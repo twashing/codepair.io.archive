@@ -3,9 +3,7 @@
 
             [alembic.still]
             [taoensso.timbre :as timbre]
-            [hara.component :as hco]
-
-            [codepair.component.server :as cs]))
+            [hara.component :as hco] ))
 
 
 (defn reload-project []
