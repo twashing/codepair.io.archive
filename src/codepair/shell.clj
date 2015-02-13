@@ -38,3 +38,17 @@
 (defn reset []
   (stop)
   (start))
+
+
+(comment
+
+  (require '[bkell.spittoon :as spit]
+           '[bkell.config :as cfg])
+
+  (def env (cfg/load-edn "config-codepair.edn"))
+
+  (def r1 (spit/db-create (:dev env)))
+
+  (def r2 (spit/db-init (:dev env)))
+
+)

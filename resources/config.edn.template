@@ -1,3 +1,9 @@
-{:test {}
- :dev {}
- :prod {}}
+{:test {:db-schema-file "db/schema-adi.edn"
+        :db-default-file "db/default.edn"
+        :db-url "datomic:mem://codepair"}
+ :dev {:db-schema-file "db/schema-adi.edn"
+       :db-default-file "db/default.edn"
+       :db-url "datomic:mem://codepair"}
+ :prod {:db-schema-file "db/schema-adi.edn"
+        :db-default-file "db/default.edn"
+        :db-url "datomic:free://localhost:4334//codepair"}}

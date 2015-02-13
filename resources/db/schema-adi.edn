@@ -56,7 +56,17 @@
          :owner [{:type :ref
                   :ref {:ns :user
                         :rval :owns}
-                  :doc "The groups's owner"}]}
+                  :doc "The groups's owner"}]
+
+         :sessions [{:type :ref
+                     :ref {:ns :session}
+                     :cardinality :many
+                     :doc "All past and active sessions for this group"}]
+
+         :availabilities [{:type :ref
+                           :ref {:ns :availability}
+                           :cardinality :many
+                           :doc "All past and active availability(s) for this group"}]}
 
  :system {:groups [{:type :ref
                     :ref {:ns :group}
