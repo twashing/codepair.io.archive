@@ -29,4 +29,6 @@
   :profiles {:dev {:dependencies [[org.clojure/test.check "0.6.1"]
                                   [midje "1.6.3"]
                                   [alembic "0.3.2"]]
-                   :plugins [[lein-midje "3.1.3"]]}})
+                   :plugins [[lein-midje "3.1.3"]]}}
+
+  :jvm-opts ^:replace ["-Xmx512m" "-server"])

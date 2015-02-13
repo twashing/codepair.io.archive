@@ -1,7 +1,26 @@
-(ns codepair.io-test
+(ns codepair.shell-test
   (:require [clojure.test :refer :all]
-            [codepair.io :refer :all]))
+            [clojure.test.check.clojure-test :refer :all]
+            [clojure.test.check.generators :as gen]
+            [clojure.test.check.properties :as prop]
+            [bkell.config :as config]
 
-(deftest a-test
-  (testing "FIXME, I fail."
-    (is (= 0 1))))
+            [codepair.shell :as sh]
+
+            [midje.repl]
+            ))
+
+(defspec test-created-database
+  5
+  (prop/for-all [_ gen/int]
+
+                (let [env (:test (config/load-edn "config-codepair.edn"))]
+
+                  (= (keys (sh/db-create env))
+                     '(:meta :connection :schema)))))
+
+(comment
+
+  (sh/log-info!)
+  (midje.repl/autotest)
+  (midje.repl/load-facts))
