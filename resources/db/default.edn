@@ -1,0 +1,32 @@
+[{:system
+
+  {:groups #{{:+/db/id [[:group-codepair]]
+
+              :name "codepair"
+
+              :users #{{:+/db/id [[:user-codepair]]
+                        :username "codepair"
+                        :password "default"
+                        :firstname "codepair"
+                        :lastname "codepair"
+                        :email "codepair"
+                        :defaultgroup [[:group-codepair]]}}
+
+              :owner [[:user-codepair]]
+
+              :availabilities #{{:time #inst "2014-12-12T23:20:50.52Z"
+                                 :title "Need Help Installing Purescript"
+                                 :description ""
+                                 :tags ["purescript" "webdevelopment" "javascript"]}
+                                {:time [#inst "2014-12-12T23:20:50.52Z" #inst "2014-12-15T24:00:00.00Z" ]
+                                 :title "Completing Project Euler Problems in Clojure"
+                                 :description "I'm willing to go through Project Euler problems for anyone who needs it"
+                                 :tags ["clojure" "functionalprogramming"]}
+                                {:time :ongoing
+                                 :title "Help Grokking Lambdas in Java"
+                                 :description "I'm trying to figure out howto use lambdas in Java"
+                                 :tags ["java" "functionalprogramming"]}}
+
+              :sessions #{{:begin #inst "2014-12-10T09:00:00.00Z"
+                           :end #inst "2014-12-10T09:20:00.00Z"
+                           :participants []}}}}}}]

@@ -1,0 +1,138 @@
+{:currency {:id [{:unique :value
+                  ;;:required true
+                  }]
+
+            :name [{:unique :value
+                    ;;:required true
+                    }]}
+
+ :country {:id [{:unique :value
+                 ;;:required true
+                 }]
+
+           :name [{:unique :value
+                   ;;:required true
+                   }]}
+
+ :account {:name [{:doc "Display name for this Account"}]
+
+           :type [{:type :enum
+                   :default :asset
+                   :enum {:ns :account.type
+                          :values #{:asset :liability :revenue :expense :capital}}}]
+
+           :counterWeight [{:type :enum
+                            :default :debit
+                            :enum {:ns :account.counterWeight
+                                   :values #{:debit :credit}}}]
+
+           :book    [{:type :ref
+                      :ref {:ns :book}
+                      :doc "The book that the journal belongs to"}]}
+
+ ;; debits & credits
+ :side {:type [{:type :enum
+                :default :debit
+                :enum {:ns :side.type
+                       :values #{:debit :credit}}}]
+
+        :amount [{:type :float}]
+
+        :account [{:type :ref
+                   :ref {:ns :account}}]
+
+        :currency [{:type :ref
+                    :ref {:ns :currency}}]}
+
+ :entry  {:date [{:type :instant}]
+
+          :currency [{:type :ref
+                      :ref {:ns :currency}}]
+
+          :content [{:type :ref
+                     :ref {:ns :side}
+                     :cardinality :many
+                     :isComponent true}]
+          :journal  [{:type :ref
+                      :ref {:ns :journal}
+                      :doc "The journal belonging to the entry"}]}
+
+ ;; journals
+ :journal {:name [{:doc "Display name for this Journal"}]
+           :book [{:type :ref
+                   :ref {:ns :book}
+                   :doc "The book that the journal belongs to"}]}
+
+ ;; assets
+ :asset {:id [{:type :uuid
+               :unique :value
+               :required true}]
+
+         :externalid [{}]
+         :filename [{}]
+         :size [{}]
+         :type [{}]
+
+         :entry [{:type :ref
+                  :ref {:ns :entry}
+                  :doc "The journal entry associated with this asset"}]}
+
+ :book {:name [{}]
+
+        :group [{:type :ref
+                 :ref {:ns :group}
+                 :doc "The group that owns this book"}]}
+
+ :user {:username [{:unique :value
+                    ;;:required true
+                    :doc "A user's username"}]
+
+        :password [{:doc "A user's password"}]
+
+        ;;:accountLevel [{:type :ref :ref :doc "A user's account level"}]
+
+        :groups [{:type :ref
+                  :ref {:ns :group
+                        :rval :users}
+                  :cardinality :many
+                  :doc "The users belonging to this group"}]
+
+        :defaultgroup
+        [{:type :ref
+          :ref {:ns :group}
+          :doc "A user can be a member of many groups. This points to the default one"}]
+
+        :firstname [{:type :string}]
+
+        :lastname [{:type :string}]
+
+        :email [{:type :string}]
+
+        :country  [{:type :ref
+                    :ref {:ns :country}}]}
+
+ :group {:name [{:unique :value
+                 :doc "A group's name"}]
+
+         :owner [{:type :ref
+                  :ref {:ns :user
+                        :rval :owns}
+                  :doc "The groups's owner"}]
+
+         :defaultCurrency [{:type :ref
+                            :ref {:ns :currency
+                                  :rval defaultGroups}
+                            :doc "The groups's default currency"}]}
+
+ :system {:currencies [{:type :ref
+                        :cardinality :many
+                        :ref {:ns :currency}}]
+
+          :countries [{:type :ref
+                       :cardinality :many
+                       :ref {:ns :country}}]
+
+          :groups [{:type :ref
+                    :ref {:ns :group}
+                    :cardinality :many
+                    :doc "The groups that are part of the system"}]}}
