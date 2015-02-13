@@ -3,7 +3,10 @@
 
             [alembic.still]
             [taoensso.timbre :as timbre]
-            [hara.component :as hco] ))
+            [hara.component :as hco]
+
+            [bkell.spittoon :as spit]
+            [bkell.config :as cfg]))
 
 
 (defn reload-project []
@@ -40,15 +43,23 @@
   (start))
 
 
-(comment
+(defn db-create
+  ([] (db-create (:dev (cfg/load-edn "config-codepair.edn"))))
+  ([env]
+   (spit/db-create env)))
 
-  (require '[bkell.spittoon :as spit]
-           '[bkell.config :as cfg])
+(defn db-init
+  ([] (db-init (:dev (cfg/load-edn "config-codepair.edn"))))
+  ([env]
+   (spit/db-init env)))
+
+
+(comment
 
   (def env (cfg/load-edn "config-codepair.edn"))
 
-  (def r1 (spit/db-create (:dev env)))
+  (def r1 (db-create (:dev env)))
 
-  (def r2 (spit/db-init (:dev env)))
+  (def r2 (db-init (:dev env)))
 
 )
