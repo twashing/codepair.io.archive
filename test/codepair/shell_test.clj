@@ -19,8 +19,22 @@
                   (= (keys (sh/db-create env))
                      '(:meta :connection :schema)))))
 
+(defspec test-initialized-database
+  5
+  (prop/for-all [_ gen/int]
+
+                (let [env (:test (config/load-edn "config-codepair.edn"))
+                      _ (sh/db-create env)]
+
+                  (= (-> (sh/db-init env)
+                         first
+                         keys)
+                   '(:system :db)))))
+
 (comment
 
   (sh/log-info!)
   (midje.repl/autotest)
-  (midje.repl/load-facts))
+  (midje.repl/load-facts)
+
+  )
