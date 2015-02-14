@@ -1,7 +1,7 @@
 (ns codepair.domain.group
   (:require [adi.core :as adi]
             [slingshot.slingshot :refer [try+ throw+]]
-            [bkell.domain.helper :as hlp]))
+            [codepair.domain.helper :as hlp]))
 
 
 (declare find-group-by-name)
