@@ -41,6 +41,17 @@
 
                 (= '(:shell :spittoon) (keys sh/system))))
 
+(defspec stopped-system-is-nil
+  5
+  (prop/for-all [_ gen/int]
+
+                (let [_ (sh/start {:shell {}
+                           :spittoon {:env (:test (config/load-edn "config-codepair.edn"))
+                                      :recreate? true}})
+                      _ (sh/stop)]
+
+                  (= nil (-> sh/system :spittoon :db)))))
+
 (comment
 
   (sh/log-info!)
