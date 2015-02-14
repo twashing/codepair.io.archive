@@ -9,15 +9,18 @@
             [codepair.shell :as sh]))
 
 
-#_(defn gen-approutes
+(defn gen-approutes
   ([]
    (gen-approutes (:dev (config/load-edn "config-codepair.edn"))))
 
   ([env]
+   (gen-approutes env false))
+
+  ([env recreate?]
 
    (sh/start {:shell {}
               :spittoon {:env env
-                         :recreate? false}})
+                         :recreate? recreate?}})
 
    (defroutes app-routes
 
@@ -34,23 +37,8 @@
      (route/resources "/")
      (route/not-found "Not Found"))))
 
-#_(gen-approutes)
 
-
-(defroutes app-routes
-
-  (GET "/" [:as req]
-
-       (-> (ring-resp/response (slurp (io/resource "public/index.html")))
-           (ring-resp/content-type "text/html")))
-
-  (GET "/foobar" [:as req]
-
-       (ring-resp/response (keys sh/system)))
-
-  (route/files "/")
-  (route/resources "/")
-  (route/not-found "Not Found"))
+(gen-approutes (:dev (config/load-edn "config-codepair.edn")) true)
 
 (def app
   (-> app-routes
