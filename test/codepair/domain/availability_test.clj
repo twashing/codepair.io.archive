@@ -12,10 +12,10 @@
 
 
 (defspec test-add-availability
-  10
+  5
   (prop/for-all [_ gen/int]
 
-                (let [uname "codepair"
+                (let [gname "codepair"
                       ds (hlp/setup-db!)
                       availability {:time :ongoing
                                     :title "Need Help Installing Purescript"
@@ -23,13 +23,36 @@
                                     :tags #{{:name "purescript"} {:name "webdevelopment"} {:name "javascript"}}}]
 
                   (= '(:+ :description :tags :time :title)
-                     (-> (av/add-availability ds uname availability)
+                     (-> (av/add-availability ds gname availability)
                          first
                          :group
                          :availabilities
                          first
                          keys
                          sort)))))
+
+(defspec test-list-availabilities
+  5
+  (prop/for-all [_ gen/int]
+
+                (let [gname "codepair"
+                      ds (hlp/setup-db!)
+                      availability {:time :ongoing
+                                    :title "Need Help Installing Purescript"
+                                    :description "I'm new to Purescript, and want to get a basic development environment."
+                                    :tags #{{:name "purescript"} {:name "webdevelopment"} {:name "javascript"}}}
+                      a (av/add-availability ds gname availability)
+                      b (av/list-availabilities ds gname)]
+
+                  (and (= 2 (count b) )
+                       (= '("Help Grokking Lambdas in Java" "Need Help Installing Purescript")
+                          (map #(-> % :availability :title) b))))))
+
+#_(defspec test-retrieve-availability
+  5
+  (prop/for-all [_ gen/int]
+
+                ))
 
 (comment
 
