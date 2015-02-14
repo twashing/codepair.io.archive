@@ -14,7 +14,21 @@
 
               :owner [[:user-codepair]]
 
+              :availabilities #{{:time :ongoing
+                                 :title "Help Grokking Lambdas in Java"
+                                 :description "I'm trying to figure out howto use lambdas in Java"
+                                 :tags #{{:name "java"} {:name "functionalprogramming"}}
+                                 :begin #inst "2014-12-10T09:00:00.00Z"
+                                 :end #inst "2014-12-10T09:20:00.00Z"}
 
+                                #_{:time #inst "2014-12-12T23:20:50.52Z"
+                                   :title "Need Help Installing Purescript"
+                                   :description ""
+                                   :tags #{{:name "purescript"} {:name "webdevelopment"} {:name "javascript"}}}
+                                #_{:time [#inst "2014-12-12T23:20:50.52Z" #inst "2014-12-15T24:00:00.00Z"]
+                                   :title "Completing Project Euler Problems in Clojure"
+                                   :description "I'm willing to go through Project Euler problems for anyone who needs it"
+                                   :tags #{{:name "clojure"} #{:name "functionalprogramming"}}}}
 
               :sessions #{{:begin #inst "2014-12-10T09:00:00.00Z"
                            :end #inst "2014-12-10T09:20:00.00Z"

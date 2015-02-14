@@ -35,6 +35,6 @@
 
   (sh/log-info!)
   (midje.repl/autotest)
-  (midje.repl/load-facts)
+  (midje.repl/load-facts 'codepair.shell-test)
 
   )

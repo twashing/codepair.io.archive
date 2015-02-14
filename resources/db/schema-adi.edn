@@ -41,7 +41,10 @@
                 :description [{:type :string}]
                 :tags [{:type :ref
                         :ref {:ns :tag}
-                        :cardinality :many}]}
+                        :cardinality :many}]
+                :begin [{:type :instant}]
+                :end [{:type :instant}]
+}
 
  :session {:begin [{:type :instant}]
            :end [{:type :instant}]
