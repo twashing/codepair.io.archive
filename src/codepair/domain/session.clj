@@ -31,10 +31,10 @@
                 {:name gname}}}
               :pull {:session :checked}))
 
-#_(defn update-session [ds gname title session]
+(defn update-session [ds gname begin session]
   (adi/update! ds
                {:session
-                {:title title
+                {:begin begin
                  :groups
                  {:name gname}}}
                {:session session}))
