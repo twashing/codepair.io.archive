@@ -34,6 +34,24 @@
 
                          (not (empty? (gp/find-group-by-name ds "group-one"))))))))
 
+(defspec test-list-all-users
+  5
+  (prop/for-all [_ gen/int]
+
+                (let [gname "codepair"
+                      ds (hlp/setup-db!)
+                      result (us/list-users ds gname)]
+
+
+
+                  (and (= 1 (count result))
+
+                       (= (-> result first :user)
+                          {:username "codepair",
+                           :lastname "codepair",
+                           :password "default",
+                           :firstname "codepair",
+                           :email "codepair"})))))
 
 (comment
 
