@@ -42,8 +42,6 @@
                       ds (hlp/setup-db!)
                       result (us/list-users ds gname)]
 
-
-
                   (and (= 1 (count result))
 
                        (= (-> result first :user)
@@ -53,10 +51,28 @@
                            :firstname "codepair",
                            :email "codepair"})))))
 
+(defspec test-retrieve-user
+  10
+  (prop/for-all [_ gen/int]
+
+                (let [user-name "one"
+                      ds (hlp/setup-db!)]
+
+                  (let [a (us/add-user ds user-name)
+                        b (us/find-user-by-username ds user-name)]
+
+                    (= (first b)
+                       {:user
+                        {:email "one",
+                         :firstname "one",
+                         :password "default",
+                         :lastname "one",
+                         :username "one"}})))))
+
 (comment
 
   (sh/log-info!)
   (midje.repl/autotest)
-  (midje.repl/load-facts)
+  (midje.repl/load-facts 'codepair.domain.user-test)
 
   )
