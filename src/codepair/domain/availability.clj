@@ -45,3 +45,9 @@
                {:name '_
                 :availabilities/groups/name gname}}
               :pull {:tag :checked}))
+
+(defn list-tags-all [ds]
+  (adi/select ds
+              {:tag
+               {:name '_}}
+              :pull {:tag :checked}))

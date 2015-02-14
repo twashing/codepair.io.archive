@@ -6,6 +6,7 @@
             [clojure.test.check.properties :as prop]
 
             [codepair.domain.availability :as av]
+            [codepair.domain.user :as us]
             [codepair.domain.test-helper :as hlp]))
 
 
@@ -98,18 +99,44 @@
   (prop/for-all [_ gen/int]
 
                 (let [gname "codepair"
-                      ds (hlp/setup-db!)
+                      ngname "group-one"
+                      nuname "one"
                       availability {:time :ongoing
                                     :title "Need Help Installing Purescript"
                                     :description "I'm new to Purescript, and want to get a basic development environment."
                                     :tags #{{:name "purescript"} {:name "webdevelopment"} {:name "javascript"}}}
-                      a (av/add-availability ds gname availability)
+
+                      ds (hlp/setup-db!)
+                      nuser (us/add-user ds nuname)
+
+                      a (av/add-availability ds ngname availability)
                       b (av/list-tags-forgroup ds gname)]
+
+                  (and (= 2 (count b) )
+                       (= '("java" "functionalprogramming")
+                          (map #(-> % :tag :name) b))))))
+
+(defspec test-list-tags-all
+  5
+  (prop/for-all [_ gen/int]
+
+                (let [gname "codepair"
+                      ngname "group-one"
+                      nuname "one"
+                      availability {:time :ongoing
+                                    :title "Need Help Installing Purescript"
+                                    :description "I'm new to Purescript, and want to get a basic development environment."
+                                    :tags #{{:name "purescript"} {:name "webdevelopment"} {:name "javascript"}}}
+
+                      ds (hlp/setup-db!)
+                      nuser (us/add-user ds nuname)
+
+                      a (av/add-availability ds ngname availability)
+                      b (av/list-tags-all ds)]
 
                   (and (= 5 (count b) )
                        (= '("purescript" "webdevelopment" "javascript" "java" "functionalprogramming")
-                          (map #(-> % :tag :name) b))))
-                ))
+                          (map #(-> % :tag :name) b))))))
 
 
 (comment
