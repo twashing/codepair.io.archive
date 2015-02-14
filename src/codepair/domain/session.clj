@@ -11,14 +11,14 @@
                 {:name gname}}
                {:group/sessions session}))
 
-#_(defn find-session-by-title
-  ([ds gname title]
-   (find-session-by-title ds gname title [:ids {:session :checked}]))
+(defn find-session-by-begin
+  ([ds gname begin]
+   (find-session-by-begin  ds gname begin [:ids {:session :checked}]))
 
-  ([ds gname title opts]
+  ([ds gname begin opts]
    (let [select-args (set/union [ds
                                  {:session
-                                  {:title title
+                                  {:begin begin
                                    :groups
                                    {:name gname}}}
                                  opts])]

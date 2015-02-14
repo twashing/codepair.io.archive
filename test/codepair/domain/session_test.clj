@@ -47,6 +47,21 @@
                        (= '(#inst "2014-12-10T09:00:00.000-00:00" #inst "2014-11-10T09:00:00.000-00:00")
                           (map #(-> % :session :begin) b))))))
 
+(defspec test-retrieve-session
+  5
+  (prop/for-all [_ gen/int]
+
+                (let [gname "codepair"
+                      ds (hlp/setup-db!)
+
+                      begin #inst "2014-11-10T09:00:00.00Z"
+                      session {:begin begin}
+                      a (ss/add-session ds gname session)
+                      b (ss/find-session-by-begin ds gname begin)]
+
+                  (= b
+                     #{{:session {:begin #inst "2014-11-10T09:00:00.000-00:00"}}}))))
+
 (comment
 
   (sh/log-info!)
