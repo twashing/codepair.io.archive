@@ -93,6 +93,25 @@
                          :title utitle,
                          :time :ongoing}}}))))
 
+(defspec test-list-tags-forgroup
+  5
+  (prop/for-all [_ gen/int]
+
+                (let [gname "codepair"
+                      ds (hlp/setup-db!)
+                      availability {:time :ongoing
+                                    :title "Need Help Installing Purescript"
+                                    :description "I'm new to Purescript, and want to get a basic development environment."
+                                    :tags #{{:name "purescript"} {:name "webdevelopment"} {:name "javascript"}}}
+                      a (av/add-availability ds gname availability)
+                      b (av/list-tags-forgroup ds gname)]
+
+                  (and (= 5 (count b) )
+                       (= '("purescript" "webdevelopment" "javascript" "java" "functionalprogramming")
+                          (map #(-> % :tag :name) b))))
+                ))
+
+
 (comment
 
   (sh/log-info!)

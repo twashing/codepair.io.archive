@@ -38,3 +38,10 @@
                  :groups
                  {:name gname}}}
                {:availability availability}))
+
+(defn list-tags-forgroup [ds gname]
+  (adi/select ds
+              {:tag
+               {:name '_
+                :availabilities/groups/name gname}}
+              :pull {:tag :checked}))
