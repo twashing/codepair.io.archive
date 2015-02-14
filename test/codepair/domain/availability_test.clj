@@ -5,7 +5,6 @@
             [clojure.test.check.generators :as gen]
             [clojure.test.check.properties :as prop]
 
-            [codepair.domain.user :as us]
             [codepair.domain.availability :as av]
             [codepair.domain.test-helper :as hlp]))
 
@@ -98,6 +97,4 @@
 
   (sh/log-info!)
   (midje.repl/autotest)
-  (midje.repl/load-facts 'codepair.domain.availability-test)
-
-  )
+  (midje.repl/load-facts 'codepair.domain.availability-test))
