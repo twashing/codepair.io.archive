@@ -31,6 +31,16 @@
                          keys)
                    '(:system :db)))))
 
+(defspec started-system-has-expected-components
+  5
+  (prop/for-all [_ gen/int]
+
+                (sh/start {:shell {}
+                           :spittoon {:env (:test (config/load-edn "config-codepair.edn"))
+                                      :recreate? true}})
+
+                (= '(:shell :spittoon) (keys sh/system))))
+
 (comment
 
   (sh/log-info!)

@@ -6,7 +6,10 @@
             [hara.component :as hco]
 
             [bkell.spittoon :as spit]
-            [bkell.config :as cfg]))
+            [bkell.config :as config]
+
+            [codepair.component.shell :as csh]
+            [codepair.component.spittoon :as css]))
 
 
 (defn reload-project []
@@ -27,8 +30,12 @@
 
 (def environment-mode :dev)
 (def system nil)
-(def topology {})
-(def component-config   {})
+(def topology {:shell [csh/map->Shell :spittoon]
+               :spittoon [css/map->Spittoon]})
+(def file-config (config/load-edn "config-codepair.edn"))
+(def component-config   {:shell {}
+                         :spittoon {:env (environment-mode file-config)
+                                    :recreate? false}})
 
 (defn start
   ([] (start component-config))
@@ -44,22 +51,20 @@
 
 
 (defn db-create
-  ([] (db-create (:dev (cfg/load-edn "config-codepair.edn"))))
+  ([] (db-create (:dev (config/load-edn "config-codepair.edn"))))
   ([env]
    (spit/db-create env)))
 
 (defn db-init
-  ([] (db-init (:dev (cfg/load-edn "config-codepair.edn"))))
+  ([] (db-init (:dev (config/load-edn "config-codepair.edn"))))
   ([env]
    (spit/db-init env)))
 
 
 (comment
 
-  (def env (cfg/load-edn "config-codepair.edn"))
-
+  (def env (config/load-edn "config-codepair.edn"))
   (def r1 (db-create (:dev env)))
-
   (def r2 (db-init (:dev env)))
 
-)
+  )
