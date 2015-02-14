@@ -30,3 +30,11 @@
                {:groups
                 {:name gname}}}
               :pull {:availability :checked}))
+
+(defn update-availability [ds gname title availability]
+  (adi/update! ds
+               {:availability
+                {:title title
+                 :groups
+                 {:name gname}}}
+               {:availability availability}))

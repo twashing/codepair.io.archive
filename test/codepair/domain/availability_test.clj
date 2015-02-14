@@ -70,6 +70,30 @@
                          :title "Need Help Installing Purescript",
                          :time :ongoing}}}))))
 
+(defspec test-update-availability
+  5
+  (prop/for-all [_ gen/int]
+
+                (let [gname "codepair"
+                      ds (hlp/setup-db!)
+
+                      title "Need Help Installing Purescript"
+                      utitle "Foobar Title"
+                      availability {:time :ongoing
+                                    :title title
+                                    :description "I'm new to Purescript, and want to get a basic development environment."
+                                    :tags #{{:name "purescript"} {:name "webdevelopment"} {:name "javascript"}}}
+                      a (av/add-availability ds gname availability)
+                      b (av/update-availability ds gname title {:title utitle})
+                      c (av/find-availability-by-title ds gname utitle)]
+
+                  (= c
+                     #{{:availability
+                        {:description
+                         "I'm new to Purescript, and want to get a basic development environment.",
+                         :title utitle,
+                         :time :ongoing}}}))))
+
 (comment
 
   (sh/log-info!)
