@@ -8,6 +8,7 @@
 
             [codepair.shell :as sh]
             [codepair.domain.group :as gp]
+            [codepair.domain.user :as us]
             [codepair.domain.test-helper :as hlp]
 
             [midje.repl]))
@@ -34,6 +35,22 @@
 
                     (= (sort '(:+/db/id :name :users :owner))
                        (sort (keys a)))))))
+
+
+(defspec test-add-group
+  10
+  (prop/for-all [_ gen/int]
+
+                (let [group-name "one"
+                      ds (hlp/setup-db!)]
+
+                  (let [a (gp/add-group ds group-name)]
+
+                    (and (= (sort '(:+ :name :users :owner))
+                            (-> a first :system :groups first keys sort))
+
+                         (not (empty? (us/find-user-by-username ds "user-one"))))))))
+
 
 
 (comment
