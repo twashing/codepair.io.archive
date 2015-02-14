@@ -52,7 +52,7 @@
                            :email "codepair"})))))
 
 (defspec test-retrieve-user
-  10
+  5
   (prop/for-all [_ gen/int]
 
                 (let [user-name "one"
@@ -68,6 +68,26 @@
                          :password "default",
                          :lastname "one",
                          :username "one"}})))))
+
+(defspec test-update-user
+  5
+  (prop/for-all [_ gen/int]
+
+                (let [uname "codepair"
+                      ds (hlp/setup-db!)]
+
+                  (let [a (us/update-user ds uname {:email "one",
+                                                    :firstname "one",
+                                                    :lastname "one"})
+                        b (us/find-user-by-username ds uname)]
+
+                    (= (first b)
+                       {:user
+                        {:email "one",
+                         :firstname "one",
+                         :password "default",
+                         :lastname "one",
+                         :username "codepair"}})))))
 
 (comment
 

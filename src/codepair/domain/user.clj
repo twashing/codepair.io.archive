@@ -30,3 +30,12 @@
                 :groups
                 {:name gname}}}
               :pull {:user :checked}))
+
+(defn update-user [ds uname user]
+  {:pre [(or (empty? (:username user))
+             (no-duplicate-user? ds (:username user)))]}
+  (adi/update! ds
+               {:user
+                {:username uname}}
+
+               {:user user}))
