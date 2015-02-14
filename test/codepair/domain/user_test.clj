@@ -34,7 +34,7 @@
 
                          (not (empty? (gp/find-group-by-name ds "group-one"))))))))
 
-(defspec test-list-all-users
+(defspec test-list-users-ingroup
   5
   (prop/for-all [_ gen/int]
 
@@ -89,10 +89,23 @@
                          :lastname "one",
                          :username "codepair"}})))))
 
+(defspec test-list-all-users
+  5
+  (prop/for-all [_ gen/int]
+
+                (let [gname "codepair"
+                      nuname "one"
+
+                      ds (hlp/setup-db!)
+                      a (us/add-user ds nuname)
+                      b (us/list-users-all ds)]
+
+                  (and (= 2 (count b))
+                       (= '("codepair" "one")
+                          (map #(-> % :user :username) b))))))
+
 (comment
 
   (sh/log-info!)
   (midje.repl/autotest)
-  (midje.repl/load-facts 'codepair.domain.user-test)
-
-  )
+  (midje.repl/load-facts 'codepair.domain.user-test))

@@ -39,3 +39,9 @@
                 {:username uname}}
 
                {:user user}))
+
+(defn list-users-all [ds]
+  (adi/select ds
+              {:user
+               {:username '_}}
+              :pull {:user :checked}))
