@@ -36,7 +36,6 @@
                     (= (sort '(:+/db/id :name :users :owner))
                        (sort (keys a)))))))
 
-
 (defspec test-add-group
   10
   (prop/for-all [_ gen/int]
@@ -50,6 +49,16 @@
                             (-> a first :system :groups first keys sort))
 
                          (not (empty? (us/find-user-by-username ds "user-one"))))))))
+
+(defspec test-list-groups
+  10
+  (prop/for-all [_ gen/int]
+
+                (let [ds (hlp/setup-db!)
+                      result (gp/list-groups ds)]
+
+                  (and (= 1 (count result))
+                       (= result #{{:name "codepair"}})))))
 
 
 
