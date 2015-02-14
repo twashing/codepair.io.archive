@@ -33,23 +33,19 @@
                          first
                          keys)))))
 
-#_(defspec test-list-sessions
+(defspec test-list-sessions
   5
   (prop/for-all [_ gen/int]
 
                 (let [gname "codepair"
                       ds (hlp/setup-db!)
-                      session {:time :ongoing
-                                    :title "Need Help Installing Purescript"
-                                    :description "I'm new to Purescript, and want to get a basic development environment."
-                                    :tags #{{:name "purescript"} {:name "webdevelopment"} {:name "javascript"}}}
+                      session {:begin #inst "2014-11-10T09:00:00.00Z"}
                       a (ss/add-session ds gname session)
                       b (ss/list-sessions ds gname)]
 
                   (and (= 2 (count b) )
-                       (= '("Help Grokking Lambdas in Java" "Need Help Installing Purescript")
-                          (map #(-> % :session :title) b))))))
-
+                       (= '(#inst "2014-12-10T09:00:00.000-00:00" #inst "2014-11-10T09:00:00.000-00:00")
+                          (map #(-> % :session :begin) b))))))
 
 (comment
 
