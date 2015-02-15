@@ -4,10 +4,38 @@
             [compojure.handler :as handler]
             [compojure.route :as route]
             [ring.util.response :as ring-resp]
+            [cheshire.core :as chesr]
+            [clj-http.client :as client]
+            [taoensso.timbre :as timbre]
             [bkell.config :as config]
 
-            [codepair.shell :as sh]))
+            [codepair.shell :as sh]
+            [codepair.domain.user :as us]))
 
+
+(defn add-user-ifnil [username]
+
+  (let [ds (-> sh/system :spittoon :db)
+        uresult (try+ (us/add-user ds username)
+                      (catch AssertionError e &throw-context))
+
+        uresultF (if (:stack-trace uresult)
+
+                   ;; Mirroring structure that's returned from a successful user creation
+                   (do
+                     (timbre/debug "NIL: user [" username "] already exists")
+                     [{:system
+                       {:groups
+                        #{{:name (str "group-" username)
+                           :users
+                           #{{:username username}}}}}}])
+
+                   ;; Return structure that system generates
+                   (do
+                     (timbre/debug "SUCCESS: adding user [" username "]")
+                     uresult))]
+
+    uresultF))
 
 (defn gen-approutes
   ([]
@@ -32,6 +60,39 @@
      (GET "/foobar" [:as req]
 
           (ring-resp/response (keys sh/system)))
+
+     (POST "/verify-assertion" [:as req]
+
+           (timbre/debug (str "/verify-assertion req[" req "]"))
+           (let [session (:session req)
+
+                 audience (get (:headers req) "origin")
+
+                 _ (timbre/debug (str "... 1: " (:headers req)))
+                 _ (timbre/debug (str "... audience: " audience))
+
+                 body (read-string (slurp (:body req)))
+                 assertion (:assertion body)
+                 response (client/post "https://verifier.login.persona.org/verify"
+                                       {:form-params {:assertion assertion
+                                                      :audience audience}})
+                 parsed-body (chesr/parse-string (-> response :body))
+                 response-status (parsed-body "status")
+                 response-email (parsed-body "email")
+                 session (if (nil? session) {} session)]
+
+             (if (= "okay" response-status)
+               (do
+
+                 ;; this will have the group-name and user-name
+                 (let [uresult (add-user-ifnil response-email)
+                       response-withuser (assoc response :uresult uresult)]
+                   (-> (ring-resp/response response-withuser)
+                       (ring-resp/content-type "application/edn")
+                       (assoc :session (assoc session :response-withuser response-withuser)))))
+               (-> (ring-resp/response (str {:body {:status response-status}}))
+                   (ring-resp/status 401)
+                   (ring-resp/content-type "application/edn")))))
 
      (route/files "/")
      (route/resources "/")

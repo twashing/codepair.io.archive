@@ -12,6 +12,8 @@
                  [ring/ring-core "1.2.1"]
                  [ring/ring-jetty-adapter "1.2.1"]
                  [slingshot "0.12.1"]
+                 [cheshire "5.4.0"]
+                 [clj-http "1.0.1"]
                  [com.taoensso/timbre "3.3.1"]
                  [im.chit/hara.component "2.1.7"]
                  [im.chit/adi "0.3.1"]
@@ -35,7 +37,7 @@
   :cljsbuild {:builds [{:id "codepair"
 
                         ;; The path to the top-level ClojureScript source directory:
-                        :source-paths ["src/cljs/" "src/clj/"]
+                        :source-paths ["src/cljs/"]
 
                         ;; The standard ClojureScript compiler options:
                         ;; (See the ClojureScript compiler documentation for details.)
