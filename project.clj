@@ -10,6 +10,7 @@
                  [compojure "1.3.1"]
                  ;[ring/ring-defaults "0.1.3"]
                  [ring/ring-core "1.2.1"]
+                 [ring/ring-devel "1.0.0"]
                  [ring/ring-jetty-adapter "1.2.1"]
                  [slingshot "0.12.1"]
                  [cheshire "5.4.0"]

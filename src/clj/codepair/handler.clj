@@ -1,9 +1,11 @@
 (ns codepair.handler
   (:require [clojure.java.io :as io]
+            [clojure.pprint :as pp]
             [compojure.core :refer :all]
             [compojure.handler :as handler]
             [compojure.route :as route]
             [ring.util.response :as ring-resp]
+            [slingshot.slingshot :refer [throw+ try+]]
             [cheshire.core :as chesr]
             [clj-http.client :as client]
             [taoensso.timbre :as timbre]
@@ -59,6 +61,7 @@
 
      (GET "/foobar" [:as req]
 
+          (timbre/debug (ring-resp/response (keys sh/system)))
           (ring-resp/response (keys sh/system)))
 
      (POST "/verify-assertion" [:as req]
@@ -68,36 +71,43 @@
 
                  audience (get (:headers req) "origin")
 
-                 _ (timbre/debug (str "... 1: " (:headers req)))
-                 _ (timbre/debug (str "... audience: " audience))
+                 ;;_ (timbre/debug (str "... 1: " (:headers req)))
+                 ;;_ (timbre/debug (str "... audience: " audience))
 
                  body (read-string (slurp (:body req)))
                  assertion (:assertion body)
-                 response (client/post "https://verifier.login.persona.org/verify"
-                                       {:form-params {:assertion assertion
-                                                      :audience audience}})
-                 parsed-body (chesr/parse-string (-> response :body))
-                 response-status (parsed-body "status")
-                 response-email (parsed-body "email")
+                 persona-response (client/post "https://verifier.login.persona.org/verify"
+                                               {:form-params {:assertion assertion
+                                                              :audience audience}})
+
+                 parsed-body (chesr/parse-string (-> persona-response :body))
+                 persona-response-status (parsed-body "status")
+                 persona-response-email (parsed-body "email")
                  session (if (nil? session) {} session)]
 
-             (if (= "okay" response-status)
+             (if (= "okay" persona-response-status)
+
                (do
 
                  ;; this will have the group-name and user-name
-                 (let [uresult (add-user-ifnil response-email)
-                       response-withuser (assoc response :uresult uresult)]
-                   (-> (ring-resp/response response-withuser)
-                       (ring-resp/content-type "application/edn")
-                       (assoc :session (assoc session :response-withuser response-withuser)))))
-               (-> (ring-resp/response (str {:body {:status response-status}}))
+                 (let [uresult (add-user-ifnil persona-response-email)
+                       response-withuser (assoc persona-response :uresult uresult)
+                       _ (timbre/debug (str "... session: " (with-out-str (pp/pprint session))))
+                       _ (timbre/debug (str "... response: " (with-out-str (pp/pprint persona-response))))
+                       _ (timbre/debug (str "... response-withuser: " (with-out-str (pp/pprint response-withuser))))]
+
+                   (let [uresult (add-user-ifnil persona-response-email)
+                         response-withuser (assoc personal-response :uresult uresult)]
+                     (-> (ring-resp/response response-withuser)
+                         (ring-resp/content-type "application/edn")
+                                               (assoc :session (assoc session :response-withuser response-withuser))))))
+               (-> (ring-resp/response (str {:body {:status persona-response-status}}))
                    (ring-resp/status 401)
                    (ring-resp/content-type "application/edn")))))
 
      (route/files "/")
      (route/resources "/")
      (route/not-found "Not Found"))))
-
 
 (gen-approutes (:dev (config/load-edn "config-codepair.edn")) true)
 
