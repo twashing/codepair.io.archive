@@ -26,9 +26,26 @@
 
   :ring {:handler codepair.handler/app}
 
-  :profiles {:dev {:dependencies [[org.clojure/test.check "0.6.1"]
+  :profiles {:dev {:source-paths ["src/cljs/" "src/clj/"]
+                   :dependencies [[org.clojure/test.check "0.6.1"]
                                   [midje "1.6.3"]
                                   [alembic "0.3.2"]]
                    :plugins [[lein-midje "3.1.3"]]}}
+
+  :cljsbuild {:builds [{:id "codepair"
+
+                        ;; The path to the top-level ClojureScript source directory:
+                        :source-paths ["src/cljs/" "src/clj/"]
+
+                        ;; The standard ClojureScript compiler options:
+                        ;; (See the ClojureScript compiler documentation for details.)
+                        :compiler {
+                                   :output-to "resources/public/js/codepair.js"
+                                   :output-dir "resources/public/js/out/"
+                                   :source-map    "resources/public/js/out.js.map"
+                                   :foreign-libs [{:file "https://login.persona.org/include.js"
+                                                   :provides ["navigator"]}]
+                                   :optimizations :none
+                                   :pretty-print true}}]}
 
   :jvm-opts ^:replace ["-Xmx512m" "-server"])
