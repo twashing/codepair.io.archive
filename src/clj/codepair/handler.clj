@@ -66,15 +66,12 @@
 
      (POST "/verify-assertion" [:as req]
 
-           (timbre/debug (str "/verify-assertion req[" req "]"))
+           (timbre/debug (str "/verify-assertion req[" (with-out-str (pp/pprint req)) "]"))
            (let [session (:session req)
-
                  audience (get (:headers req) "origin")
-
-                 ;;_ (timbre/debug (str "... 1: " (:headers req)))
-                 ;;_ (timbre/debug (str "... audience: " audience))
-
                  body (read-string (slurp (:body req)))
+                 _ (timbre/debug (str "/verify-assertion body[" (with-out-str (pp/pprint body)) "]"))
+
                  assertion (:assertion body)
                  persona-response (client/post "https://verifier.login.persona.org/verify"
                                                {:form-params {:assertion assertion
@@ -97,10 +94,10 @@
                        _ (timbre/debug (str "... response-withuser: " (with-out-str (pp/pprint response-withuser))))]
 
                    (let [uresult (add-user-ifnil persona-response-email)
-                         response-withuser (assoc personal-response :uresult uresult)]
+                         response-withuser (assoc persona-response :uresult uresult)]
                      (-> (ring-resp/response response-withuser)
                          (ring-resp/content-type "application/edn")
-                                               (assoc :session (assoc session :response-withuser response-withuser))))))
+                         (assoc :session (assoc session :response-withuser response-withuser))))))
                (-> (ring-resp/response (str {:body {:status persona-response-status}}))
                    (ring-resp/status 401)
                    (ring-resp/content-type "application/edn")))))

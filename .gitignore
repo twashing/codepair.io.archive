@@ -11,3 +11,5 @@ pom.xml.asc
 .hg/
 /resources/config-codepair.edn
 changes
+*.log
+/logs

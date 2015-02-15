@@ -7,8 +7,7 @@
 
             [codepair.shell :as sh]
 
-            [midje.repl]
-            ))
+            [midje.repl]))
 
 (defspec test-created-database
   5

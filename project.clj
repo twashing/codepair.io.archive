@@ -7,6 +7,7 @@
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [org.clojure/clojurescript "0.0-2505"]
                  [org.clojure/core.async "0.1.346.0-17112a-alpha"]
+                 [org.clojure/data.codec "0.1.0"]
                  [compojure "1.3.1"]
                  ;[ring/ring-defaults "0.1.3"]
                  [ring/ring-core "1.2.1"]
@@ -31,6 +32,7 @@
 
   :profiles {:dev {:source-paths ["src/cljs/" "src/clj/"]
                    :dependencies [[org.clojure/test.check "0.6.1"]
+                                  [ring/ring-mock "0.2.0"]
                                   [midje "1.6.3"]
                                   [alembic "0.3.2"]]
                    :plugins [[lein-midje "3.1.3"]]}}
@@ -51,4 +53,5 @@
                                    :optimizations :none
                                    :pretty-print true}}]}
 
-  :jvm-opts ^:replace ["-Xmx512m" "-server"])
+  :jvm-opts ^:replace ["-Xmx1024m" "-server"]
+  )
