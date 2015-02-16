@@ -96,7 +96,7 @@
                          authentication-data {:groupname groupname
                                               :username username
                                               :token token}
-                         responseF (-> (ring-resp/response (pr-str response-withuser))
+                         responseF (-> (ring-resp/response (pr-str authentication-data))
                                        (ring-resp/content-type "application/edn")
                                        (assoc :session (assoc session :authentication-data authentication-data)))]
 

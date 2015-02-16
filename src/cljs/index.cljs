@@ -34,13 +34,18 @@
                           (fn [e xhr]
                             (let [data (.getResponseText xhr)
                                   responseF  (reader/read-string data)
-                                  groupname (-> responseF :uresult first :system :groups first :name)
-                                  username (-> responseF :uresult first :system :groups first :users first :username)]
+                                  ;;groupname (-> responseF :uresult first :system :groups first :name)
+                                  ;;username (-> responseF :uresult first :system :groups first :users first :username)
+                                  ;;token _
+                                  groupname (-> responseF :authentication-data :groupname)
+                                  username (-> responseF :authentication-data :username)
+                                  token (-> responseF :authentication-data :token)]
 
                               ;; set the user data into the namespace
                               (swap! ln/user-state (fn [inp]
                                                      {:groupname groupname
                                                       :username username
+                                                      :token token
                                                       :source responseF})))))}))
 
 (defn start []
