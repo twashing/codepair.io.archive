@@ -22,6 +22,7 @@
 
                  ;; meant to override [clj-time "0.6.0"] in ring-core
                  [clj-time "0.8.0"]
+                 [abengoa/clj-stripe "1.0.4"]
 
                  [bkell "0.1.2"]]
 

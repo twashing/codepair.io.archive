@@ -8,6 +8,22 @@
   <body>
 
     <div class="tk-open-sans" id="signin">login</div>
+    <br/>
+
+    <script src="https://checkout.stripe.com/checkout.js"></script>
+    <div class="tk-open-sans" id="customButton">purchase</div>
+    <form action="/charge" method="POST">
+      <script
+         src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+         data-key="pk_test_CT5VaR5BAIH2ZneC0wGLTh9b",
+         data-image="/square-image.png"
+         data-name="CodePair.io"
+         data-description="Professional Plan"
+         data-amount="900">
+      </script>
+      <input type="hidden" name="planId" value="professional">
+    </form>
+
 
     <!-- Ensuring users of IE can't use Compatibility Mode, as this will break Persona.
          (https://developer.mozilla.org/en-US/Persona/Quick_setup) -->

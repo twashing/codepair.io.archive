@@ -4,6 +4,16 @@
             [alembic.still]
             [taoensso.timbre :as timbre]
             [hara.component :as hco]
+            [clj-stripe.util :as util]
+            [clj-stripe.common :as common]
+            [clj-stripe.plans :as plans]
+            [clj-stripe.coupons :as coupons]
+            [clj-stripe.charges :as charges]
+            [clj-stripe.cards :as cards]
+            [clj-stripe.subscriptions :as subscriptions]
+            [clj-stripe.customers :as customers]
+            [clj-stripe.invoices :as invoices]
+            [clj-stripe.invoiceitems :as invoiceitems]
 
             [bkell.spittoon :as spit]
             [bkell.config :as config]
@@ -66,5 +76,18 @@
   (def env (config/load-edn "config-codepair.edn"))
   (def r1 (db-create (:dev env)))
   (def r2 (db-init (:dev env)))
+
+
+  ;; list available plans
+  (common/with-token sktest
+    (common/execute (plans/get-all-plans)))
+
+  ;; create a new customer on a subscription plan
+  (common/with-token sktest
+    (common/execute
+     (customers/create-customer
+      (common/card "A card token obtained with stripe.js")
+      (customers/email "twashing@gmail.com")
+      (common/plan "professional"))))
 
   )

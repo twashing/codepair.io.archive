@@ -11,6 +11,17 @@
             [cheshire.core :as chesr]
             [clj-http.client :as client]
             [taoensso.timbre :as timbre]
+            [clj-stripe.util :as util]
+            [clj-stripe.common :as common]
+            [clj-stripe.plans :as plans]
+            [clj-stripe.coupons :as coupons]
+            [clj-stripe.charges :as charges]
+            [clj-stripe.cards :as cards]
+            [clj-stripe.subscriptions :as subscriptions]
+            [clj-stripe.customers :as customers]
+            [clj-stripe.invoices :as invoices]
+            [clj-stripe.invoiceitems :as invoiceitems]
+
             [bkell.config :as config]
 
             [codepair.shell :as sh]
@@ -60,6 +71,28 @@
 
           (-> (ring-resp/response (slurp (io/resource "public/index.html")))
               (ring-resp/content-type "text/html")))
+
+     (POST "/charge" [:as req]
+
+           (timbre/debug (str "/charge req[" (with-out-str (pp/pprint req)) "]"))
+
+           ;; tie together with existing account
+           ;; pull in secret key from config
+           ;; can't do this unless logged in
+           (let [sktest ""
+                 charge-token (-> req :params :stripeToken)
+                 stripe-email (-> req :params :stripeEmail)
+                 result (common/with-token sktest
+                          (common/execute
+                           (customers/create-customer
+                            (common/card charge-token)
+                            (customers/email stripe-email)
+                            (common/plan "professional"))))]
+
+             (timbre/debug (str "/charge result[" (with-out-str (pp/pprint result)) "]"))
+
+             (-> (ring-resp/response (slurp (io/resource "public/landing.html")))
+                 (ring-resp/content-type "text/html"))))
 
      (GET "/session-status" [:as req]
 
