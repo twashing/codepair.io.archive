@@ -52,3 +52,21 @@
    {:method :get
     :url "/signout"
     :on-complete basicHandler}))
+
+(defn ^:export a []
+  (edn-xhr
+   {:method :post
+    :url "/a"
+    :on-complete basicHandler}))
+
+(defn ^:export b []
+  (edn-xhr
+   {:method :post
+    :url "/b"
+    :on-complete basicHandler}))
+
+(defn ^:export c []
+  (edn-xhr
+   {:method :post
+    :url "/c"
+    :on-complete basicHandler}))

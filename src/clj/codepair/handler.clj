@@ -64,6 +64,17 @@
           (timbre/debug (ring-resp/response (keys sh/system)))
           (ring-resp/response (keys sh/system)))
 
+     (POST "/a" [:as req]
+           (ring-resp/response {:ok "ok"}))
+
+     (POST "/b" [:as req]
+           (-> (ring-resp/response {:ok "ok"})
+               (ring-resp/content-type "application/edn")))
+
+     (POST "/c" [:as req]
+           (-> (ring-resp/response "ok")
+               (ring-resp/content-type "text/html")))
+
      (POST "/verify-assertion" [:as req]
 
            (timbre/debug (str "/verify-assertion req[" (with-out-str (pp/pprint req)) "]"))

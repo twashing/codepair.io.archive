@@ -47,5 +47,17 @@ codepair.console_log.call(null,"signoutUser CALLED");
 
 return codepair.edn_xhr.call(null,new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"method","method",55703592),new cljs.core.Keyword(null,"get","get",1683182755),new cljs.core.Keyword(null,"url","url",276297046),"/signout",new cljs.core.Keyword(null,"on-complete","on-complete",-1531183971),codepair.basicHandler], null));
 });
+codepair.a = (function a(){
+return codepair.edn_xhr.call(null,new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"method","method",55703592),new cljs.core.Keyword(null,"post","post",269697687),new cljs.core.Keyword(null,"url","url",276297046),"/a",new cljs.core.Keyword(null,"on-complete","on-complete",-1531183971),codepair.basicHandler], null));
+});
+goog.exportSymbol('codepair.a', codepair.a);
+codepair.b = (function b(){
+return codepair.edn_xhr.call(null,new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"method","method",55703592),new cljs.core.Keyword(null,"post","post",269697687),new cljs.core.Keyword(null,"url","url",276297046),"/b",new cljs.core.Keyword(null,"on-complete","on-complete",-1531183971),codepair.basicHandler], null));
+});
+goog.exportSymbol('codepair.b', codepair.b);
+codepair.c = (function c(){
+return codepair.edn_xhr.call(null,new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"method","method",55703592),new cljs.core.Keyword(null,"post","post",269697687),new cljs.core.Keyword(null,"url","url",276297046),"/c",new cljs.core.Keyword(null,"on-complete","on-complete",-1531183971),codepair.basicHandler], null));
+});
+goog.exportSymbol('codepair.c', codepair.c);
 
 //# sourceMappingURL=codepair.js.map
