@@ -24,12 +24,14 @@ util.console_log.call(null,[cljs.core.str("verifyAssertion CALLED / assertion: "
 return codepair.edn_xhr.call(null,new cljs.core.PersistentArrayMap(null, 4, [new cljs.core.Keyword(null,"method","method",55703592),new cljs.core.Keyword(null,"post","post",269697687),new cljs.core.Keyword(null,"url","url",276297046),"/verify-assertion",new cljs.core.Keyword(null,"data","data",-232669377),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"assertion","assertion",-1645134882),assertion], null),new cljs.core.Keyword(null,"on-complete","on-complete",-1531183971),cljs.core.partial.call(null,codepair.basicHandler,(function (e,xhr){
 var data = xhr.getResponseText();
 var responseF = cljs.reader.read_string.call(null,data);
-var groupname = new cljs.core.Keyword(null,"name","name",1843675177).cljs$core$IFn$_invoke$arity$1(cljs.core.first.call(null,new cljs.core.Keyword(null,"groups","groups",-136896102).cljs$core$IFn$_invoke$arity$1(new cljs.core.Keyword(null,"system","system",-29381724).cljs$core$IFn$_invoke$arity$1(cljs.core.first.call(null,new cljs.core.Keyword(null,"uresult","uresult",-615011743).cljs$core$IFn$_invoke$arity$1(responseF))))));
-var username = new cljs.core.Keyword(null,"username","username",1605666410).cljs$core$IFn$_invoke$arity$1(cljs.core.first.call(null,new cljs.core.Keyword(null,"users","users",-713552705).cljs$core$IFn$_invoke$arity$1(cljs.core.first.call(null,new cljs.core.Keyword(null,"groups","groups",-136896102).cljs$core$IFn$_invoke$arity$1(new cljs.core.Keyword(null,"system","system",-29381724).cljs$core$IFn$_invoke$arity$1(cljs.core.first.call(null,new cljs.core.Keyword(null,"uresult","uresult",-615011743).cljs$core$IFn$_invoke$arity$1(responseF))))))));
-return cljs.core.swap_BANG_.call(null,landing.user_state,((function (data,responseF,groupname,username){
+var _ = util.console_log.call(null,[cljs.core.str("sanity check... "),cljs.core.str(responseF)].join(''));
+var groupname = new cljs.core.Keyword(null,"groupname","groupname",-493355733).cljs$core$IFn$_invoke$arity$1(responseF);
+var username = new cljs.core.Keyword(null,"username","username",1605666410).cljs$core$IFn$_invoke$arity$1(responseF);
+var token = new cljs.core.Keyword(null,"token","token",-1211463215).cljs$core$IFn$_invoke$arity$1(responseF);
+return cljs.core.swap_BANG_.call(null,landing.user_state,((function (data,responseF,_,groupname,username,token){
 return (function (inp){
-return new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"groupname","groupname",-493355733),groupname,new cljs.core.Keyword(null,"username","username",1605666410),username,new cljs.core.Keyword(null,"source","source",-433931539),responseF], null);
-});})(data,responseF,groupname,username))
+return new cljs.core.PersistentArrayMap(null, 4, [new cljs.core.Keyword(null,"groupname","groupname",-493355733),groupname,new cljs.core.Keyword(null,"username","username",1605666410),username,new cljs.core.Keyword(null,"token","token",-1211463215),token,new cljs.core.Keyword(null,"source","source",-433931539),responseF], null);
+});})(data,responseF,_,groupname,username,token))
 );
 }))], null));
 });

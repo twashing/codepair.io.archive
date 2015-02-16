@@ -2,15 +2,15 @@
  "file":
  "/home/twashing/Projects/codepair.io/resources/public/js/out/index.js",
  "sources":["index.cljs"],
- "lineCount":47,
+ "lineCount":49,
  "mappings":
- ";AAAA;;;;;;;;;;AAYA,AAAA,AAEA,uBAAA,vBAAMA;AAAN,AACE,kBAAA,dAAMC;IACAC,cAAYC;AADlB,AAGE,2BAAA,3BAACC;;AACD,AAAQF,kBACA,+BAAA,2CAAA,iFAAA,iFAAA,5OAACG,+IAAuBJ,uEACLK,mFACCC;;AAC5B,OAAUL;;AAEd,wBAAA,xBAAMI,kDAAiBE;AAAvB,AAEE,AAACJ,2BAAe,eAAA,sDAA4CI;;AAC5D,kCAAA,2CAAA,uDAAA,oDAAA,kDAAA,oBAAA,qDAAA,2CAAA,kFAAA,zaAACC,uZAGmBD,sFACL,AAACE,4BAAQC,sBACA,WAAKC,EAAEC;AAAP,AACE,IAAMC,OAAK,AAAkBD;IACvBE,YAAW,AAACC,kCAAmBF;IAC/BG,YAAU,AAAA,mFAAA,0BAAA,AAAA,uFAAA,AAAA,sFAAA,0BAAA,AAAA,yFAAIF,nHAAmBG,vMAAsBA;IACvDC,WAAS,AAAA,2FAAA,0BAAA,AAAA,qFAAA,0BAAA,AAAA,uFAAA,AAAA,sFAAA,0BAAA,AAAA,yFAAIJ,nHAAmBG,vMAAsBA,/GAAaA;AAHzE,AAKE,OAACE,+BAAMC,mBAAc;kBAAKC;AAAL,AAAA,kDAAA,yEAAA,sEAAA,hFACcL,uEACDE,kEACFJ;;;;;AAG9D,cAAA,dAAMQ;AAAN,AACE,IAAAC,qBAAoB,oBAAA,pBAACE;AAArB,AAAA,oBAAAF;AAAA,iBAAAA,bAASC;AAAT,AACE,OAAM,AAAWA,qBAAYzB;;AAD/B;;;AAGF,AAACuB",
+ ";AAAA;;;;;;;;;;AAYA,AAAA,AAEA,uBAAA,vBAAMA;AAAN,AACE,kBAAA,dAAMC;IACAC,cAAYC;AADlB,AAGE,2BAAA,3BAACC;;AACD,AAAQF,kBACA,+BAAA,2CAAA,iFAAA,iFAAA,5OAACG,+IAAuBJ,uEACLK,mFACCC;;AAC5B,OAAUL;;AAEd,wBAAA,xBAAMI,kDAAiBE;AAAvB,AAEE,AAACJ,2BAAe,eAAA,sDAA4CI;;AAC5D,kCAAA,2CAAA,uDAAA,oDAAA,kDAAA,oBAAA,qDAAA,2CAAA,kFAAA,zaAACC,uZAGmBD,sFACL,AAACE,4BAAQC,sBACA,WAAKC,EAAEC;AAAP,AACE,IAAMC,OAAK,AAAkBD;IACvBE,YAAW,AAACC,kCAAmBF;IAE/BG,IAAE,AAACb,2BAAe,eAAA,kCAAwBW;IAC1CG,YAAU,AAAA,6FAAYH;IACtBI,WAAS,AAAA,2FAAWJ;IACpBK,QAAM,AAAA,sFAAQL;AANpB,AASE,OAACM,+BAAMC,mBAAc;kBAAKC;AAAL,AAAA,kDAAA,yEAAA,sEAAA,8DAAA,9IACcL,uEACDC,iEACHC,+DACCL;;;;;AAE9D,cAAA,dAAMS;AAAN,AACE,IAAAC,qBAAoB,oBAAA,pBAACE;AAArB,AAAA,oBAAAF;AAAA,iBAAAA,bAASC;AAAT,AACE,OAAM,AAAWA,qBAAY1B;;AAD/B;;;AAGF,AAACwB",
  "names":
  ["index/onClickHandler", "currentUser", "navigatorId",
   "js/navigator.id", "util/console-log", "cljs.core/clj->js",
   "index/verifyAssertion", "codepair/signoutUser", "assertion",
   "codepair/edn-xhr", "cljs.core/partial", "codepair/basicHandler",
-  "e", "xhr", "data", "responseF", "cljs.reader/read-string",
-  "groupname", "cljs.core/first", "username", "cljs.core/swap!",
+  "e", "xhr", "data", "responseF", "cljs.reader/read-string", "_",
+  "groupname", "username", "token", "cljs.core/swap!",
   "landing/user-state", "inp", "index/start", "temp__4124__auto__",
   "signinLink", "goog.dom/getElement"]}

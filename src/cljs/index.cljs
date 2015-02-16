@@ -34,12 +34,11 @@
                           (fn [e xhr]
                             (let [data (.getResponseText xhr)
                                   responseF  (reader/read-string data)
-                                  ;;groupname (-> responseF :uresult first :system :groups first :name)
-                                  ;;username (-> responseF :uresult first :system :groups first :users first :username)
-                                  ;;token _
-                                  groupname (-> responseF :authentication-data :groupname)
-                                  username (-> responseF :authentication-data :username)
-                                  token (-> responseF :authentication-data :token)]
+
+                                  _ (ul/console-log (str "sanity check... " responseF))
+                                  groupname (:groupname responseF)
+                                  username (:username responseF)
+                                  token (:token responseF)]
 
                               ;; set the user data into the namespace
                               (swap! ln/user-state (fn [inp]

@@ -40,12 +40,14 @@
 
 (def environment-mode :dev)
 (def system nil)
+(def file-config (config/load-edn "config-codepair.edn"))
+
 (def topology {:shell [csh/map->Shell :spittoon]
                :spittoon [css/map->Spittoon]})
-(def file-config (config/load-edn "config-codepair.edn"))
-(def component-config   {:shell {}
-                         :spittoon {:env (environment-mode file-config)
-                                    :recreate? false}})
+
+(def component-config {:shell {}
+                       :spittoon {:env (environment-mode file-config)
+                                  :recreate? false}})
 
 (defn start
   ([] (start component-config))

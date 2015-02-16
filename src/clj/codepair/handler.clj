@@ -77,9 +77,9 @@
            (timbre/debug (str "/charge req[" (with-out-str (pp/pprint req)) "]"))
 
            ;; tie together with existing account
-           ;; pull in secret key from config
            ;; can't do this unless logged in
-           (let [sktest ""
+           ;; can only change plans if already under a plan
+           (let [sktest (-> sh/file-config sh/environment-mode :stripe-key-secret)
                  charge-token (-> req :params :stripeToken)
                  stripe-email (-> req :params :stripeEmail)
                  result (common/with-token sktest
@@ -87,12 +87,18 @@
                            (customers/create-customer
                             (common/card charge-token)
                             (customers/email stripe-email)
-                            (common/plan "professional"))))]
+                            (common/plan "professional"))))
+                 stripe-customer-id (:id result)
+
+                 session (:session req)
+                 authentication-data (assoc (:authentication-data session)
+                                       :stripe-customer-id stripe-customer-id)]
 
              (timbre/debug (str "/charge result[" (with-out-str (pp/pprint result)) "]"))
 
              (-> (ring-resp/response (slurp (io/resource "public/landing.html")))
-                 (ring-resp/content-type "text/html"))))
+                 (ring-resp/content-type "text/html")
+                 (assoc :session (assoc session :authentication-data authentication-data)))))
 
      (GET "/session-status" [:as req]
 
@@ -131,7 +137,9 @@
                                               :token token}
                          responseF (-> (ring-resp/response (pr-str authentication-data))
                                        (ring-resp/content-type "application/edn")
-                                       (assoc :session (assoc session :authentication-data authentication-data)))]
+                                       (assoc :session (assoc session :authentication-data
+                                                              (assoc authentication-data
+                                                                :stripe-customer-id "-INCOMPLETE-"))))]
 
                      (timbre/debug (str "/verify-assertion responseF[" (with-out-str (pp/pprint responseF)) "]"))
 

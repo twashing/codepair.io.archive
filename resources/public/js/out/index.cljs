@@ -34,14 +34,18 @@
                           (fn [e xhr]
                             (let [data (.getResponseText xhr)
                                   responseF  (reader/read-string data)
-                                  groupname (-> responseF :uresult first :system :groups first :name)
-                                  username (-> responseF :uresult first :system :groups first :users first :username)]
+
+                                  _ (ul/console-log (str "sanity check... " responseF))
+                                  groupname (:groupname responseF)
+                                  username (:username responseF)
+                                  token (:token responseF)]
+
                               ;; set the user data into the namespace
                               (swap! ln/user-state (fn [inp]
                                                      {:groupname groupname
                                                       :username username
-                                                      :source responseF}))
-                              )))}))
+                                                      :token token
+                                                      :source responseF})))))}))
 
 (defn start []
   (if-let [signinLink (gdom/getElement "signin")]
