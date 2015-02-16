@@ -59,5 +59,9 @@ codepair.c = (function c(){
 return codepair.edn_xhr.call(null,new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"method","method",55703592),new cljs.core.Keyword(null,"post","post",269697687),new cljs.core.Keyword(null,"url","url",276297046),"/c",new cljs.core.Keyword(null,"on-complete","on-complete",-1531183971),codepair.basicHandler], null));
 });
 goog.exportSymbol('codepair.c', codepair.c);
+codepair.d = (function d(){
+return codepair.edn_xhr.call(null,new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"method","method",55703592),new cljs.core.Keyword(null,"post","post",269697687),new cljs.core.Keyword(null,"url","url",276297046),"/d",new cljs.core.Keyword(null,"on-complete","on-complete",-1531183971),codepair.basicHandler], null));
+});
+goog.exportSymbol('codepair.d', codepair.d);
 
 //# sourceMappingURL=codepair.js.map

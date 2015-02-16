@@ -70,3 +70,9 @@
    {:method :post
     :url "/c"
     :on-complete basicHandler}))
+
+(defn ^:export d []
+  (edn-xhr
+   {:method :post
+    :url "/d"
+    :on-complete basicHandler}))

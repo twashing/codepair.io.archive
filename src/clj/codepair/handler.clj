@@ -65,15 +65,18 @@
           (ring-resp/response (keys sh/system)))
 
      (POST "/a" [:as req]
-           (ring-resp/response {:ok "ok"}))
+           (ring-resp/response (pr-str {:ok "ok"})))
 
      (POST "/b" [:as req]
-           (-> (ring-resp/response {:ok "ok"})
+           (-> (ring-resp/response (pr-str {:ok "ok"}))
                (ring-resp/content-type "application/edn")))
 
      (POST "/c" [:as req]
            (-> (ring-resp/response "ok")
                (ring-resp/content-type "text/html")))
+
+     (POST "/d" [:as req]
+           (ring-resp/response (chesr/generate-string {:ok "ok"})))
 
      (POST "/verify-assertion" [:as req]
 
@@ -87,8 +90,8 @@
                  ;;body (read-string z)
                  ;;_ (timbre/debug (str "/verify-assertion body[" (with-out-str (pp/pprint body)) "]"))
 
-                 ;;assertion (:assertion body)
-                 assertion (-> req :params :assertion)
+                 assertion (:assertion (-> req :body slurp read-string))
+
                  persona-response (client/post "https://verifier.login.persona.org/verify"
                                                {:form-params {:assertion assertion
                                                               :audience audience}})
@@ -105,17 +108,17 @@
                  ;; this will have the group-name and user-name
                  (let [uresult (add-user-ifnil persona-response-email)
                        response-withuser (assoc persona-response :uresult uresult)
-                       ;;_ (timbre/debug (str "... session: " (with-out-str (pp/pprint session))))
-                       ;;_ (timbre/debug (str "... response: " (with-out-str (pp/pprint persona-response))))
-                       ;;_ (timbre/debug (str "... response-withuser: " (with-out-str (pp/pprint response-withuser))))
+                       _ (timbre/debug (str "... session: " (with-out-str (pp/pprint session))))
+                       _ (timbre/debug (str "... response: " (with-out-str (pp/pprint persona-response))))
+                       _ (timbre/debug (str "... response-withuser: " (with-out-str (pp/pprint response-withuser))))
                        ]
 
                    (let [uresult (add-user-ifnil persona-response-email)
                          response-withuser (assoc persona-response :uresult uresult)]
-                     (-> (ring-resp/response response-withuser)
+                     (-> (ring-resp/response (pr-str response-withuser))
                          (ring-resp/content-type "application/edn")
                          (assoc :session (assoc session :response-withuser response-withuser))))))
-               (-> (ring-resp/response (str {:body {:status persona-response-status}}))
+               (-> (ring-resp/response (pr-str {:body {:status persona-response-status}}))
                    (ring-resp/status 401)
                    (ring-resp/content-type "application/edn")))))
 
