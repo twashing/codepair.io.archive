@@ -69,10 +69,15 @@
            (timbre/debug (str "/verify-assertion req[" (with-out-str (pp/pprint req)) "]"))
            (let [session (:session req)
                  audience (get (:headers req) "origin")
-                 body (read-string (slurp (:body req)))
-                 _ (timbre/debug (str "/verify-assertion body[" (with-out-str (pp/pprint body)) "]"))
 
-                 assertion (:assertion body)
+                 ;;z (slurp (:body req))
+                 ;;_ (timbre/debug (str "slurped body[" z "]"))
+
+                 ;;body (read-string z)
+                 ;;_ (timbre/debug (str "/verify-assertion body[" (with-out-str (pp/pprint body)) "]"))
+
+                 ;;assertion (:assertion body)
+                 assertion (-> req :params :assertion)
                  persona-response (client/post "https://verifier.login.persona.org/verify"
                                                {:form-params {:assertion assertion
                                                               :audience audience}})
@@ -89,9 +94,10 @@
                  ;; this will have the group-name and user-name
                  (let [uresult (add-user-ifnil persona-response-email)
                        response-withuser (assoc persona-response :uresult uresult)
-                       _ (timbre/debug (str "... session: " (with-out-str (pp/pprint session))))
-                       _ (timbre/debug (str "... response: " (with-out-str (pp/pprint persona-response))))
-                       _ (timbre/debug (str "... response-withuser: " (with-out-str (pp/pprint response-withuser))))]
+                       ;;_ (timbre/debug (str "... session: " (with-out-str (pp/pprint session))))
+                       ;;_ (timbre/debug (str "... response: " (with-out-str (pp/pprint persona-response))))
+                       ;;_ (timbre/debug (str "... response-withuser: " (with-out-str (pp/pprint response-withuser))))
+                       ]
 
                    (let [uresult (add-user-ifnil persona-response-email)
                          response-withuser (assoc persona-response :uresult uresult)]
