@@ -1,0 +1,10 @@
+{"version":3,
+ "file":
+ "/home/twashing/Projects/codepair.io/resources/public/js/out/landing.js",
+ "sources":["landing.cljs"],
+ "lineCount":11,
+ "mappings":
+ ";AAAA;;;AAGA,AAAKA,qBAAW,yBAAA,zBAACC;AAEjB,yBAAA,zBAAeC;AAAf,AACE,OAACC,2BAAe,eAAA,AAAAC,0BAAMJ",
+ "names":
+ ["landing/user-state", "cljs.core/atom", "landing/printUserState",
+  "util/console-log", "cljs.core/deref"]}

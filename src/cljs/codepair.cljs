@@ -1,14 +1,12 @@
 (ns codepair
   (:require [cljs.reader :as reader]
             [goog.events :as events]
-            [goog.dom :as gdom])
+            [goog.dom :as gdom]
+            [landing :as ln]
+            [util :as ul])
   (:import [goog.net XhrIo]
            goog.net.EventType
            [goog.events EventType]))
-
-
-(defn console-log [message]
-  (.log js/console message))
 
 
 (def ^:private meths
@@ -21,58 +19,31 @@
   (let [xhr (XhrIo.)]
     (events/listen xhr goog.net.EventType.COMPLETE
                    (fn [e]
-                     (on-complete (reader/read-string (.getResponseText xhr)))))
+                     (on-complete (reader/read-string
+                                   (.getResponseText xhr))
+                                  xhr)))
     (. xhr
        (send url (meths method) (when data (pr-str data))
              #js {"Content-Type" "application/edn"}))))
 
-(defn basicHandler [res]
-
-  (if (= 200 (:status res))
-    (do
-      (console-log (str "XMLHttpRequest SUCCESS: " res))
-      (.reload window.location))
-    (do
-      (console-log (str "XMLHttpRequest ERROR: " res))
-      (.logout navigator.id))))
-
-(defn verifyAssertion [assertion]
-
-  (console-log (str "verifyAssertion CALLED / assertion: " assertion))
-  (edn-xhr
-   {:method :post
-    :url "/verify-assertion"
-    :data {:assertion assertion}
-    :on-complete basicHandler}))
+(defn basicHandler [handlefn e xhr]
+  (let [res (.getResponseText xhr)
+        status (.getStatus xhr)]
+    (ul/console-log (str "basicHandler response: " res))
+    (if (= 200 status)
+      (do
+        (ul/console-log (str "XMLHttpRequest SUCCESS: " res))
+        (handlefn e xhr))
+      (do
+        (ul/console-log (str "XMLHttpRequest ERROR: " res))
+        (.logout navigator.id)))))
 
 (defn signoutUser []
-  (console-log "signoutUser CALLED")
+  (ul/console-log "signoutUser CALLED")
 
   (edn-xhr
    {:method :get
     :url "/signout"
-    :on-complete basicHandler}))
-
-(defn ^:export a []
-  (edn-xhr
-   {:method :post
-    :url "/a"
-    :on-complete basicHandler}))
-
-(defn ^:export b []
-  (edn-xhr
-   {:method :post
-    :url "/b"
-    :on-complete basicHandler}))
-
-(defn ^:export c []
-  (edn-xhr
-   {:method :post
-    :url "/c"
-    :on-complete basicHandler}))
-
-(defn ^:export d []
-  (edn-xhr
-   {:method :post
-    :url "/d"
-    :on-complete basicHandler}))
+    :on-complete (partial basicHandler
+                          (fn [e xhr]
+                            (ul/console-log (str "signoutUser completed"))))}))

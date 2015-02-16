@@ -108,9 +108,9 @@
                  ;; this will have the group-name and user-name
                  (let [uresult (add-user-ifnil persona-response-email)
                        response-withuser (assoc persona-response :uresult uresult)
-                       _ (timbre/debug (str "... session: " (with-out-str (pp/pprint session))))
-                       _ (timbre/debug (str "... response: " (with-out-str (pp/pprint persona-response))))
-                       _ (timbre/debug (str "... response-withuser: " (with-out-str (pp/pprint response-withuser))))
+                       ;;_ (timbre/debug (str "... session: " (with-out-str (pp/pprint session))))
+                       ;;_ (timbre/debug (str "... response: " (with-out-str (pp/pprint persona-response))))
+                       ;;_ (timbre/debug (str "... response-withuser: " (with-out-str (pp/pprint response-withuser))))
                        ]
 
                    (let [uresult (add-user-ifnil persona-response-email)
