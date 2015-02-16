@@ -49,8 +49,20 @@
                    (do
                      (timbre/debug "SUCCESS: adding user [" username "]")
                      uresult))]
-
     uresultF))
+
+(defn validate-request-against-session [session gname uname token]
+
+  (let [vgroup (-> session :authentication-data :groupname)
+        vuser (-> session :authentication-data :username)
+        vtoken (-> session :authentication-data :token)
+
+        stripe-id (-> session :authentication-data :stripe-customer-id)
+
+        valid-hash (hash (str vgroup vuser vtoken stripe-id))
+        input-hash (hash (str gname uname token stripe-id))]
+
+    (= valid-hash input-hash)))
 
 (defn gen-approutes
   ([]
