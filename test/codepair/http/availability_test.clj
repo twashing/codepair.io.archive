@@ -1,4 +1,4 @@
-(ns codepair.handler-test
+(ns codepair.http.availability-test
   (:require [midje.sweet]
             [midje.repl]
             [clojure.pprint :as pp]
@@ -18,26 +18,6 @@
             [codepair.http.handler :as hdl]
             [codepair.domain.availability :as av]))
 
-
-(declare verify-assertion-request
-         verify-assertion-requestS
-         verify-assertion-response)
-
-;; ** for some reason, valid body inputsream disappears when it arrives at the handler
-;; trying groundhog to fix the problem - no dice
-#_(defspec test-verify-assertion
-  1
-  (prop/for-all [_ gen/int]
-
-                (let [a (mock/body (mock/request :post "/verify-assertion")
-                                   (pr-str (verify-assertion-request)))
-                      app (-> hdl/app
-                              groundhog/groundhog)]
-
-                  (timbre/debug (str "... " (slurp (:body a))))
-                  (= '(:body :headers :status)
-                     (sort (keys (with-redefs [client/post (constantly (tu/verify-assertion-response))]
-                                   (app a))))))))
 
 (defspec test-list-availabilities-all
   5
@@ -203,21 +183,4 @@
   (sh/log-info!)
   (midje.repl/autotest)
 
-  (require '[midje.repl])
-  (midje.repl/load-facts 'codepair.handler-test)
-
-
-  (def ds (th/setup-db!))
-  (def gname "codepair")
-  (def availability {:time :ongoing
-                     :title "Need Help Installing Purescript"
-                     :description "I'm new to Purescript, and want to get a basic development environment."
-                     :tags #{{:name "purescript"} {:name "webdevelopment"} {:name "javascript"}}})
-
-  (def a (av/add-availability ds gname availability))
-
-  (av/list-availabilities ds gname)
-
-  (av/list-availabilities-all ds)
-
-  )
+  (midje.repl/load-facts 'codepair.http.availability-test))
