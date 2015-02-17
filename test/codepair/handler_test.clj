@@ -44,9 +44,7 @@
   (prop/for-all [_ gen/int]
 
                 (let [gname "codepair"
-                      _ (th/setup-db!)
-
-                      ds (-> sh/system :spittoon :db)
+                      ds (th/setup-db!)
 
                       availability {:time :ongoing
                                     :title "Need Help Installing Purescript"
@@ -54,10 +52,10 @@
                                     :tags #{{:name "purescript"} {:name "webdevelopment"} {:name "javascript"}}}
 
                       a (av/add-availability ds gname availability)
-
                       b (mock/request :get "/list-availabilities")
+                      r1 (with-redefs [hdl/get-datastore (constantly ds)]
+                           (hdl/app b))
 
-                      r1 (hdl/app b)
                       r2 (-> r1 :body read-string)]
 
                   (and (= 200 (:status r1))
@@ -75,13 +73,14 @@
                                     :description "I'm new to Purescript, and want to get a basic development environment."
                                     :tags #{{:name "purescript"} {:name "webdevelopment"} {:name "javascript"}}}
 
-                      _ (th/setup-db!)
-                      ds (-> sh/system :spittoon :db)
-
+                      ds (th/setup-db!)
                       nuser (us/add-user ds nuname)
+
                       a (av/add-availability ds ngname availability)
                       b (mock/request :get "/list-availabilities" {:groupname ngname :username nuname})
-                      r1 (hdl/app b)
+                      r1 (with-redefs [hdl/get-datastore (constantly ds)]
+                           (hdl/app b))
+
                       r2 (-> r1 :body read-string)]
 
                   (and (= 200 (:status r1))
@@ -135,11 +134,37 @@
                            (hdl/app b))
                       r2 (-> r1 :body read-string)]
 
-                  (and (= 200 (:status #spy/p r1))
+                  (and (= 200 (:status r1))
                        (= 5 (count r2) )
                        (= '("purescript" "webdevelopment" "javascript" "java" "functionalprogramming")
                           (map #(-> % :tag :name) r2))))))
 
+(defspec test-add-availability
+  1
+  (prop/for-all [_ gen/int]
+
+                (let [gname "codepair"
+                      ngname "group-one"
+                      nuname "one"
+                      title "Need Help Installing Purescript"
+                      availability {:time :ongoing
+                                    :title title
+                                    :description "I'm new to Purescript, and want to get a basic development environment."
+                                    :tags #{{:name "purescript"} {:name "webdevelopment"} {:name "javascript"}}}
+
+                      ds (th/setup-db!)
+                      nuser (us/add-user ds nuname)
+                      a (mock/request :post "/add-availability" {:groupname ngname
+                                                                 :username nuname
+                                                                 :availability (pr-str availability)})
+
+                      r1 (with-redefs [hdl/get-datastore (constantly ds)]
+                           (hdl/app a))
+
+                      r2 (av/find-availability-by-title ds ngname title)]
+
+                  (and (= 200 (:status #spy/p r1))
+                       (= 1 (count #spy/p r2))))))
 
 (comment
 

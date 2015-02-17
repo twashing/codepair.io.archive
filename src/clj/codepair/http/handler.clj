@@ -61,7 +61,7 @@
            (let [ds (get-datastore)]
              (au/verify-assertion ds req)))
 
-     (POST "add-availability" [:as req]
+     (POST "/add-availability" [:as req]
 
            (timbre/debug (str "/add-availability req[" (with-out-str (pp/pprint req)) "]"))
            (let [ds (get-datastore)
