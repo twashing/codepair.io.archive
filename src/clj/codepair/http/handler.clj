@@ -12,7 +12,8 @@
             [bkell.config :as config]
             [codepair.shell :as sh]
             [codepair.http.aauth :as au]
-            [codepair.http.charge :as ch]))
+            [codepair.http.charge :as ch]
+            [codepair.http.domain :as hd]))
 
 
 (defn gen-approutes
@@ -35,6 +36,11 @@
           (-> (ring-resp/response (slurp (io/resource "public/index.html")))
               (ring-resp/content-type "text/html")))
 
+     (GET "/session-status" [:as req]
+
+          (timbre/debug (str "/session-status request[" (:session req) "]"))
+          (ring-resp/response (pr-str (:session req))))
+
      (POST "/charge" [:as req]
 
            (timbre/debug (str "/charge req[" (with-out-str (pp/pprint req)) "]"))
@@ -45,15 +51,29 @@
                  (ring-resp/content-type "text/html")
                  (assoc :session (assoc session :authentication-data authentication-data)))))
 
-     (GET "/session-status" [:as req]
-
-          (timbre/debug (str "/session-status request[" (:session req) "]"))
-          (ring-resp/response (pr-str (:session req))))
-
      (POST "/verify-assertion" [:as req]
 
            (timbre/debug (str "/verify-assertion req[" (with-out-str (pp/pprint req)) "]"))
-           (au/verify-assertion req))
+           (let [ds (-> sh/system :spittoon :db)]
+             (au/verify-assertion ds req)))
+
+     (POST "add-availability" [:as req]
+
+           (timbre/debug (str "/add-availability req[" (with-out-str (pp/pprint req)) "]"))
+           (let [ds (-> sh/system :spittoon :db)
+                result (hd/add-availability ds req)]
+
+            (-> (ring-resp/response (pr-str result))
+                (ring-resp/content-type "application/edn"))))
+
+     (GET "/list-availabilities" [:as req]
+
+          (timbre/debug (str "/list-availabilities req[" (with-out-str (pp/pprint req)) "]"))
+          (let [ds (-> sh/system :spittoon :db)
+                result (hd/list-availabilities ds req)]
+
+            (-> (ring-resp/response (pr-str result))
+                (ring-resp/content-type "application/edn"))))
 
      (route/files "/")
      (route/resources "/")

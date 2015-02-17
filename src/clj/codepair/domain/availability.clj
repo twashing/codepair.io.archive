@@ -31,6 +31,12 @@
                 {:name gname}}}
               :pull {:availability :checked}))
 
+(defn list-availabilities-all [ds]
+  (adi/select ds
+              {:availability
+               {:time '_}}
+              :pull {:availability :checked}))
+
 (defn update-availability [ds gname title availability]
   (adi/update! ds
                {:availability

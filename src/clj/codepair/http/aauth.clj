@@ -8,10 +8,9 @@
             [codepair.shell :as sh]
             [codepair.domain.user :as us]))
 
-(defn add-user-ifnil [username]
+(defn add-user-ifnil [ds username]
 
-  (let [ds (-> sh/system :spittoon :db)
-        uresult (try+ (us/add-user ds username)
+  (let [uresult (try+ (us/add-user ds username)
                       (catch AssertionError e &throw-context))
 
         uresultF (if (:stack-trace uresult)
@@ -44,7 +43,7 @@
 
     (= valid-hash input-hash)))
 
-(defn verify-assertion [req]
+(defn verify-assertion [ds req]
 
   (let [session (:session req)
         audience (get (:headers req) "origin")
@@ -62,10 +61,10 @@
       (do
 
         ;; this will have the group-name and user-name
-        (let [uresult (add-user-ifnil persona-response-email)
+        (let [uresult (add-user-ifnil ds persona-response-email)
               response-withuser (assoc persona-response :uresult uresult)]
 
-          (let [uresult (add-user-ifnil persona-response-email)
+          (let [uresult (add-user-ifnil ds persona-response-email)
                 response-withuser (assoc persona-response :uresult uresult)
                 groupname (-> response-withuser :uresult first :system :groups first :name)
                 username (-> response-withuser :uresult first :system :groups first :users first :username)
