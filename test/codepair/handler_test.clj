@@ -11,7 +11,7 @@
             [clj-http.client :as client]
             [taoensso.timbre :as timbre]
             [noisesmith.groundhog :as groundhog]
-            [codepair.handler :as hdl]))
+            [codepair.http.handler :as hdl]))
 
 
 (declare verify-assertion-request

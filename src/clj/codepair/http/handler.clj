@@ -1,0 +1,64 @@
+(ns codepair.http.handler
+  (:require [clojure.java.io :as io]
+            [clojure.pprint :as pp]
+            [compojure.core :refer :all]
+            [compojure.handler :as handler]
+            [compojure.route :as route]
+            [ring.util.response :as ring-resp]
+            [ring.middleware.session :as session]
+            [ring.middleware.session.cookie :refer :all]
+            [taoensso.timbre :as timbre]
+
+            [bkell.config :as config]
+            [codepair.shell :as sh]
+            [codepair.http.aauth :as au]
+            [codepair.http.charge :as ch]))
+
+
+(defn gen-approutes
+  ([]
+   (gen-approutes (:dev (config/load-edn "config-codepair.edn"))))
+
+  ([env]
+   (gen-approutes env false))
+
+  ([env recreate?]
+
+   (sh/start {:shell {}
+              :spittoon {:env env
+                         :recreate? recreate?}})
+
+   (defroutes app-routes
+
+     (GET "/" [:as req]
+
+          (-> (ring-resp/response (slurp (io/resource "public/index.html")))
+              (ring-resp/content-type "text/html")))
+
+     (POST "/charge" [:as req]
+
+           (timbre/debug (str "/charge req[" (with-out-str (pp/pprint req)) "]"))
+           (ch/charge req))
+
+     (GET "/session-status" [:as req]
+
+          (timbre/debug (str "/session-status request[" (:session req) "]"))
+          (ring-resp/response (pr-str (:session req))))
+
+     (POST "/verify-assertion" [:as req]
+
+           (timbre/debug (str "/verify-assertion req[" (with-out-str (pp/pprint req)) "]"))
+           (au/verify-assertion req))
+
+     (route/files "/")
+     (route/resources "/")
+     (route/not-found "Not Found"))))
+
+(gen-approutes (:dev (config/load-edn "config-codepair.edn"))
+               true)
+
+(def app
+  (-> app-routes
+      handler/site
+      (session/wrap-session {:cookie-attrs {:max-age 3600
+                                            :secure true}})))

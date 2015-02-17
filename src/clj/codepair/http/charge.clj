@@ -1,0 +1,43 @@
+(ns codepair.http.charge
+  (:require [clojure.java.io :as io]
+            [clojure.pprint :as pp]
+            [ring.util.response :as ring-resp]
+            [taoensso.timbre :as timbre]
+            [clj-stripe.util :as util]
+            [clj-stripe.common :as common]
+            [clj-stripe.plans :as plans]
+            [clj-stripe.coupons :as coupons]
+            [clj-stripe.charges :as charges]
+            [clj-stripe.cards :as cards]
+            [clj-stripe.subscriptions :as subscriptions]
+            [clj-stripe.customers :as customers]
+            [clj-stripe.invoices :as invoices]
+            [clj-stripe.invoiceitems :as invoiceitems]
+            [codepair.shell :as sh]))
+
+
+(defn charge [req]
+
+  ;; tie together with existing account
+  ;; can't do this unless logged in
+  ;; can only change plans if already under a plan
+  (let [sktest (-> sh/file-config sh/environment-mode :stripe-key-secret)
+        charge-token (-> req :params :stripeToken)
+        stripe-email (-> req :params :stripeEmail)
+        result (common/with-token sktest
+                 (common/execute
+                  (customers/create-customer
+                   (common/card charge-token)
+                   (customers/email stripe-email)
+                   (common/plan "professional"))))
+        stripe-customer-id (:id result)
+
+        session (:session req)
+        authentication-data (assoc (:authentication-data session)
+                              :stripe-customer-id stripe-customer-id)]
+
+    (timbre/debug (str "/charge result[" (with-out-str (pp/pprint result)) "]"))
+
+    (-> (ring-resp/response (slurp (io/resource "public/landing.html")))
+        (ring-resp/content-type "text/html")
+        (assoc :session (assoc session :authentication-data authentication-data)))))
