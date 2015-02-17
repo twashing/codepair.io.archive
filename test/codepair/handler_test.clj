@@ -14,6 +14,7 @@
             [codepair.test-util :as tu]
             [codepair.domain.test-helper :as th]
             [codepair.shell :as sh]
+            [codepair.domain.user :as us]
             [codepair.http.handler :as hdl]
             [codepair.domain.availability :as av]))
 
@@ -61,6 +62,30 @@
 
                   (and (= 200 (:status r1))
                        (= 2 (count r2))))))
+
+(defspec test-list-availabilities-forgroup
+  1
+  (prop/for-all [_ gen/int]
+
+                (let [gname "codepair"
+                      ngname "group-two"
+                      nuname "two"
+                      availability {:time :ongoing
+                                    :title "Need Help Installing Purescript"
+                                    :description "I'm new to Purescript, and want to get a basic development environment."
+                                    :tags #{{:name "purescript"} {:name "webdevelopment"} {:name "javascript"}}}
+
+                      _ (th/setup-db!)
+                      ds (-> sh/system :spittoon :db)
+
+                      nuser (us/add-user ds nuname)
+                      a (av/add-availability ds ngname availability)
+                      b (mock/request :get "/list-availabilities" {:groupname ngname :username nuname})
+                      r1 (hdl/app b)
+                      r2 (-> r1 :body read-string)]
+
+                  (and (= 200 (:status #spy/p r1))
+                       (= 1 (count r2))))))
 
 
 (comment

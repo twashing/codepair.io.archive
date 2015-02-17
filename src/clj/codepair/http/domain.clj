@@ -4,7 +4,7 @@
 
 (defn list-availabilities [ds req]
 
-  (let [gname (-> req :params :authentication-data :groupname)]
+  (let [gname (-> req :params :groupname)]
 
     (if gname
       (av/list-availabilities ds gname)
@@ -12,7 +12,7 @@
 
 (defn add-availability [ds req]
 
-  (let [gname (-> req :params :authentication-data :groupname)
+  (let [gname (-> req :params :groupname)
         availability (-> req :params :availability)]
 
     (av/add-availability ds gname availability)))
