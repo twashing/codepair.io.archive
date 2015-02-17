@@ -122,6 +122,8 @@
            (timbre/debug (str "/verify-assertion req[" (with-out-str (pp/pprint req)) "]"))
            (let [session (:session req)
                  audience (get (:headers req) "origin")
+
+                 _ #spy/p (slurp (:body req))
                  assertion (:assertion (-> req :body slurp read-string))
                  persona-response (client/post "https://verifier.login.persona.org/verify"
                                                {:form-params {:assertion assertion
