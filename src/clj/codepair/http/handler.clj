@@ -38,7 +38,12 @@
      (POST "/charge" [:as req]
 
            (timbre/debug (str "/charge req[" (with-out-str (pp/pprint req)) "]"))
-           (ch/charge req))
+           (let [authentication-data (ch/charge req)
+                 session (:session req)]
+
+             (-> (ring-resp/response (slurp (io/resource "public/landing.html")))
+                 (ring-resp/content-type "text/html")
+                 (assoc :session (assoc session :authentication-data authentication-data)))))
 
      (GET "/session-status" [:as req]
 

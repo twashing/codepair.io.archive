@@ -32,12 +32,9 @@
                    (common/plan "professional"))))
         stripe-customer-id (:id result)
 
-        session (:session req)
-        authentication-data (assoc (:authentication-data session)
-                              :stripe-customer-id stripe-customer-id)]
+        session (:session req)]
 
     (timbre/debug (str "/charge result[" (with-out-str (pp/pprint result)) "]"))
 
-    (-> (ring-resp/response (slurp (io/resource "public/landing.html")))
-        (ring-resp/content-type "text/html")
-        (assoc :session (assoc session :authentication-data authentication-data)))))
+    (assoc (:authentication-data session)
+      :stripe-customer-id stripe-customer-id)))

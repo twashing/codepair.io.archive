@@ -29,7 +29,7 @@
 
   :repl-options {:init-ns codepair.shell}
 
-  :ring {:handler codepair.handler/app}
+  :ring {:handler codepair.http.handler/app}
 
   :profiles {:dev {:source-paths ["src/cljs/" "src/clj/"]
                    :dependencies [[org.clojure/test.check "0.6.1"]
