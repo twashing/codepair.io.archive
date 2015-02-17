@@ -84,8 +84,61 @@
                       r1 (hdl/app b)
                       r2 (-> r1 :body read-string)]
 
-                  (and (= 200 (:status #spy/p r1))
+                  (and (= 200 (:status r1))
                        (= 1 (count r2))))))
+
+(defspec test-list-tags-forgroup
+  1
+  (prop/for-all [_ gen/int]
+
+                (let [gname "codepair"
+                      ngname "group-three"
+                      nuname "three"
+                      availability {:time :ongoing
+                                    :title "Need Help Installing Purescript"
+                                    :description "I'm new to Purescript, and want to get a basic development environment."
+                                    :tags #{{:name "purescript"} {:name "webdevelopment"} {:name "javascript"}}}
+
+                      ds (th/setup-db!)
+
+                      nuser (us/add-user ds nuname)
+                      a (av/add-availability ds ngname availability)
+
+                      b (mock/request :get "/list-tags" {:groupname ngname :username nuname})
+                      r1 (with-redefs [hdl/get-datastore (constantly ds)]
+                           (hdl/app b))
+                      r2 (-> r1 :body read-string)]
+
+                  (and (= 200 (:status r1))
+                       (= 3 (count r2))
+                       (= '("purescript" "webdevelopment" "javascript")
+                          (map #(-> % :tag :name) r2))))))
+
+(defspec test-list-tags-all
+  1
+  (prop/for-all [_ gen/int]
+
+                (let [gname "codepair"
+                      ngname "group-four"
+                      nuname "four"
+                      availability {:time :ongoing
+                                    :title "Need Help Installing Purescript"
+                                    :description "I'm new to Purescript, and want to get a basic development environment."
+                                    :tags #{{:name "purescript"} {:name "webdevelopment"} {:name "javascript"}}}
+
+                      ds (th/setup-db!)
+
+                      nuser (us/add-user ds nuname)
+                      a (av/add-availability ds ngname availability)
+                      b (mock/request :get "/list-tags")
+                      r1 (with-redefs [hdl/get-datastore (constantly ds)]
+                           (hdl/app b))
+                      r2 (-> r1 :body read-string)]
+
+                  (and (= 200 (:status #spy/p r1))
+                       (= 5 (count r2) )
+                       (= '("purescript" "webdevelopment" "javascript" "java" "functionalprogramming")
+                          (map #(-> % :tag :name) r2))))))
 
 
 (comment
@@ -95,6 +148,7 @@
 
   (require '[midje.repl])
   (midje.repl/load-facts 'codepair.handler-test)
+
 
   (def ds (th/setup-db!))
   (def gname "codepair")

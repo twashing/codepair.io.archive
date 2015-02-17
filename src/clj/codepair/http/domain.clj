@@ -16,3 +16,11 @@
         availability (-> req :params :availability)]
 
     (av/add-availability ds gname availability)))
+
+(defn list-tags [ds req]
+
+  (let [gname (-> req :params :groupname)]
+
+    (if gname
+      (av/list-tags-forgroup ds gname)
+      (av/list-tags-all ds))))

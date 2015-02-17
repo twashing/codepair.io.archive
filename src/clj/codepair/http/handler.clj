@@ -16,6 +16,10 @@
             [codepair.http.domain :as hd]))
 
 
+
+(defn get-datastore []
+  (-> sh/system :spittoon :db))
+
 (defn gen-approutes
   ([]
    (gen-approutes (:dev (config/load-edn "config-codepair.edn"))))
@@ -54,13 +58,13 @@
      (POST "/verify-assertion" [:as req]
 
            (timbre/debug (str "/verify-assertion req[" (with-out-str (pp/pprint req)) "]"))
-           (let [ds (-> sh/system :spittoon :db)]
+           (let [ds (get-datastore)]
              (au/verify-assertion ds req)))
 
      (POST "add-availability" [:as req]
 
            (timbre/debug (str "/add-availability req[" (with-out-str (pp/pprint req)) "]"))
-           (let [ds (-> sh/system :spittoon :db)
+           (let [ds (get-datastore)
                 result (hd/add-availability ds req)]
 
             (-> (ring-resp/response (pr-str result))
@@ -69,8 +73,17 @@
      (GET "/list-availabilities" [:as req]
 
           (timbre/debug (str "/list-availabilities req[" (with-out-str (pp/pprint req)) "]"))
-          (let [ds (-> sh/system :spittoon :db)
+          (let [ds (get-datastore)
                 result (hd/list-availabilities ds req)]
+
+            (-> (ring-resp/response (pr-str result))
+                (ring-resp/content-type "application/edn"))))
+
+     (GET "/list-tags" [:as req]
+
+          (timbre/debug (str "/list-tags req[" (with-out-str (pp/pprint req)) "]"))
+          (let [ds (get-datastore)
+                result (hd/list-tags ds req)]
 
             (-> (ring-resp/response (pr-str result))
                 (ring-resp/content-type "application/edn"))))
