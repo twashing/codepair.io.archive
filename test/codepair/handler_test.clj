@@ -163,8 +163,40 @@
 
                       r2 (av/find-availability-by-title ds ngname title)]
 
-                  (and (= 200 (:status #spy/p r1))
-                       (= 1 (count #spy/p r2))))))
+                  (and (= 200 (:status r1))
+                       (= 1 (count r2))))))
+
+(defspec test-update-availability
+  1
+  (prop/for-all [_ gen/int]
+
+                (let [gname "codepair"
+                      ngname "group-one"
+                      nuname "one"
+                      title "Need Help Installing Purescript"
+                      availability {:time :ongoing
+                                    :title title
+                                    :description "I'm new to Purescript, and want to get a basic development environment."
+                                    :tags #{{:name "purescript"} {:name "webdevelopment"} {:name "javascript"}}}
+
+                      ds (th/setup-db!)
+                      nuser (us/add-user ds nuname)
+                      ndescription "new description"
+                      navailability {:description ndescription}
+
+                      a (av/add-availability ds ngname availability)
+                      b (mock/request :post "/update-availability" {:groupname ngname
+                                                                    :username nuname
+                                                                    :availability (pr-str navailability)})
+
+                      r1 (with-redefs [hdl/get-datastore (constantly ds)]
+                           (hdl/app b))
+
+                      r2 (av/find-availability-by-title ds ngname title)]
+
+                  (and (= 200 (:status r1))
+                       (= 1 (count r2))
+                       (= ndescription (-> r2 first :availability :description))))))
 
 (comment
 

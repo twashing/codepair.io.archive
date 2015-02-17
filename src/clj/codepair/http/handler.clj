@@ -70,6 +70,15 @@
             (-> (ring-resp/response (pr-str result))
                 (ring-resp/content-type "application/edn"))))
 
+     (POST "/update-availability" [:as req]
+
+           (timbre/debug (str "/update-availability req[" (with-out-str (pp/pprint req)) "]"))
+           (let [ds (get-datastore)
+                result (hd/update-availability ds req)]
+
+            (-> (ring-resp/response (pr-str result))
+                (ring-resp/content-type "application/edn"))))
+
      (GET "/list-availabilities" [:as req]
 
           (timbre/debug (str "/list-availabilities req[" (with-out-str (pp/pprint req)) "]"))

@@ -39,6 +39,6 @@
 
   (let [gname (-> req :params :groupname)
         title (-> req :params :title)
-        availability (-> req :params :availability)]
+        availability (-> req :params :availability read-string)]
 
     (av/update-availability ds gname title availability)))
