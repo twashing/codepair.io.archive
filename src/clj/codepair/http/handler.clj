@@ -61,11 +61,22 @@
            (let [ds (get-datastore)]
              (au/verify-assertion ds req)))
 
+
+     ;; Availabilities / Tags
      (POST "/add-availability" [:as req]
 
            (timbre/debug (str "/add-availability req[" (with-out-str (pp/pprint req)) "]"))
            (let [ds (get-datastore)
                 result (hd/add-availability ds req)]
+
+            (-> (ring-resp/response (pr-str result))
+                (ring-resp/content-type "application/edn"))))
+
+     (GET "/find-availability" [:as req]
+
+           (timbre/debug (str "/find-availability req[" (with-out-str (pp/pprint req)) "]"))
+           (let [ds (get-datastore)
+                result (hd/find-availability ds req)]
 
             (-> (ring-resp/response (pr-str result))
                 (ring-resp/content-type "application/edn"))))
@@ -79,6 +90,8 @@
             (-> (ring-resp/response (pr-str result))
                 (ring-resp/content-type "application/edn"))))
 
+
+     ;; Listings
      (GET "/list-availabilities" [:as req]
 
           (timbre/debug (str "/list-availabilities req[" (with-out-str (pp/pprint req)) "]"))
@@ -93,6 +106,15 @@
           (timbre/debug (str "/list-tags req[" (with-out-str (pp/pprint req)) "]"))
           (let [ds (get-datastore)
                 result (hd/list-tags ds req)]
+
+            (-> (ring-resp/response (pr-str result))
+                (ring-resp/content-type "application/edn"))))
+
+     #_(GET "/list-sessions" [:as req]
+
+          (timbre/debug (str "/list-sessions req[" (with-out-str (pp/pprint req)) "]"))
+          (let [ds (get-datastore)
+                result (hd/list-sessions ds req)]
 
             (-> (ring-resp/response (pr-str result))
                 (ring-resp/content-type "application/edn"))))

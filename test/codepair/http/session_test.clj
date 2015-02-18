@@ -1,4 +1,4 @@
-(ns codepair.http.availability-test
+(ns codepair.http.session-test
   (:require [midje.sweet]
             [midje.repl]
             [clojure.pprint :as pp]
@@ -41,7 +41,7 @@
                   (and (= 200 (:status r1))
                        (= 2 (count r2))))))
 
-(defspec test-list-availabilities-forgroup
+#_(defspec test-list-availabilities-forgroup
   1
   (prop/for-all [_ gen/int]
 
@@ -66,60 +66,7 @@
                   (and (= 200 (:status r1))
                        (= 1 (count r2))))))
 
-(defspec test-list-tags-forgroup
-  1
-  (prop/for-all [_ gen/int]
-
-                (let [gname "codepair"
-                      ngname "group-three"
-                      nuname "three"
-                      availability {:time :ongoing
-                                    :title "Need Help Installing Purescript"
-                                    :description "I'm new to Purescript, and want to get a basic development environment."
-                                    :tags #{{:name "purescript"} {:name "webdevelopment"} {:name "javascript"}}}
-
-                      ds (th/setup-db!)
-
-                      nuser (us/add-user ds nuname)
-                      a (av/add-availability ds ngname availability)
-
-                      b (mock/request :get "/list-tags" {:groupname ngname :username nuname})
-                      r1 (with-redefs [hdl/get-datastore (constantly ds)]
-                           (hdl/app b))
-                      r2 (-> r1 :body read-string)]
-
-                  (and (= 200 (:status r1))
-                       (= 3 (count r2))
-                       (= '("purescript" "webdevelopment" "javascript")
-                          (map #(-> % :tag :name) r2))))))
-
-(defspec test-list-tags-all
-  1
-  (prop/for-all [_ gen/int]
-
-                (let [gname "codepair"
-                      ngname "group-four"
-                      nuname "four"
-                      availability {:time :ongoing
-                                    :title "Need Help Installing Purescript"
-                                    :description "I'm new to Purescript, and want to get a basic development environment."
-                                    :tags #{{:name "purescript"} {:name "webdevelopment"} {:name "javascript"}}}
-
-                      ds (th/setup-db!)
-
-                      nuser (us/add-user ds nuname)
-                      a (av/add-availability ds ngname availability)
-                      b (mock/request :get "/list-tags")
-                      r1 (with-redefs [hdl/get-datastore (constantly ds)]
-                           (hdl/app b))
-                      r2 (-> r1 :body read-string)]
-
-                  (and (= 200 (:status r1))
-                       (= 5 (count r2) )
-                       (= '("purescript" "webdevelopment" "javascript" "java" "functionalprogramming")
-                          (map #(-> % :tag :name) r2))))))
-
-(defspec test-add-availability
+#_(defspec test-add-availability
   1
   (prop/for-all [_ gen/int]
 
@@ -146,33 +93,7 @@
                   (and (= 200 (:status r1))
                        (= 1 (count r2))))))
 
-(defspec test-find-availability
-  1
-  (prop/for-all [_ gen/int]
-
-                (let [gname "codepair"
-                      ngname "group-one"
-                      nuname "one"
-                      title "Need Help Installing Purescript"
-                      availability {:time :ongoing
-                                    :title title
-                                    :description "I'm new to Purescript, and want to get a basic development environment."
-                                    :tags #{{:name "purescript"} {:name "webdevelopment"} {:name "javascript"}}}
-
-                      ds (th/setup-db!)
-                      nuser (us/add-user ds nuname)
-                      a (av/add-availability ds ngname availability)
-                      b (mock/request :get "/find-availability" {:groupname ngname
-                                                                 :title title})
-
-                      r1 (with-redefs [hdl/get-datastore (constantly ds)]
-                           (hdl/app b))]
-
-                  (and (= 200 (:status r1))
-                       (= 1 (count (-> r1 :body read-string)))
-                       (= title (-> r1 :body read-string first :availability :title))))))
-
-(defspec test-update-availability
+#_(defspec test-update-availability
   1
   (prop/for-all [_ gen/int]
 
@@ -209,4 +130,4 @@
   (sh/log-info!)
   (midje.repl/autotest)
 
-  (midje.repl/load-facts 'codepair.http.availability-test))
+  (midje.repl/load-facts 'codepair.http.session-test))

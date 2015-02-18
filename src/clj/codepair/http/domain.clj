@@ -2,6 +2,7 @@
   (:require [codepair.domain.availability :as av]))
 
 
+;; Listings
 (defn list-availabilities [ds req]
 
   (let [gname (-> req :params :groupname)]
@@ -20,6 +21,7 @@
 
 
 
+;; Availabilities
 (defn add-availability [ds req]
 
   (identity req)
@@ -42,3 +44,7 @@
         availability (-> req :params :availability read-string)]
 
     (av/update-availability ds gname title availability)))
+
+
+
+;; Sessions
