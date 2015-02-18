@@ -41,28 +41,28 @@
                   (and (= 200 (:status r1))
                        (= 2 (count r2))))))
 
-
-#_(defspec test-list-sessions-forgroup
+(defspec test-add-session
   1
   (prop/for-all [_ gen/int]
 
                 (let [gname "codepair"
-                      ngname "group-two"
-                      nuname "two"
-                      session {:time :ongoing
-                                    :title "Need Help Installing Purescript"
-                                    :description "I'm new to Purescript, and want to get a basic development environment."
-                                    :tags #{{:name "purescript"} {:name "webdevelopment"} {:name "javascript"}}}
+                      ngname "group-one"
+                      nuname "one"
+
+                      begin #inst "2014-12-11T09:00:00.00Z"
+                      session {:begin begin
+                               :end #inst "2014-12-12T09:20:00.00Z"
+                               :participants []}
 
                       ds (th/setup-db!)
                       nuser (us/add-user ds nuname)
+                      a (mock/request :post "/add-session" {:groupname ngname
+                                                            :session (pr-str session)})
 
-                      a (av/add-session ds ngname session)
-                      b (mock/request :get "/list-sessions" {:groupname ngname :username nuname})
                       r1 (with-redefs [hdl/get-datastore (constantly ds)]
-                           (hdl/app b))
+                           (hdl/app a))
 
-                      r2 (-> r1 :body read-string)]
+                      r2 (ss/find-session-by-begin ds ngname begin)]
 
                   (and (= 200 (:status r1))
                        (= 1 (count r2))))))
@@ -74,33 +74,6 @@
 
   (midje.repl/load-facts 'codepair.http.session-test))
 
-
-#_(defspec test-add-session
-  1
-  (prop/for-all [_ gen/int]
-
-                (let [gname "codepair"
-                      ngname "group-one"
-                      nuname "one"
-                      title "Need Help Installing Purescript"
-                      session {:time :ongoing
-                                    :title title
-                                    :description "I'm new to Purescript, and want to get a basic development environment."
-                                    :tags #{{:name "purescript"} {:name "webdevelopment"} {:name "javascript"}}}
-
-                      ds (th/setup-db!)
-                      nuser (us/add-user ds nuname)
-                      a (mock/request :post "/add-session" {:groupname ngname
-                                                                 :username nuname
-                                                                 :session (pr-str session)})
-
-                      r1 (with-redefs [hdl/get-datastore (constantly ds)]
-                           (hdl/app a))
-
-                      r2 (av/find-session-by-title ds ngname title)]
-
-                  (and (= 200 (:status r1))
-                       (= 1 (count r2))))))
 
 #_(defspec test-find-session
   1
