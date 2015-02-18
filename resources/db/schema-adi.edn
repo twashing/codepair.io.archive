@@ -45,9 +45,9 @@
                        :ref {:ns :user}
                        :cardinality :many}]
                :state [{:type :enum
-                        :default :session-active
-                        :enum {:ns :request.state
-                               :values #{:session-active :session-exited :session-ended}}}]}
+                        :default :participant-active
+                        :enum {:ns :participant.state
+                               :values #{:participant-active :participant-exited :participant-session-ended}}}]}
 
  :availability {:time [{:type :enum
                         :default :ongoing
@@ -66,6 +66,13 @@
 
  :session {:begin [{:type :instant}]
            :end [{:type :instant}]
+           :availability [{:type :ref
+                           :ref {:ns :availability}
+                           :cardinality :one}]
+           :state [{:type :enum
+                    :default :session-active
+                    :enum {:ns :session.state
+                           :values #{:session-active :session-exited :session-ended}}}]
            :participants [{:type :ref
                            :ref {:ns :participant}
                            :cardinality :many

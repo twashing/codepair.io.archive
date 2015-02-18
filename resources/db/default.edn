@@ -14,7 +14,8 @@
 
               :owner [[:user-codepair]]
 
-              :availabilities #{{:time :ongoing
+              :availabilities #{{:+/db/id [[:av-one]]
+                                 :time :ongoing
                                  :title "Help Grokking Lambdas in Java"
                                  :description "I'm trying to figure out howto use lambdas in Java"
                                  :tags #{{:name "java"} {:name "functionalprogramming"}}
@@ -28,13 +29,20 @@
 
               :sessions #{{:begin #inst "2014-12-10T09:00:00.00Z"
                            :end #inst "2014-12-10T09:20:00.00Z"
+                           :availability [[:av-one]]
+                           :state :session-exited
                            :participants #{{:user {:+/db/id [[:user-codepair]]}
-                                            :state :session-exited}}}}}}}}]
+                                            :state :participant-active}}}}}}}}]
 
 ;; expand availability :time to be i) an instance or ii) an instance range
 ;; :connection-requested
 ;; :connection-accepted
+;; :connection-rejected
 
 ;; :session-active
 ;; :session-exited
 ;; :session-ended
+
+;; :participant-active
+;; :participant-exited
+;; :participant-session-ended
