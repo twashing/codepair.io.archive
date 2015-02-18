@@ -91,6 +91,35 @@
                 (ring-resp/content-type "application/edn"))))
 
 
+     ;; Session
+     (POST "/add-session" [:as req]
+
+           (timbre/debug (str "/add-session req[" (with-out-str (pp/pprint req)) "]"))
+           (let [ds (get-datastore)
+                result (hd/add-session ds req)]
+
+            (-> (ring-resp/response (pr-str result))
+                (ring-resp/content-type "application/edn"))))
+
+     (GET "/find-session" [:as req]
+
+           (timbre/debug (str "/find-session req[" (with-out-str (pp/pprint req)) "]"))
+           (let [ds (get-datastore)
+                result (hd/find-session ds req)]
+
+            (-> (ring-resp/response (pr-str result))
+                (ring-resp/content-type "application/edn"))))
+
+     (POST "/update-session" [:as req]
+
+           (timbre/debug (str "/update-session req[" (with-out-str (pp/pprint req)) "]"))
+           (let [ds (get-datastore)
+                result (hd/update-session ds req)]
+
+            (-> (ring-resp/response (pr-str result))
+                (ring-resp/content-type "application/edn"))))
+
+
      ;; Listings
      (GET "/list-availabilities" [:as req]
 
@@ -110,7 +139,7 @@
             (-> (ring-resp/response (pr-str result))
                 (ring-resp/content-type "application/edn"))))
 
-     #_(GET "/list-sessions" [:as req]
+     (GET "/list-sessions" [:as req]
 
           (timbre/debug (str "/list-sessions req[" (with-out-str (pp/pprint req)) "]"))
           (let [ds (get-datastore)
