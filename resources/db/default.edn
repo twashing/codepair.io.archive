@@ -19,8 +19,22 @@
                                  :description "I'm trying to figure out howto use lambdas in Java"
                                  :tags #{{:name "java"} {:name "functionalprogramming"}}
                                  :begin #inst "2014-12-10T09:00:00.00Z"
-                                 :end #inst "2014-12-10T09:20:00.00Z"}}
+                                 :end #inst "2014-12-10T09:20:00.00Z"
+                                 :requests #{{:user {:+/db/id [[:user-codepair]]}
+                                              :state :connection-requested}
+
+                                             {:user {:+/db/id [[:user-codepair]]}
+                                              :state :connection-accepted}}}}
 
               :sessions #{{:begin #inst "2014-12-10T09:00:00.00Z"
                            :end #inst "2014-12-10T09:20:00.00Z"
-                           :participants []}}}}}}]
+                           :participants #{{:user {:+/db/id [[:user-codepair]]}
+                                            :state :session-exited}}}}}}}}]
+
+;; expand availability :time to be i) an instance or ii) an instance range
+;; :connection-requested
+;; :connection-accepted
+
+;; :session-active
+;; :session-exited
+;; :session-ended
