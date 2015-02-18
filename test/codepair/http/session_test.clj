@@ -67,68 +67,66 @@
                   (and (= 200 (:status r1))
                        (= 1 (count r2))))))
 
-(comment
-
-  (sh/log-info!)
-  (midje.repl/autotest)
-
-  (midje.repl/load-facts 'codepair.http.session-test))
-
-
-#_(defspec test-find-session
+(defspec test-find-session
   1
   (prop/for-all [_ gen/int]
 
                 (let [gname "codepair"
                       ngname "group-one"
                       nuname "one"
-                      title "Need Help Installing Purescript"
-                      session {:time :ongoing
-                                    :title title
-                                    :description "I'm new to Purescript, and want to get a basic development environment."
-                                    :tags #{{:name "purescript"} {:name "webdevelopment"} {:name "javascript"}}}
+
+                      begin #inst "2014-12-11T09:00:00.00Z"
+                      session {:begin begin
+                               :end #inst "2014-12-12T09:20:00.00Z"
+                               :participants []}
 
                       ds (th/setup-db!)
                       nuser (us/add-user ds nuname)
-                      a (av/add-session ds ngname session)
+                      a (ss/add-session ds ngname session)
                       b (mock/request :get "/find-session" {:groupname ngname
-                                                                 :title title})
+                                                            :begin (pr-str begin)})
 
                       r1 (with-redefs [hdl/get-datastore (constantly ds)]
                            (hdl/app b))]
 
                   (and (= 200 (:status r1))
                        (= 1 (count (-> r1 :body read-string)))
-                       (= title (-> r1 :body read-string first :session :title))))))
+                       (= begin (-> r1 :body read-string first :session :begin))))))
 
-#_(defspec test-update-session
+(defspec test-update-session
   1
   (prop/for-all [_ gen/int]
 
                 (let [gname "codepair"
                       ngname "group-one"
                       nuname "one"
-                      title "Need Help Installing Purescript"
-                      session {:time :ongoing
-                                    :title title
-                                    :description "I'm new to Purescript, and want to get a basic development environment."
-                                    :tags #{{:name "purescript"} {:name "webdevelopment"} {:name "javascript"}}}
+
+                      begin #inst "2014-12-11T09:00:00.00Z"
+                      session {:begin begin
+                               :end #inst "2014-12-12T09:20:00.00Z"
+                               :participants []}
 
                       ds (th/setup-db!)
                       nuser (us/add-user ds nuname)
-                      ndescription "new description"
-                      nsession {:description ndescription}
+                      nbegin #inst "2014-12-11T10:00:00.00Z"
+                      nsession {:begin nbegin}
 
-                      a (av/add-session ds ngname session)
+                      a (ss/add-session ds ngname session)
                       b (mock/request :post "/update-session" {:groupname ngname
-                                                                    :username nuname
-                                                                    :session (pr-str nsession)})
+                                                               :session (pr-str nsession)})
 
                       r1 (with-redefs [hdl/get-datastore (constantly ds)]
                            (hdl/app b))
 
-                      r2 (av/find-session-by-title ds ngname title)]
+                      r2 (ss/find-session-by-begin ds ngname nbegin)]
 
                   (and (= 200 (:status r1))
                        (= 1 (count r2))
-                       (= ndescription (-> r2 first :session :description))))))
+                       (= nbegin (-> r2 first :session :begin))))))
+
+(comment
+
+  (sh/log-info!)
+  (midje.repl/autotest)
+
+  (midje.repl/load-facts 'codepair.http.session-test))

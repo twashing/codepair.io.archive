@@ -66,7 +66,7 @@
 (defn find-session [ds req]
 
   (let [gname (-> req :params :groupname)
-        begin (-> req :params :begin)]
+        begin (-> req :params :begin read-string)]
 
     (ss/find-session-by-begin ds gname begin)))
 
