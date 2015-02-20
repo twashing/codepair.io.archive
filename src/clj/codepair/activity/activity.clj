@@ -2,7 +2,7 @@
   (:require [codepair.domain.availability :as av]))
 
 
-(defn request-connection [ds availability gname userb usera]
+(defn request-connection [ds availability gname userb]
 
   ;; ** for HTTP namespace, a way to notify owner of request
 
@@ -14,12 +14,10 @@
         availabilityN (update-in availability
                                  [:requests]
                                  #(conj % {:user [[(-> userb :db :id)]]
-                                           :state :connection-requested}))
+                                           :state :connection-requested}))]
 
-        r (av/update-availability ds gname title availabilityN)]
+    (av/update-availability ds gname title availabilityN)))
 
-    #spy/p r
-    r))
 
 (defn respondto-request [ds availability usera responsekw]
 

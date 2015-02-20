@@ -34,50 +34,22 @@
                       navailability (av/add-availability ds gname availability)
 
                       nuser (us/add-user ds nuname)
-                      usera (us/find-user-by-username ds "codepair")
-                      userb (us/find-user-by-username ds nuname)
+                      usera (first (us/find-user-by-username ds "codepair"))
+                      userb (first (us/find-user-by-username ds nuname))
 
-                      r2 (ay/request-connection ds availability userb usera)]
+                      r2 (ay/request-connection ds availability gname userb)]
 
-                  (and
-                       (= 1 (count r2))
-                       ))))
+                  (and (= 1 (count r2))
+                       (= '(:availability :db)
+                          (keys (first r2)))
+                       (= 1 (count (-> r2 first :availability :requests)))))))
 
 (comment
 
   (sh/log-info!)
   (midje.repl/autotest)
+  (midje.repl/load-facts 'codepair.activity.activity-test))
 
-  (midje.repl/load-facts 'codepair.activity.activity-test)
-
-
-  (def ds (th/setup-db!))
-  (def gname "codepair")
-  (def ngname "group-one")
-  (def nuname "one")
-  (def title "Need Help Installing Purescript")
-  (def availability {:time :ongoing
-                     :title title
-                     :description "I'm new to Purescript, and want to get a basic development environment."
-                     :tags #{{:name "purescript"} {:name "webdevelopment"} {:name "javascript"}}
-                     :requests #{}})
-
-  (def nuser (us/add-user ds nuname))
-  (def navailability (av/add-availability ds gname availability))
-
-
-  (def usera (first (us/find-user-by-username ds "codepair")))
-  (def userb #spy/p (first (us/find-user-by-username ds nuname)))
-
-  (def r2 (ay/request-connection ds availability gname userb usera))
-
-
-  (def one (av/list-availabilities ds "codepair"))
-  (def two (av/list-availabilities ds ngname))
-
-  (av/find-availability-by-title ds gname title)
-
-  )
 
 #_(defspec test-update-availability
   1
