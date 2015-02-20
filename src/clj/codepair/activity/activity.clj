@@ -1,16 +1,25 @@
-(ns codepair.activity.activity)
+(ns codepair.activity.activity
+  (:require [codepair.domain.availability :as av]))
 
 
-(defn request-connection [ds availability userb usera]
+(defn request-connection [ds availability gname userb usera]
+
+  ;; ** for HTTP namespace, a way to notify owner of request
 
   ;; userb is requester
   ;; usera is owner
   ;; i) add :request to an availability
   ;; ii) set its :state to :connection-requested
+  (let [title (:title availability)
+        availabilityN (update-in availability
+                                 [:requests]
+                                 #(conj % {:user [[(-> userb :db :id)]]
+                                           :state :connection-requested}))
 
-  ;; ** for HTTP namespace, a way to notify owner of request
+        r (av/update-availability ds gname title availabilityN)]
 
-  )
+    #spy/p r
+    r))
 
 (defn respondto-request [ds availability usera responsekw]
 

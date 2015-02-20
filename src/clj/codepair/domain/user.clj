@@ -1,5 +1,6 @@
 (ns codepair.domain.user
-  (:require [adi.core :as adi]
+  (:require [clojure.set :as set]
+            [adi.core :as adi]
             [codepair.domain.helper :as hlp]))
 
 (declare find-user-by-username)
@@ -20,8 +21,19 @@
                  {:system {:groups '_}}
                  {:system {:groups generated-group}})))
 
-(defn find-user-by-username [ds uname]
-  (adi/select ds {:user {:username uname}}))
+(defn find-user-by-username
+  ([ds uname]
+   (find-user-by-username ds uname [:ids {:user :checked}]))
+  ([ds uname opts]
+
+   (let [select-args (set/union [ds
+                                   {:user {:username uname}}]
+                                  opts)]
+     (apply adi/select select-args))
+
+   #_(adi/select ds {:user {:username uname}} :ids {:user :checked})
+
+   ))
 
 (defn list-users [ds gname]
   (adi/select ds
