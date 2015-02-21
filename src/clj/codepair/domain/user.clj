@@ -27,13 +27,9 @@
   ([ds uname opts]
 
    (let [select-args (set/union [ds
-                                   {:user {:username uname}}]
-                                  opts)]
-     (apply adi/select select-args))
-
-   #_(adi/select ds {:user {:username uname}} :ids {:user :checked})
-
-   ))
+                                 {:user {:username uname}}]
+                                opts)]
+     (apply adi/select select-args))))
 
 (defn list-users [ds gname]
   (adi/select ds

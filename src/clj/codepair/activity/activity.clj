@@ -1,5 +1,7 @@
 (ns codepair.activity.activity
-  (:require [codepair.domain.availability :as av]))
+  (:require [taoensso.timbre :as timbre]
+            [codepair.util :as ul]
+            [codepair.domain.availability :as av]))
 
 
 (defn request-connection [ds availability gname userb]
@@ -19,14 +21,20 @@
     (av/update-availability ds gname title availabilityN)))
 
 
-(defn respondto-request [ds availability usera responsekw]
-
-  ;; ensure usera owns availability
-  ;; set [:availability :request :state] to either [:connection-accepted | :connection-rejected]
+(defn respondto-request [ds request usera responsekw]
+  {:pre [(= (get-in usera [:user :username])
+            (-> (av/find-user-for-request ds request)
+                first :user :username))]}
 
   ;; ** for HTTP namespace, a way to notify requester of response
 
-  )
+  ;; ensure usera owns availability/request
+  ;; set [:request :state] to either [:connection-accepted | :connection-rejected]
+  (let [nrequest (update-in request [:state] (fn [_] responsekw))
+        gname (ul/groupname-fromuser usera)
+        id (av/yank-genericid nrequest)]
+    (av/update-request ds gname id nrequest)))
+
 
 (defn list-incoming-requests [ds user] )
 

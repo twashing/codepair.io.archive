@@ -1,7 +1,13 @@
 (ns codepair.domain.availability
-  (:require [adi.core :as adi]
+  (:require [taoensso.timbre :as timbre]
+            [adi.core :as adi]
             [clojure.set :as set]))
 
+
+(defn yank-genericid [thing]
+  (if (:+ thing)
+    (-> thing :+ :db :id)
+    (-> thing :db :id)))
 
 (defn add-availability [ds gname availability]
   {:pre [(= :ongoing (:time availability))]}
@@ -20,9 +26,41 @@
                                  {:availability
                                   {:title title
                                    :groups
-                                   {:name gname}}}
-                                 opts])]
+                                   {:name gname}}}]
+                                opts)]
      (apply adi/select select-args))))
+
+(defn find-user-for-availability
+  ([ds availability]
+   (find-user-for-availability ds availability [:ids {:user :checked}]))
+  ([ds availability opts]
+
+   (let [select-args (set/union [ds
+                                 {:user
+                                  {:groups
+                                   {:availabilities
+                                    {:db
+                                     {:id (yank-genericid availability)}}}}}]
+                                opts)]
+     (apply adi/select select-args))))
+
+(defn find-user-for-request
+  ([ds request]
+   (find-user-for-request ds request [:ids {:user :checked}]))
+  ([ds request opts]
+
+   (let [select-args (set/union [ds
+                                 {:user
+                                  {:groups
+                                   {:availabilities/requests
+                                    {:db
+                                     {:id (yank-genericid request)}}}}}]
+                                opts)]
+     (apply adi/select select-args))))
+
+(defn find-request [ds id]
+  (adi/select ds id :ids {:request :checked}))
+
 
 (defn list-availabilities [ds gname]
   (adi/select ds
@@ -44,6 +82,17 @@
                  :groups
                  {:name gname}}}
                {:availability availability}))
+
+(defn update-request [ds gname id request]
+
+  (let [requestF (if (:+ request)
+                   {;;:db (-> request :+ :db)
+                    :state (:state request)
+                    :user (:user request)}
+                   (dissoc request :db))]
+
+    (adi/update! ds id
+                {:request requestF})))
 
 (defn list-tags-forgroup [ds gname]
   (adi/select ds
