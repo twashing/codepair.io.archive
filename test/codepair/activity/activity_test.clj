@@ -98,40 +98,15 @@
   (av/find-availability-by-title ds gname title)
   (av/find-user-for-request ds (-> r1 :availability :requests first))
 
-  (adi/select ds
-              {:user
-               {:groups
-                {:availabilities/requests
-                 {:db
-                  {:id (-> r1 :availability :requests first :+ :db :id)}}}}}
-              :ids)
+  (av/list-incoming-requests ds {:username "codepair"})
+  #{{:db {:id 17592186045432}, :request {:state :connection-requested}}
+    {:db {:id 17592186045449}, :request {:state :connection-requested}}
+    {:db {:id 17592186045433}, :request {:state :connection-accepted}}}
 
-  (adi/select ds
-              {:availability
-               {:requests
-                {:db
-                 {:id (-> r1 :availability :requests first :+ :db :id)}
-                 :availabilities
-                 {:groups
-                  {:name gname}}}}}
-              :ids
-              {:availability/request :checked})
+  (av/list-submitted-requests ds {:username "codepair"})
+  #{}
 
-  (adi/select ds
-              {:request
-               {:availabilities
-                {:groups
-                 {:name gname}}}}
-              :ids
-              {:request :checked})
-
-  (adi/select ds 17592186045449 :ids {:request :checked})
-
-
-  (def one #{{:db {:id 17592186045449}, :request {:state :connection-requested}}
-             {:db {:id 17592186045432}, :request {:state :connection-accepted}}
-             {:db {:id 17592186045433}, :request {:state :connection-requested}}})
-
-  (filter #(= 17592186045449 (-> % :db :id)) one)
+  (av/list-submitted-requests ds {:username "one"})
+  #{{:db {:id 17592186045449}, :request {:state :connection-requested}}}
 
   )

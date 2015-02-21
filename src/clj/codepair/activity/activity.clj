@@ -36,9 +36,11 @@
     (av/update-request ds gname id nrequest)))
 
 
-(defn list-incoming-requests [ds user] )
+(defn list-incoming-requests [ds user]
+  (av/list-incoming-requests ds user))
 
-(defn list-submitted-requests [ds user] )
+(defn list-submitted-requests [ds user]
+  (av/list-submitted-requests ds user))
 
 
 (defn establish-session [ds user availability & participants]

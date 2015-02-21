@@ -23,7 +23,6 @@
                                  :end #inst "2014-12-10T09:20:00.00Z"
                                  :requests #{{:user {:+/db/id [[:user-codepair]]}
                                               :state :connection-requested}
-
                                              {:user {:+/db/id [[:user-codepair]]}
                                               :state :connection-accepted}}}}
 
