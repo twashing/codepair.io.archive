@@ -11,24 +11,51 @@
                 {:name gname}}
                {:group/sessions session}))
 
-(defn find-session-by-begin
+;; fix later
+#_(defn find-session-by-begin
   ([ds gname begin]
-   (find-session-by-begin  ds gname begin [:ids {:session :checked}]))
-
+   (find-session-by-begin ds gname begin [:ids :pull {:session
+                                                      {:participants
+                                                       {:state :checked}}}]))
   ([ds gname begin opts]
-   (let [select-args (set/union [ds
+   (let [select-args #spy/p (set/union [#_ds
                                  {:session
                                   {:begin begin
                                    :groups
-                                   {:name gname}}}
-                                 opts])]
+                                   {:name gname}}}]
+                                opts)]
      (apply adi/select select-args))))
+
+(defn find-session-by-begin [ds gname begin]
+  (adi/select ds
+              {:session
+               {:begin begin
+                :groups
+                {:name gname}}}
+              :ids
+              :pull {:session
+                     {:participants
+                      {:state :checked}}}))
+
+(defn find-participant-insession [ds session participant]
+
+  (adi/select ds
+              {:participant
+               {:user
+                {:username (-> participant :user :username)}
+                :sessions
+                {:begin (-> session :session :begin)}}}
+              :ids
+              {:participant
+               {:user
+                {:username :checked}}}))
 
 (defn list-sessions [ds gname]
   (adi/select ds
               {:session
                {:groups
                 {:name gname}}}
+              :ids
               :pull {:session :checked}))
 
 (defn update-session [ds gname begin session]

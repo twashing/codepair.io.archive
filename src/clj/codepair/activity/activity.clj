@@ -2,6 +2,7 @@
   (:require [taoensso.timbre :as timbre]
             [codepair.util :as ul]
             [codepair.domain.group :as gp]
+            [codepair.domain.session :as ss]
             [codepair.domain.availability :as av]))
 
 
@@ -23,14 +24,17 @@
 
 
 (defn ensureuser-ownsavailability [ds availability owner]
-  (= #spy/p (get-in owner [:user :username])
-     #spy/p (-> (av/find-user-for-availability ds availability)
+  (= (get-in owner [:user :username])
+     (-> (av/find-user-for-availability ds availability)
          first :user :username)))
 
 (defn ensureuser-ownsrequest [ds request owner]
   (= (get-in owner [:user :username])
      (-> (av/find-user-for-request ds request)
          first :user :username)))
+
+(defn ensureuser-issessionguest [ds session guest]
+  (not (empty? (ss/find-participant-insession ds session guest))))
 
 (defn respondto-request [ds request usera responsekw]
   {:pre [(ensureuser-ownsrequest ds request usera)]}
@@ -61,7 +65,6 @@
   ;; create a session, tied to incoming availability
   ;; set [:session :state] to either [:session-active | :session-exited | :session-ended]
   ;; set [:session :participant :state] to :active
-
   (let [gname (ul/groupname-fromuser user)
         group (-> (gp/find-group-by-name ds gname) first :group)
         session {:begin #inst "2014-12-10T09:00:00.00Z"
@@ -71,26 +74,31 @@
                                                {:user (-> inp :db :id)
                                                 :state :participant-active})
                                              participants))}
-        ngroup #spy/p (update-in group [:sessions] (fn [inp]
+        ngroup (update-in group [:sessions] (fn [inp]
                                               (into [] (conj inp session))))]
     (gp/update-group ds gname ngroup)))
 
 
 (defn exit-session [ds session user]
-
-  ;; ensure user is the guest
-  ;; set [:session :participant :state] to :participant-exited
+  {:pre [(ensureuser-issessionguest ds session user)]}
 
   ;; ** for HTTP namespace, notify owner that a participant has left
 
-  )
+  ;; ** TODO
+  ;; ensure user is the guest
+  ;; set [:session :participant :state] to :participant-exited
+  (ss/update-session ds {:participants
+                         [{:state :participant-exited :+ {:db {:id 17592186045430}}}]
+                         :state (:state session)
+                         :begin (:begin session)
+                         :end (:end session)}))
 
 (defn end-session [ds session user]
+
+  ;; ** for HTTP namespace, notify partcipants that the session has been ended
 
   ;; ensure user is the owner
   ;; set all [:session :participant :state] to :participant-session-ended
   ;; set [:session :state] to :session-ended
-
-  ;; ** for HTTP namespace, notify partcipants that the session has been ended
 
   )

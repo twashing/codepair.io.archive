@@ -14,6 +14,7 @@
             [codepair.shell :as sh]
             [codepair.domain.user :as us]
             [codepair.domain.availability :as av]
+            [codepair.domain.session :as ss]
             [codepair.activity.activity :as ay]))
 
 
@@ -95,6 +96,7 @@
 
   (def gname "codepair")
   (def title (default-availability-title))
+  (def begin #inst "2014-12-10T09:00:00.000-00:00",)
   (def availability (first (av/find-availability-by-title ds gname title)))
   (def one (first (us/find-user-by-username ds "one")))
   (def owner {:user {:username "codepair"}})
@@ -102,7 +104,7 @@
 
   (av/find-user-for-request ds (-> r1 :availability :requests first))
 
-
+  ;; 1
   (av/list-incoming-requests ds {:username "codepair"})
   #{{:db {:id 17592186045432}, :request {:state :connection-requested}}
     {:db {:id 17592186045449}, :request {:state :connection-requested}}
@@ -121,9 +123,10 @@
   (ay/ensureuser-ownsavailability ds availability owner)
 
 
+  ;; 2
   (ay/establish-session ds owner availability one)
   [{:group {:sessions #{{:+ {:db {:id 17592186045454}},
-                         :begin #inst "2014-12-10T09:00:00.000-00:00",
+                         :begin begin
                          :availability 17592186045438,
                          :state :session-active,
                          :participants #{{:+ {:db {:id 17592186045455}},
@@ -131,5 +134,44 @@
                                           :state :participant-active}}}},
             :name "codepair"},
     :db {:id 17592186045428}}]
+
+
+  ;; 3
+  (def session (first (ss/find-session-by-begin ds gname begin)))
+  {:db {:id 17592186045429},
+   :session
+   {:participants
+    #{{:state :participant-active, :+ {:db {:id 17592186045430}}}},
+    :state :session-exited,
+    :begin #inst "2014-12-10T09:00:00.000-00:00",
+    :end #inst "2014-12-10T09:20:00.000-00:00"}}
+
+  (ss/list-sessions ds gname)
+  #{{:db {:id 17592186045451}, :session {:state :session-active, :begin #inst "2014-12-10T09:00:00.000-00:00"}}
+    {:db {:id 17592186045429}, :session {:state :session-exited, :end #inst "2014-12-10T09:20:00.000-00:00", :begin #inst "2014-12-10T09:00:00.000-00:00"}}}
+
+
+  (ss/find-participant-insession ds session one)
+  #{{:db {:id 17592186045452}, :participant {:state :participant-active}}}
+
+  (ay/ensureuser-issessionguest ds session one)
+  true
+
+  (adi/select ds
+              {:participant
+               {:user
+                {:username (-> one :user :username)}
+                :sessions
+                {:begin (-> session :session :begin)}}}
+              :ids
+              {:participant
+               {:user
+                {:username :checked}}})
+
+  #{{:db {:id 17592186045452}, :participant {:state :participant-active}}}
+
+  ;; ** TODO
+  (ay/exit-session ds session one)
+
 
   )
