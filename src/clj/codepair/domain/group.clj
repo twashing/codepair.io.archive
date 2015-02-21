@@ -27,6 +27,11 @@
               {:group {:name gname}}
               :pull {:group {:name :checked}}))
 
+(defn update-group [ds gname group]
+  (adi/update! ds
+               {:group {:name gname}}
+               {:group group}))
+
 (defn list-groups [ds]
   (-> (adi/select ds {:system {:groups '_}} :pull {:system {:groups :checked}})
       first :system :groups))

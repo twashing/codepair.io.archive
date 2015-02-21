@@ -1,6 +1,7 @@
 (ns codepair.activity.activity
   (:require [taoensso.timbre :as timbre]
             [codepair.util :as ul]
+            [codepair.domain.group :as gp]
             [codepair.domain.availability :as av]))
 
 
@@ -21,10 +22,18 @@
     (av/update-availability ds gname title availabilityN)))
 
 
+(defn ensureuser-ownsavailability [ds availability owner]
+  (= #spy/p (get-in owner [:user :username])
+     #spy/p (-> (av/find-user-for-availability ds availability)
+         first :user :username)))
+
+(defn ensureuser-ownsrequest [ds request owner]
+  (= (get-in owner [:user :username])
+     (-> (av/find-user-for-request ds request)
+         first :user :username)))
+
 (defn respondto-request [ds request usera responsekw]
-  {:pre [(= (get-in usera [:user :username])
-            (-> (av/find-user-for-request ds request)
-                first :user :username))]}
+  {:pre [(ensureuser-ownsrequest ds request usera)]}
 
   ;; ** for HTTP namespace, a way to notify requester of response
 
@@ -44,15 +53,28 @@
 
 
 (defn establish-session [ds user availability & participants]
+  {:pre [(ensureuser-ownsavailability ds availability user)]}
+
+  ;; ** for HTTP namespace, notify owner and participants to start the UI session
 
   ;; ensure user is owner of availability
   ;; create a session, tied to incoming availability
   ;; set [:session :state] to either [:session-active | :session-exited | :session-ended]
   ;; set [:session :participant :state] to :active
 
-  ;; ** for HTTP namespace, notify owner and participants to start the UI session
+  (let [gname (ul/groupname-fromuser user)
+        group (-> (gp/find-group-by-name ds gname) first :group)
+        session {:begin #inst "2014-12-10T09:00:00.00Z"
+                 :availability (av/yank-genericid availability)
+                 :state :session-active
+                 :participants (into [] (map (fn [inp]
+                                               {:user (-> inp :db :id)
+                                                :state :participant-active})
+                                             participants))}
+        ngroup #spy/p (update-in group [:sessions] (fn [inp]
+                                              (into [] (conj inp session))))]
+    (gp/update-group ds gname ngroup)))
 
-  )
 
 (defn exit-session [ds session user]
 

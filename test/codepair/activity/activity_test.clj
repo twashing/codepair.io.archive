@@ -95,8 +95,13 @@
 
   (def gname "codepair")
   (def title (default-availability-title))
-  (av/find-availability-by-title ds gname title)
+  (def availability (first (av/find-availability-by-title ds gname title)))
+  (def one (first (us/find-user-by-username ds "one")))
+  (def owner {:user {:username "codepair"}})
+
+
   (av/find-user-for-request ds (-> r1 :availability :requests first))
+
 
   (av/list-incoming-requests ds {:username "codepair"})
   #{{:db {:id 17592186045432}, :request {:state :connection-requested}}
@@ -108,5 +113,23 @@
 
   (av/list-submitted-requests ds {:username "one"})
   #{{:db {:id 17592186045449}, :request {:state :connection-requested}}}
+
+
+  (av/find-user-for-availability ds availability)
+
+
+  (ay/ensureuser-ownsavailability ds availability owner)
+
+
+  (ay/establish-session ds owner availability one)
+  [{:group {:sessions #{{:+ {:db {:id 17592186045454}},
+                         :begin #inst "2014-12-10T09:00:00.000-00:00",
+                         :availability 17592186045438,
+                         :state :session-active,
+                         :participants #{{:+ {:db {:id 17592186045455}},
+                                          :user #{17592186045444},
+                                          :state :participant-active}}}},
+            :name "codepair"},
+    :db {:id 17592186045428}}]
 
   )
