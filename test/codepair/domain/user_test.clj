@@ -12,7 +12,7 @@
 
 
 (defspec test-no-user?
-  10
+  1
   (prop/for-all [_ gen/int]
 
                 (let [user-name "fubar"
@@ -21,7 +21,7 @@
                   (us/no-duplicate-user? ds user-name))))
 
 (defspec test-add-user
-  10
+  1
   (prop/for-all [_ gen/int]
 
                 (let [user-name "one"
@@ -35,7 +35,7 @@
                          (not (empty? (gp/find-group-by-name ds "group-one"))))))))
 
 (defspec test-list-users-ingroup
-  5
+  1
   (prop/for-all [_ gen/int]
 
                 (let [gname "codepair"
@@ -52,7 +52,7 @@
                            :email "codepair"})))))
 
 (defspec test-retrieve-user
-  5
+  1
   (prop/for-all [_ gen/int]
 
                 (let [user-name "one"
@@ -70,7 +70,7 @@
                          :username "one"}})))))
 
 (defspec test-update-user
-  5
+  1
   (prop/for-all [_ gen/int]
 
                 (let [uname "codepair"
@@ -81,16 +81,17 @@
                                                     :lastname "one"})
                         b (us/find-user-by-username ds uname)]
 
-                    (= (first b)
-                       {:user
-                        {:email "one",
-                         :firstname "one",
-                         :password "default",
-                         :lastname "one",
-                         :username "codepair"}})))))
+                    (and (= '(:db :user) (-> b first keys))
+                         (= (-> b first (dissoc :db))
+                            {:user
+                             {:email "one",
+                              :firstname "one",
+                              :password "default",
+                              :lastname "one",
+                              :username "codepair"}}))))))
 
 (defspec test-list-all-users
-  5
+  1
   (prop/for-all [_ gen/int]
 
                 (let [gname "codepair"
