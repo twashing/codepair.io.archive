@@ -44,8 +44,8 @@
                       b (ss/list-sessions ds gname)]
 
                   (and (= 2 (count b) )
-                       (= '(#inst "2014-12-10T09:00:00.000-00:00" #inst "2014-11-10T09:00:00.000-00:00")
-                          (map #(-> % :session :begin) b))))))
+                       (= '(#inst "2014-11-10T09:00:00.000-00:00" #inst "2014-12-10T09:00:00.000-00:00")
+                          #spy/p (sort (map #(-> % :session :begin) b)))))))
 
 (defspec test-retrieve-session
   5
@@ -59,8 +59,9 @@
                       a (ss/add-session ds gname session)
                       b (ss/find-session-by-begin ds gname begin)]
 
-                  (= b
-                     #{{:session {:begin #inst "2014-11-10T09:00:00.000-00:00"}}}))))
+                  (and (= '(:db :session) (-> b first keys))
+                       (= (-> b first (dissoc :db))
+                          {:session {:begin #inst "2014-11-10T09:00:00.000-00:00"}})))))
 
 (defspec test-update-session
   5
@@ -76,13 +77,13 @@
                       b (ss/update-session ds gname begin {:begin ubegin})
                       c (ss/find-session-by-begin ds gname ubegin)]
 
-                  (= c
-                     #{{:session {:begin #inst "2014-10-10T09:00:00.000-00:00"}}}))))
+                  (and (= '(:db :session) (-> c first keys))
+
+                       (= (-> c first (dissoc :db))
+                          {:session {:begin #inst "2014-10-10T09:00:00.000-00:00"}})))))
 
 (comment
 
   (sh/log-info!)
   (midje.repl/autotest)
-  (midje.repl/load-facts 'codepair.domain.session-test)
-
-  )
+  (midje.repl/load-facts 'codepair.domain.session-test))

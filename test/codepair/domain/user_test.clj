@@ -61,7 +61,8 @@
                   (let [a (us/add-user ds user-name)
                         b (us/find-user-by-username ds user-name)]
 
-                    (= (first b)
+                    (and (= '(:db :user) (-> b first keys)))
+                    (= (-> b first (dissoc :db))
                        {:user
                         {:email "one",
                          :firstname "one",
