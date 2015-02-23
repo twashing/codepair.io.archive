@@ -11,6 +11,11 @@ This should be sufficient to run the tests
 - `cp resources/{config.edn.template,config-codepair.edn}`
 - `lein midje`
 
+## TODO
+
+- explore http handling using [Pedestal](pedestal.io)
+  - asynchronous communication with client
+
 ## License
 
 Copyright © 2015 FIXME
