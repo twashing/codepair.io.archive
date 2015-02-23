@@ -145,6 +145,8 @@
 
 
   ;; 3
+  (ay/establish-session ds owner availability one)
+
   (def session (first (ss/find-session-by-begin ds gname begin)))
   {:db {:id 17592186045429},
    :session
@@ -168,5 +170,34 @@
 
   (ay/exit-session ds session one)
   [{:participant {:state :participant-exited}, :db {:id 17592186045452}}]
+
+
+  ;; 4
+  (ay/establish-session ds owner availability one)
+
+  (ay/ensureuser-ownsession ds session {:user {:username "codepair"}})
+  true
+
+
+  (ay/end-session ds session {:user {:username "codepair"}})
+  [{:participant {:state :participant-session-ended}, :db {:id 17592186045430}}
+   {:participant {:state :participant-session-ended}, :db {:id 17592186045452}}]
+
+  (ss/find-session-by-begin ds gname begin)
+  #{{:db {:id 17592186045429},
+     :session
+     {:participants
+      #{{:state :participant-session-ended,
+         :+ {:db {:id 17592186045430}}}},
+      :state :session-exited,
+      :begin #inst "2014-12-10T09:00:00.000-00:00",
+      :end #inst "2014-12-10T09:20:00.000-00:00"}}
+    {:db {:id 17592186045451},
+     :session
+     {:participants
+      #{{:state :participant-session-ended,
+         :+ {:db {:id 17592186045452}}}},
+      :state :session-active,
+      :begin #inst "2014-12-10T09:00:00.000-00:00"}}}
 
   )

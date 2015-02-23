@@ -1,5 +1,6 @@
 (ns codepair.activity.activity
-  (:require [taoensso.timbre :as timbre]
+  (:require [adi.core :as adi]
+            [taoensso.timbre :as timbre]
             [codepair.util :as ul]
             [codepair.domain.group :as gp]
             [codepair.domain.session :as ss]
@@ -35,6 +36,14 @@
 
 (defn ensureuser-issessionguest [ds session guest]
   (not (empty? (ss/find-participant-insession ds session guest))))
+
+(defn ensureuser-ownsession [ds session owner]
+  (not (empty? (adi/select ds {:user
+                                {:username (-> owner :user :username)
+                                 :groups
+                                 {:sessions
+                                  {:db
+                                   {:id (av/yank-genericid session)}}}}}))))
 
 (defn respondto-request [ds request usera responsekw]
   {:pre [(ensureuser-ownsrequest ds request usera)]}
@@ -93,6 +102,7 @@
                                                (assoc-in [:participant :state] :participant-exited)))))
 
 (defn end-session [ds session user]
+  {:pre [(ensureuser-ownsession ds session user)]}
 
   ;; ** for HTTP namespace, notify partcipants that the session has been ended
 
@@ -100,4 +110,4 @@
   ;; set all [:session :participant :state] to :participant-session-ended
   ;; set [:session :state] to :session-ended
 
-  )
+  (ss/update-all-participants ds session user :participant-session-ended))

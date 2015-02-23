@@ -73,3 +73,10 @@
                  :sessions
                  {:begin (-> session :session :begin)}}}
                participant))
+
+(defn update-all-participants [ds session user state-kw]
+  (adi/update! ds
+               {:participant
+                {:sessions
+                 {:begin (-> session :session :begin)}}}
+               {:participant {:state state-kw}}))
