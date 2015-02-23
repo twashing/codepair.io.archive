@@ -92,13 +92,17 @@
               {:availability
                {:groups
                 {:name gname}}}
-              :pull {:availability :checked}))
+              :pull {:availability
+                     {:tags
+                      {:name :checked}}}))
 
 (defn list-availabilities-all [ds]
   (adi/select ds
               {:availability
                {:time '_}}
-              :pull {:availability :checked}))
+              :pull {:availability
+                     {:tags
+                      {:name :checked}}}))
 
 (defn list-tags-forgroup [ds gname]
   (adi/select ds

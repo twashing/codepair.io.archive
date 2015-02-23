@@ -146,4 +146,31 @@
 
   (sh/log-info!)
   (midje.repl/autotest)
-  (midje.repl/load-facts 'codepair.domain.availability-test))
+  (midje.repl/load-facts 'codepair.domain.availability-test)
+
+  (def gname "codepair")
+  (def ds (hlp/setup-db!))
+  (def availability {:time :ongoing
+                     :title "Need Help Installing Purescript"
+                     :description "I'm new to Purescript, and want to get a basic development environment."
+                     :tags #{{:name "purescript"} {:name "webdevelopment"} {:name "javascript"}}})
+  (def a (av/add-availability ds gname availability))
+  (av/list-availabilities ds gname)
+
+  #{{:availability
+     {:description "I'm trying to figure out howto use lambdas in Java",
+      :tags #{{:name "functionalprogramming"}
+              {:name "java"}},
+      :time :ongoing,
+      :title "Help Grokking Lambdas in Java",
+      :begin #inst "2014-12-10T09:00:00.000-00:00",
+      :end #inst "2014-12-10T09:20:00.000-00:00"}}
+    {:availability
+     {:description
+      "I'm new to Purescript, and want to get a basic development environment.",
+      :tags #{{:name "webdevelopment"} {:name "purescript"}
+              {:name "javascript"}},
+      :time :ongoing,
+      :title "Need Help Installing Purescript"}}}
+
+  )
