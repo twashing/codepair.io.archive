@@ -18,7 +18,7 @@
                                                       {:participants
                                                        {:state :checked}}}]))
   ([ds gname begin opts]
-   (let [select-args #spy/p (set/union [#_ds
+   (let [select-args (set/union [#_ds
                                  {:session
                                   {:begin begin
                                    :groups

@@ -2,9 +2,9 @@
  "file":
  "/home/twashing/Projects/codepair.io/resources/public/js/out/index.js",
  "sources":["index.cljs"],
- "lineCount":49,
+ "lineCount":74,
  "mappings":
- ";AAAA;;;;;;;;;;AAYA,AAAA,AAEA,uBAAA,vBAAMA;AAAN,AACE,kBAAA,dAAMC;IACAC,cAAYC;AADlB,AAGE,2BAAA,3BAACC;;AACD,AAAQF,kBACA,+BAAA,2CAAA,iFAAA,iFAAA,5OAACG,+IAAuBJ,uEACLK,mFACCC;;AAC5B,OAAUL;;AAEd,wBAAA,xBAAMI,kDAAiBE;AAAvB,AAEE,AAACJ,2BAAe,eAAA,sDAA4CI;;AAC5D,kCAAA,2CAAA,uDAAA,oDAAA,kDAAA,oBAAA,qDAAA,2CAAA,kFAAA,zaAACC,uZAGmBD,sFACL,AAACE,4BAAQC,sBACA,WAAKC,EAAEC;AAAP,AACE,IAAMC,OAAK,AAAkBD;IACvBE,YAAW,AAACC,kCAAmBF;IAE/BG,IAAE,AAACb,2BAAe,eAAA,kCAAwBW;IAC1CG,YAAU,AAAA,6FAAYH;IACtBI,WAAS,AAAA,2FAAWJ;IACpBK,QAAM,AAAA,sFAAQL;AANpB,AASE,OAACM,+BAAMC,mBAAc;kBAAKC;AAAL,AAAA,kDAAA,yEAAA,sEAAA,8DAAA,9IACcL,uEACDC,iEACHC,+DACCL;;;;;AAE9D,cAAA,dAAMS;AAAN,AACE,IAAAC,qBAAoB,oBAAA,pBAACE;AAArB,AAAA,oBAAAF;AAAA,iBAAAA,bAASC;AAAT,AACE,OAAM,AAAWA,qBAAY1B;;AAD/B;;;AAGF,AAACwB",
+ ";AAAA;;;;;;;;;;;AAaA,AAAA,AAEA,uBAAA,vBAAMA;AAAN,AACE,kBAAA,dAAMC;IACAC,cAAYC;AADlB,AAGE,2BAAA,3BAACC;;AACD,AAAQF,kBACA,+BAAA,2CAAA,iFAAA,iFAAA,5OAACG,+IAAuBJ,uEACLK,mFACCC;;AAC5B,OAAUL;;AAEd,wBAAA,xBAAMI,kDAAiBE;AAAvB,AAEE,AAACJ,2BAAe,eAAA,sDAA4CI;;AAC5D,kCAAA,2CAAA,uDAAA,oDAAA,kDAAA,oBAAA,qDAAA,2CAAA,kFAAA,zaAACC,uZAGmBD,sFACL,AAACE,4BAAQC,sBACA,WAAKC,EAAEC;AAAP,AACE,IAAMC,OAAK,AAAkBD;IACvBE,YAAW,AAACC,kCAAmBF;IAE/BG,IAAE,AAACb,2BAAe,eAAA,kCAAwBW;IAC1CG,YAAU,AAAA,6FAAYH;IACtBI,WAAS,AAAA,2FAAWJ;IACpBK,QAAM,AAAA,sFAAQL;AANpB,AASE,OAACM,+BAAMC,mBAAc;kBAAKC;AAAL,AAAA,kDAAA,yEAAA,sEAAA,8DAAA,9IACcL,uEACDC,iEACHC,+DACCL;;;;;AAG9D,sBAAA,tBAAMS;AAAN,AACE,IAAAC,qBAAoB,oBAAA,pBAACE;AAArB,AAAA,oBAAAF;AAAA,iBAAAA,bAASC;AAAT,AACE,OAAM,AAAWA,qBAAY1B;;AAD/B;;;AAGF,qBAAA,rBAAM4B,4CAAchB,EAAEC,IAAIC;AAA1B,AACE,AAACV,2BAAe,eAAA,wBAAcU;;AAC9B,OAACO,+BAAMQ,iBAAa,WAAKjB;AAAL,AACE,2CAAA,mFAAA,vHAACkB,8BAAUlB,sJAAU,WAAKmB;AAAL,AAAQ,gCAAA,zBAACC,0DAAQlB;;;;AAE9D,+BAAA,/BAAMmB,gEAAwBrB,EAAEC,IAAIC;AAApC,AACE,AAACV,2BAAe,eAAA,kCAAwBU;;AACxC,OAACO,+BAAMQ,iBAAa,WAAKjB;AAAL,AACE,2CAAA,mFAAA,vHAACkB,8BAAUlB,wKAAoB,WAAKmB;AAAL,AAAQ,gCAAA,zBAACC,0DAAQlB;;;;AAGxE,AAACoB,qBACA,WAAKjB;AAAL,AAEE,AAACO;;AACD,AAACW,2BAAaP;;AACd,OAACQ,qCAAuBH",
  "names":
  ["index/onClickHandler", "currentUser", "navigatorId",
   "js/navigator.id", "util/console-log", "cljs.core/clj->js",
@@ -12,5 +12,8 @@
   "codepair/edn-xhr", "cljs.core/partial", "codepair/basicHandler",
   "e", "xhr", "data", "responseF", "cljs.reader/read-string", "_",
   "groupname", "username", "token", "cljs.core/swap!",
-  "landing/user-state", "inp", "index/start", "temp__4124__auto__",
-  "signinLink", "goog.dom/getElement"]}
+  "landing/user-state", "inp", "index/enable-signin",
+  "temp__4124__auto__", "signinLink", "goog.dom/getElement",
+  "index/tags-handler", "common/app-state", "cljs.core/update-in", "f",
+  "cljs.core/into", "index/availabilities-handler", "util/ready",
+  "common/list-tags", "common/list-availabilities"]}

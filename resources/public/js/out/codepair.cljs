@@ -19,8 +19,7 @@
   (let [xhr (XhrIo.)]
     (events/listen xhr goog.net.EventType.COMPLETE
                    (fn [e]
-                     (on-complete (reader/read-string
-                                   (.getResponseText xhr))
+                     (on-complete (reader/read-string (.getResponseText xhr))
                                   xhr)))
     (. xhr
        (send url (meths method) (when data (pr-str data))
@@ -29,13 +28,13 @@
 (defn basicHandler [handlefn e xhr]
   (let [res (.getResponseText xhr)
         status (.getStatus xhr)]
-    (ul/console-log (str "basicHandler response: " res))
+    ;;(ul/console-log (str "basicHandler response: " res))
     (if (= 200 status)
       (do
-        (ul/console-log (str "XMLHttpRequest SUCCESS: " res))
+        ;;(ul/console-log (str "XMLHttpRequest SUCCESS: " res))
         (handlefn e xhr))
       (do
-        (ul/console-log (str "XMLHttpRequest ERROR: " res))
+        ;;(ul/console-log (str "XMLHttpRequest ERROR: " res))
         (.logout navigator.id)))))
 
 (defn signoutUser []

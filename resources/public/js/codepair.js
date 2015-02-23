@@ -4,4 +4,5 @@ goog.addDependency("../util.js", ['util'], ['cljs.core']);
 goog.addDependency("../landing.js", ['landing'], ['cljs.core', 'util']);
 goog.addDependency("../cljs/reader.js", ['cljs.reader'], ['goog.string', 'cljs.core', 'goog.string.StringBuffer']);
 goog.addDependency("../codepair.js", ['codepair'], ['goog.dom', 'goog.net.XhrIo', 'cljs.core', 'landing', 'goog.events.EventType', 'util', 'cljs.reader', 'goog.events']);
-goog.addDependency("../index.js", ['index'], ['goog.dom', 'goog.net.XhrIo', 'cljs.core', 'landing', 'goog.events.EventType', 'util', 'cljs.reader', 'goog.events', 'codepair']);
+goog.addDependency("../common.js", ['common'], ['goog.dom', 'cljs.core', 'util', 'cljs.reader', 'goog.events', 'codepair']);
+goog.addDependency("../index.js", ['index'], ['goog.dom', 'goog.net.XhrIo', 'cljs.core', 'landing', 'goog.events.EventType', 'util', 'common', 'cljs.reader', 'goog.events', 'codepair']);

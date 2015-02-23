@@ -8,6 +8,7 @@ goog.require('landing');
 goog.require('goog.events');
 goog.require('goog.net.XhrIo');
 goog.require('codepair');
+goog.require('common');
 goog.require('cljs.reader');
 index.onClickHandler = (function onClickHandler(){
 var currentUser = "twashing@gmail.com";
@@ -35,7 +36,7 @@ return new cljs.core.PersistentArrayMap(null, 4, [new cljs.core.Keyword(null,"gr
 );
 }))], null));
 });
-index.start = (function start(){
+index.enable_signin = (function enable_signin(){
 var temp__4124__auto__ = goog.dom.getElement("signin");
 if(cljs.core.truth_(temp__4124__auto__)){
 var signinLink = temp__4124__auto__;
@@ -44,6 +45,30 @@ return signinLink.onclick = index.onClickHandler;
 return null;
 }
 });
-index.start.call(null);
+index.tags_handler = (function tags_handler(e,xhr,data){
+util.console_log.call(null,[cljs.core.str("tags: "),cljs.core.str(data)].join(''));
+
+return cljs.core.swap_BANG_.call(null,common.app_state,(function (e__$1){
+return cljs.core.update_in.call(null,e__$1,new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"tags","tags",1771418977)], null),(function (f){
+return cljs.core.into.call(null,cljs.core.PersistentVector.EMPTY,data);
+}));
+}));
+});
+index.availabilities_handler = (function availabilities_handler(e,xhr,data){
+util.console_log.call(null,[cljs.core.str("availabilities: "),cljs.core.str(data)].join(''));
+
+return cljs.core.swap_BANG_.call(null,common.app_state,(function (e__$1){
+return cljs.core.update_in.call(null,e__$1,new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"availabilities","availabilities",-9113555)], null),(function (f){
+return cljs.core.into.call(null,cljs.core.PersistentVector.EMPTY,data);
+}));
+}));
+});
+util.ready.call(null,(function (_){
+index.enable_signin.call(null);
+
+common.list_tags.call(null,index.tags_handler);
+
+return common.list_availabilities.call(null,index.availabilities_handler);
+}));
 
 //# sourceMappingURL=index.js.map

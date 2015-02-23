@@ -3,6 +3,7 @@
             [goog.events :as events]
             [goog.dom :as gdom]
             [codepair :as cp]
+            [common :as cm]
             [landing :as ln]
             [util :as ul])
   (:import [goog.net XhrIo]
@@ -47,8 +48,25 @@
                                                       :token token
                                                       :source responseF})))))}))
 
-(defn start []
+
+(defn enable-signin []
   (if-let [signinLink (gdom/getElement "signin")]
     (set! (.-onclick signinLink) onClickHandler)))
 
-(start)
+(defn tags-handler [e xhr data]
+  (ul/console-log (str "tags: " data))
+  (swap! cm/app-state (fn [e]
+                        (update-in e [:tags] (fn [f] (into [] data))))))
+
+(defn availabilities-handler [e xhr data]
+  (ul/console-log (str "availabilities: " data))
+  (swap! cm/app-state (fn [e]
+                        (update-in e [:availabilities] (fn [f] (into [] data))))))
+
+
+(ul/ready
+ (fn [_]
+
+   (enable-signin)
+   (cm/list-tags tags-handler)
+   (cm/list-availabilities availabilities-handler)))
