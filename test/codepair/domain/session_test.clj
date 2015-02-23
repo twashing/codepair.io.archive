@@ -45,7 +45,7 @@
 
                   (and (= 2 (count b) )
                        (= '(#inst "2014-11-10T09:00:00.000-00:00" #inst "2014-12-10T09:00:00.000-00:00")
-                          #spy/p (sort (map #(-> % :session :begin) b)))))))
+                          (sort (map #(-> % :session :begin) b)))))))
 
 (defspec test-retrieve-session
   5

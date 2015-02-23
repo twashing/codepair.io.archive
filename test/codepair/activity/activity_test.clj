@@ -118,21 +118,29 @@
 
 
   (av/find-user-for-availability ds availability)
-
+  #{{:db {:id 17592186045436},
+     :user {:email "codepair",
+            :firstname "codepair",
+            :password "default",
+            :lastname "codepair",
+            :username "codepair"}}}
 
   (ay/ensureuser-ownsavailability ds availability owner)
-
+  true
 
   ;; 2
   (ay/establish-session ds owner availability one)
-  [{:group {:sessions #{{:+ {:db {:id 17592186045454}},
-                         :begin begin
-                         :availability 17592186045438,
-                         :state :session-active,
-                         :participants #{{:+ {:db {:id 17592186045455}},
-                                          :user #{17592186045444},
-                                          :state :participant-active}}}},
-            :name "codepair"},
+  [{:group
+    {:name "codepair",
+     :sessions
+     #{{:availability 17592186045438,
+        :participants
+        #{{:state :participant-active,
+           :+ {:db {:id 17592186045452}},
+           :user #{17592186045444}}},
+        :state :session-active,
+        :begin #inst "2014-12-10T09:00:00.000-00:00",
+        :+ {:db {:id 17592186045451}}}}},
     :db {:id 17592186045428}}]
 
 
@@ -148,8 +156,9 @@
 
   (ss/list-sessions ds gname)
   #{{:db {:id 17592186045451}, :session {:state :session-active, :begin #inst "2014-12-10T09:00:00.000-00:00"}}
-    {:db {:id 17592186045429}, :session {:state :session-exited, :end #inst "2014-12-10T09:20:00.000-00:00", :begin #inst "2014-12-10T09:00:00.000-00:00"}}}
-
+    {:db {:id 17592186045429}, :session {:state :session-exited,
+                                         :end #inst "2014-12-10T09:20:00.000-00:00",
+                                         :begin #inst "2014-12-10T09:00:00.000-00:00"}}}
 
   (ss/find-participant-insession ds session one)
   #{{:db {:id 17592186045452}, :participant {:state :participant-active}}}
@@ -157,21 +166,7 @@
   (ay/ensureuser-issessionguest ds session one)
   true
 
-  (adi/select ds
-              {:participant
-               {:user
-                {:username (-> one :user :username)}
-                :sessions
-                {:begin (-> session :session :begin)}}}
-              :ids
-              {:participant
-               {:user
-                {:username :checked}}})
-
-  #{{:db {:id 17592186045452}, :participant {:state :participant-active}}}
-
-  ;; ** TODO
   (ay/exit-session ds session one)
-
+  [{:participant {:state :participant-exited}, :db {:id 17592186045452}}]
 
   )

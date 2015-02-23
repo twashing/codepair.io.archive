@@ -38,7 +38,6 @@
                       {:state :checked}}}))
 
 (defn find-participant-insession [ds session participant]
-
   (adi/select ds
               {:participant
                {:user
@@ -65,3 +64,12 @@
                  :groups
                  {:name gname}}}
                {:session session}))
+
+(defn update-participant [ds session user participant]
+  (adi/update! ds
+               {:participant
+                {:user
+                 {:username (-> user :user :username)}
+                 :sessions
+                 {:begin (-> session :session :begin)}}}
+               participant))

@@ -64,12 +64,13 @@
                       a (av/add-availability ds gname availability)
                       b (av/find-availability-by-title ds gname title)]
 
-                  (= b
-                     #{{:availability
-                        {:description
-                         "I'm new to Purescript, and want to get a basic development environment.",
-                         :title "Need Help Installing Purescript",
-                         :time :ongoing}}}))))
+                  (and (= '(:db :availability) (-> b first keys))
+                       (= (-> b first (dissoc :db))
+                          {:availability
+                           {:description
+                            "I'm new to Purescript, and want to get a basic development environment.",
+                            :title "Need Help Installing Purescript",
+                            :time :ongoing}})))))
 
 (defspec test-update-availability
   5
@@ -88,12 +89,13 @@
                       b (av/update-availability ds gname title {:title utitle})
                       c (av/find-availability-by-title ds gname utitle)]
 
-                  (= c
-                     #{{:availability
-                        {:description
-                         "I'm new to Purescript, and want to get a basic development environment.",
-                         :title utitle,
-                         :time :ongoing}}}))))
+                  (and (= '(:db :availability) (-> c first keys))
+                       (= (-> c first (dissoc :db))
+                          {:availability
+                            {:description
+                             "I'm new to Purescript, and want to get a basic development environment.",
+                             :title utitle,
+                             :time :ongoing}})))))
 
 (defspec test-list-tags-forgroup
   5

@@ -84,14 +84,13 @@
 
   ;; ** for HTTP namespace, notify owner that a participant has left
 
-  ;; ** TODO
   ;; ensure user is the guest
   ;; set [:session :participant :state] to :participant-exited
-  (ss/update-session ds {:participants
-                         [{:state :participant-exited :+ {:db {:id 17592186045430}}}]
-                         :state (:state session)
-                         :begin (:begin session)
-                         :end (:end session)}))
+  (let [participant (ss/find-participant-insession ds session user)]
+    (ss/update-participant ds session user (-> participant
+                                               first
+                                               (dissoc :db)
+                                               (assoc-in [:participant :state] :participant-exited)))))
 
 (defn end-session [ds session user]
 
