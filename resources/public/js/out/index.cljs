@@ -2,9 +2,13 @@
   (:require [cljs.reader :as reader]
             [goog.events :as events]
             [goog.dom :as gdom]
+            [om.core :as om :include-macros true]
+            [om.dom :as dom :include-macros true]
+            [sablono.core :as html :refer-macros [html]]
             [codepair :as cp]
             [common :as cm]
             [landing :as ln]
+            [view :as vw]
             [util :as ul])
   (:import [goog.net XhrIo]
            goog.net.EventType
@@ -53,20 +57,30 @@
   (if-let [signinLink (gdom/getElement "signin")]
     (set! (.-onclick signinLink) onClickHandler)))
 
+
 (defn tags-handler [e xhr data]
-  (ul/console-log (str "tags: " data))
+
   (swap! cm/app-state (fn [e]
-                        (update-in e [:tags] (fn [f] (into [] data))))))
+                        (update-in e [:tags] (fn [f] (into [] data)))))
+
+
+  (om/root vw/tags-view
+           (:tags @cm/app-state)
+           {:target (. js/document (getElementById "tags"))}))
 
 (defn availabilities-handler [e xhr data]
-  (ul/console-log (str "availabilities: " data))
-  (swap! cm/app-state (fn [e]
-                        (update-in e [:availabilities] (fn [f] (into [] data))))))
 
+
+  (swap! cm/app-state (fn [e]
+                        (update-in e [:availabilities] (fn [f] (into [] data)))))
+
+  (om/root vw/availabilities-view
+           (:availabilities @cm/app-state)
+           {:target (. js/document (getElementById "availabilities"))}))
 
 (ul/ready
- (fn [_]
 
+ (fn [_]
    (enable-signin)
    (cm/list-tags tags-handler)
    (cm/list-availabilities availabilities-handler)))

@@ -2,11 +2,15 @@
 goog.provide('index');
 goog.require('cljs.core');
 goog.require('goog.dom');
+goog.require('om.dom');
+goog.require('view');
+goog.require('sablono.core');
 goog.require('goog.events.EventType');
 goog.require('util');
 goog.require('landing');
 goog.require('goog.events');
 goog.require('goog.net.XhrIo');
+goog.require('om.core');
 goog.require('codepair');
 goog.require('common');
 goog.require('cljs.reader');
@@ -46,22 +50,22 @@ return null;
 }
 });
 index.tags_handler = (function tags_handler(e,xhr,data){
-util.console_log.call(null,[cljs.core.str("tags: "),cljs.core.str(data)].join(''));
-
-return cljs.core.swap_BANG_.call(null,common.app_state,(function (e__$1){
+cljs.core.swap_BANG_.call(null,common.app_state,(function (e__$1){
 return cljs.core.update_in.call(null,e__$1,new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"tags","tags",1771418977)], null),(function (f){
 return cljs.core.into.call(null,cljs.core.PersistentVector.EMPTY,data);
 }));
 }));
+
+return om.core.root.call(null,view.tags_view,new cljs.core.Keyword(null,"tags","tags",1771418977).cljs$core$IFn$_invoke$arity$1(cljs.core.deref.call(null,common.app_state)),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"target","target",253001721),document.getElementById("tags")], null));
 });
 index.availabilities_handler = (function availabilities_handler(e,xhr,data){
-util.console_log.call(null,[cljs.core.str("availabilities: "),cljs.core.str(data)].join(''));
-
-return cljs.core.swap_BANG_.call(null,common.app_state,(function (e__$1){
+cljs.core.swap_BANG_.call(null,common.app_state,(function (e__$1){
 return cljs.core.update_in.call(null,e__$1,new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"availabilities","availabilities",-9113555)], null),(function (f){
 return cljs.core.into.call(null,cljs.core.PersistentVector.EMPTY,data);
 }));
 }));
+
+return om.core.root.call(null,view.availabilities_view,new cljs.core.Keyword(null,"availabilities","availabilities",-9113555).cljs$core$IFn$_invoke$arity$1(cljs.core.deref.call(null,common.app_state)),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"target","target",253001721),document.getElementById("availabilities")], null));
 });
 util.ready.call(null,(function (_){
 index.enable_signin.call(null);
