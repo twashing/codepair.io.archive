@@ -14,34 +14,33 @@ This should be sufficient to run the tests
 
 ## TODO
 
-- Bound layout to session
+1) Bound layout to session
   - `/index` when logged out
   - `/landing` when logged in
-
-- Header with *title* and *login* / *logout* link
-
-- Landing Page Outline
+2) Header with *title* and *login* / *logout* link
+3) Landing Page Outline
   - all listings
   - your availabilities
   - your session(s)
   - stripe page
-
-- Stripe page (update account level)
-
-- *CRU* availability
+4) Stripe page (update account level)
+5) *CRU* availability
   - tags all lower case, no dashes or spaces
   - create button & workflow
   - page transitions (between all, availabilities, sessions)
-
-- Connect with someone
+6) ***Integrate WebRTC (incl. signalling server), or Google Hangouts integration***
+7) Devops
+  - point DNS records to Linode server
+  - prod deploy **app**
+  - prod deploy **db**
+  - prod deploy **webrtc** solution
+  - notify Stripe that I'm going live
+8) Connect with someone
   - Accept a connection 
-
-- Exit pairing (of others)
+9) Exit pairing (of others)
   - End session (of yours)
-
-- Search for availabilities by *user* *text search*
-
-- Explore http handling using [Pedestal](pedestal.io)
+10) Search for availabilities by *user* *text search*
+11) Explore http handling using [Pedestal](pedestal.io)
   - asynchronous communication with client
 
 
