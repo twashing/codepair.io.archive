@@ -6,6 +6,9 @@
     <!-- TypeKit -->
     <script src="//use.typekit.net/zac5lnn.js"></script>
     <script>try{Typekit.load();}catch(e){}</script>
+
+
+    <link rel="stylesheet" type="text/css" href="css/codepair.css">
   </head>
 
   <body>
@@ -13,14 +16,15 @@
     <!-- Persona
          Ensuring users of IE can't use Compatibility Mode, as this will break Persona.
          (https://developer.mozilla.org/en-US/Persona/Quick_setup) -->
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge"></meta>
     <script src="https://login.persona.org/include.js"></script>
 
-    <div class="tk-open-sans" id="signin">login</div>
-    <br/>
+    <div class="header">
+      <div class="tk-open-sans" id="signin">login</div>
+    </div>
 
 
-    <!-- Stripe -->
+    <!-- Stripe
     <script src="https://checkout.stripe.com/checkout.js"></script>
     <div class="tk-open-sans" id="customButton">purchase</div>
     <form action="/charge" method="POST">
@@ -34,7 +38,7 @@
       </script>
       <input type="hidden" name="planId" value="professional">
     </form>
-
+    -->
 
     <div id="tags"></div>
     <div id="availabilities"></div>

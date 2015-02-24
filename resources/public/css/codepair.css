@@ -1,0 +1,35 @@
+* {
+    font-family: "open-sans",sans-serif;
+}
+html {
+    height: 100%;
+}
+body {
+    zoom: 70%;
+    margin: 0;
+}
+.header {
+    height: 60px;
+    line-height: 60px;
+    font-size: 18px;
+    padding: 0 10px;
+    background-color: #4F7DC9;
+    color: #FFF;
+    transition: height 0.2s;
+    display: block;
+    box-shadow: 0px 5px 5px #aaaaaa;
+}
+.header-logo {
+    font-size: 30px;
+}
+.header-text {
+    font-size: 16px;
+}
+#signin , #signout {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    -webkit-justify-content: flex-end;
+    justify-content: flex-end;
+}
