@@ -29,6 +29,8 @@ This should be sufficient to run the tests
   - create button & workflow
   - page transitions (between all, availabilities, sessions)
 6. ***Integrate WebRTC (incl. signalling server), or Google Hangouts integration***
+  - Good video documentation: https://www.youtube.com/watch?v=5ci91dfKCyc
+  - Signalling & STUN server
 7. Devops
   - point DNS records to Linode server
   - prod deploy **app**
