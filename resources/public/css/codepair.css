@@ -13,17 +13,20 @@ body {
     line-height: 60px;
     font-size: 18px;
     padding: 0 10px;
-    background-color: #4F7DC9;
-    color: #FFF;
+    background-color: #D6E3E7;
+    color: #000;
     transition: height 0.2s;
     display: block;
     box-shadow: 0px 5px 5px #aaaaaa;
 }
 .header-logo {
     font-size: 30px;
+    float: left;
+    margin-right: 12px;
 }
 .header-text {
     font-size: 16px;
+    float: left;
 }
 #signin , #signout {
     display: -webkit-flex;
@@ -32,4 +35,5 @@ body {
     flex-direction: row;
     -webkit-justify-content: flex-end;
     justify-content: flex-end;
+    float: right;
 }
