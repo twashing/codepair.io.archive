@@ -2,7 +2,6 @@
   (:require [cljs.reader :as reader]
             [goog.events :as events]
             [goog.dom :as gdom]
-            [landing :as ln]
             [util :as ul])
   (:import [goog.net XhrIo]
            goog.net.EventType

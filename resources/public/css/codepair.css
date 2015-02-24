@@ -28,7 +28,7 @@ body {
     font-size: 16px;
     float: left;
 }
-#signin , #signout {
+#aauth {
     display: -webkit-flex;
     display: flex;
     -webkit-flex-direction: row;

@@ -7,7 +7,6 @@
             [sablono.core :as html :refer-macros [html]]
             [codepair :as cp]
             [common :as cm]
-            [landing :as ln]
             [view :as vw]
             [util :as ul])
   (:import [goog.net XhrIo]
@@ -15,9 +14,12 @@
            [goog.events EventType]))
 
 
-(declare verifyAssertion)
+(declare verifyAssertion
+         loginClickHandler
+         session-check
+         user-handler)
 
-(defn onClickHandler []
+(defn loginClickHandler []
   (let [currentUser "twashing@gmail.com"
         navigatorId js/navigator.id]
 
@@ -27,6 +29,7 @@
                       :onlogin verifyAssertion
                       :onlogout cp/signoutUser}))
     (.request navigatorId)))
+
 
 (defn verifyAssertion [assertion]
 
@@ -38,24 +41,34 @@
     :on-complete (partial cp/basicHandler
                           (fn [e xhr]
                             (let [data (.getResponseText xhr)
-                                  responseF  (reader/read-string data)
+                                  responseF  (reader/read-string data)]
 
-                                  _ (ul/console-log (str "sanity check... " responseF))
-                                  groupname (:groupname responseF)
-                                  username (:username responseF)
-                                  token (:token responseF)]
+                              (user-handler e xhr responseF))))}))
 
-                              ;; set the user data into the namespace
-                              (swap! ln/user-state (fn [inp]
-                                                     {:groupname groupname
-                                                      :username username
-                                                      :token token
-                                                      :source responseF})))))}))
+(defn login-button [state owner]
+  (om/component (html [:div {:on-click loginClickHandler}
+                       "login"])))
+
+(defn logout-button [state owner]
+  (om/component (html [:div {}
+                       "logout"])))
 
 (defn enable-signin []
-  (if-let [signinLink (gdom/getElement "signin")]
-    (set! (.-onclick signinLink) onClickHandler)))
+  (om/root login-button
+           (:user @cm/app-state)
+           {:target (. js/document (getElementById "aauth"))}))
 
+(defn enable-signout []
+  (om/root logout-button
+           (:user @cm/app-state)
+           {:target (. js/document (getElementById "aauth"))}))
+
+
+(defn session-check []
+
+  (if (nil? (:user @cm/app-state))
+    (enable-signin)
+    (enable-signout)))
 
 (defn tags-handler [e xhr data]
 
@@ -75,9 +88,19 @@
            (:availabilities @cm/app-state)
            {:target (. js/document (getElementById "availabilities"))}))
 
+(defn user-handler [e xhr data]
+
+  (swap! cm/app-state
+         (fn [e]
+           (update-in e [:user] (fn [f] data))))
+
+  (session-check))
+
+
 (ul/ready
 
  (fn [_]
-   (enable-signin)
-   (cm/list-tags tags-handler)
-   (cm/list-availabilities availabilities-handler)))
+
+   (cm/load-tags tags-handler)
+   (cm/load-availabilities availabilities-handler)
+   (cm/load-user-data user-handler)))

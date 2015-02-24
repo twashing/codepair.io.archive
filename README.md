@@ -14,10 +14,11 @@ This should be sufficient to run the tests
 
 ## TODO
 
-1. Bound layout to session
+[ok] Header with *title* and *login* / *logout* link
+[ok] Bound layout to session
   - `/index` when logged out
   - `/landing` when logged in
-2. Header with *title* and *login* / *logout* link
+
 3. Landing Page Outline
   - all listings
   - your availabilities

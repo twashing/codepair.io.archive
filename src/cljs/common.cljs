@@ -5,33 +5,37 @@
             [codepair :as cp]
             [util :as ul]))
 
+
 (def app-state (atom {:user {}
                       :availabilities []
                       :tags []}))
 
-(defn list-tags [response-handler]
+(defn localCommonHandler [response-handler]
+  (partial cp/basicHandler
+           (fn [e xhr]
+
+             (let [data (.getResponseText xhr)
+                   responseF  (reader/read-string data)]
+
+               (response-handler e xhr responseF)))))
+
+(defn load-tags [response-handler]
   (cp/edn-xhr
    {:method :get
     :url "/list-tags"
-    :on-complete (partial cp/basicHandler
-                          (fn [e xhr]
+    :on-complete (localCommonHandler response-handler)}))
 
-                            (let [data (.getResponseText xhr)
-                                  responseF  (reader/read-string data)]
-
-                              (response-handler e xhr responseF))))}))
-
-(defn list-availabilities [response-handler]
+(defn load-availabilities [response-handler]
   (cp/edn-xhr
    {:method :get
     :url "/list-availabilities"
-    :on-complete (partial cp/basicHandler
-                          (fn [e xhr]
+    :on-complete (localCommonHandler response-handler)}))
 
-                            (let [data (.getResponseText xhr)
-                                  responseF  (reader/read-string data)]
-
-                              (response-handler e xhr responseF))))}))
+(defn load-user-data [response-handler]
+  (cp/edn-xhr
+   {:method :get
+    :url "/user-data"
+    :on-complete (localCommonHandler response-handler)}))
 
 (defn ^:export printAppState []
   (ul/console-log (str @app-state)))

@@ -2,12 +2,13 @@
  "file":
  "/home/twashing/Projects/codepair.io/resources/public/js/out/common.js",
  "sources":["common.cljs"],
- "lineCount":29,
+ "lineCount":31,
  "mappings":
- ";AAAA;;;;;;;AAOA,AAAKA,mBAAU,yBAAA,2CAAA,qDAAA,mCAAA,uEAAA,iCAAA,qDAAA,zTAACC;AAIhB,mBAAA,nBAAMC,uCAAWC;AAAjB,AACE,kCAAA,2CAAA,uDAAA,mDAAA,kDAAA,aAAA,/OAACC,mTAGc,AAACC,4BAAQC,sBACA,WAAKC,EAAEC;AAAP,AAEE,IAAMC,OAAK,AAAkBD;IACvBE,YAAW,AAACC,kCAAmBF;AADrC,AAGE,OAACN,2BAAiBI,EAAEC,IAAIE;;;AAEtD,6BAAA,7BAAME,2DAAqBT;AAA3B,AACE,kCAAA,2CAAA,uDAAA,mDAAA,kDAAA,uBAAA,zPAACC,6TAGc,AAACC,4BAAQC,sBACA,WAAKC,EAAEC;AAAP,AAEE,IAAMC,OAAK,AAAkBD;IACvBE,YAAW,AAACC,kCAAmBF;AADrC,AAGE,OAACN,2BAAiBI,EAAEC,IAAIE;;;AAEtD,uBAAA,vBAAeG;AAAf,AACE,OAACC,2BAAe,eAAA,AAAAC,0BAAMf",
+ ";AAAA;;;;;;;AAQA,AAAKA,mBAAU,yBAAA,2CAAA,qDAAA,mCAAA,uEAAA,iCAAA,qDAAA,zTAACC;AAIhB,4BAAA,5BAAMC,yDAAoBC;AAA1B,AACE,OAACC,4BAAQC,sBACA,WAAKC,EAAEC;AAAP,AAEE,IAAMC,OAAK,AAAkBD;IACvBE,YAAW,AAACC,kCAAmBF;AADrC,AAGE,OAACL,2BAAiBG,EAAEC,IAAIE;;;AAEvC,mBAAA,nBAAME,uCAAWR;AAAjB,AACE,kCAAA,2CAAA,uDAAA,mDAAA,kDAAA,aAAA,/OAACS,mTAGc,AAACV,oCAAmBC;;AAErC,6BAAA,7BAAMU,2DAAqBV;AAA3B,AACE,kCAAA,2CAAA,uDAAA,mDAAA,kDAAA,uBAAA,zPAACS,6TAGc,AAACV,oCAAmBC;;AAErC,wBAAA,xBAAMW,iDAAgBX;AAAtB,AACE,kCAAA,2CAAA,uDAAA,mDAAA,kDAAA,aAAA,/OAACS,mTAGc,AAACV,oCAAmBC;;AAErC,uBAAA,vBAAeY;AAAf,AACE,OAACC,2BAAe,eAAA,AAAAC,0BAAMjB",
  "names":
- ["common/app-state", "cljs.core/atom", "common/list-tags",
-  "response-handler", "codepair/edn-xhr", "cljs.core/partial",
-  "codepair/basicHandler", "e", "xhr", "data", "responseF",
-  "cljs.reader/read-string", "common/list-availabilities",
-  "common/printAppState", "util/console-log", "cljs.core/deref"]}
+ ["common/app-state", "cljs.core/atom", "common/localCommonHandler",
+  "response-handler", "cljs.core/partial", "codepair/basicHandler",
+  "e", "xhr", "data", "responseF", "cljs.reader/read-string",
+  "common/load-tags", "codepair/edn-xhr", "common/load-availabilities",
+  "common/load-user-data", "common/printAppState", "util/console-log",
+  "cljs.core/deref"]}

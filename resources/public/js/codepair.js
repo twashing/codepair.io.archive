@@ -1,9 +1,8 @@
 goog.addDependency("base.js", ['goog'], []);
 goog.addDependency("../cljs/core.js", ['cljs.core'], ['goog.string', 'goog.object', 'goog.string.StringBuffer', 'goog.array']);
 goog.addDependency("../util.js", ['util'], ['cljs.core']);
-goog.addDependency("../landing.js", ['landing'], ['cljs.core', 'util']);
 goog.addDependency("../cljs/reader.js", ['cljs.reader'], ['goog.string', 'cljs.core', 'goog.string.StringBuffer']);
-goog.addDependency("../codepair.js", ['codepair'], ['goog.dom', 'goog.net.XhrIo', 'cljs.core', 'landing', 'goog.events.EventType', 'util', 'cljs.reader', 'goog.events']);
+goog.addDependency("../codepair.js", ['codepair'], ['goog.dom', 'goog.net.XhrIo', 'cljs.core', 'goog.events.EventType', 'util', 'cljs.reader', 'goog.events']);
 goog.addDependency("../om/dom.js", ['om.dom'], ['cljs.core', 'goog.object']);
 goog.addDependency("../clojure/set.js", ['clojure.set'], ['cljs.core']);
 goog.addDependency("../clojure/string.js", ['clojure.string'], ['goog.string', 'cljs.core', 'goog.string.StringBuffer']);
@@ -16,4 +15,4 @@ goog.addDependency("../sablono/core.js", ['sablono.core'], ['goog.dom', 'sablono
 goog.addDependency("../om/core.js", ['om.core'], ['goog.dom', 'cljs.core', 'om.dom', 'goog.ui.IdGenerator']);
 goog.addDependency("../common.js", ['common'], ['goog.dom', 'cljs.core', 'util', 'cljs.reader', 'goog.events', 'codepair']);
 goog.addDependency("../view.js", ['view'], ['om_material_ui.core', 'goog.dom', 'cljs.core', 'om.dom', 'sablono.core', 'util', 'om.core', 'common']);
-goog.addDependency("../index.js", ['index'], ['goog.dom', 'view', 'goog.net.XhrIo', 'cljs.core', 'om.dom', 'landing', 'sablono.core', 'goog.events.EventType', 'util', 'om.core', 'common', 'cljs.reader', 'goog.events', 'codepair']);
+goog.addDependency("../index.js", ['index'], ['goog.dom', 'view', 'goog.net.XhrIo', 'cljs.core', 'om.dom', 'sablono.core', 'goog.events.EventType', 'util', 'om.core', 'common', 'cljs.reader', 'goog.events', 'codepair']);

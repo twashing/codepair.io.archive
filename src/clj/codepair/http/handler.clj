@@ -45,6 +45,11 @@
           (timbre/debug (str "/session-status request[" (:session req) "]"))
           (ring-resp/response (pr-str (:session req))))
 
+     (GET "/user-data" [:as req]
+
+          (timbre/debug (str "/user-data req[" (with-out-str (pp/pprint req)) "]"))
+          (ring-resp/response (pr-str (-> req :session :authentication-data))))
+
      (POST "/charge" [:as req]
 
            (timbre/debug (str "/charge req[" (with-out-str (pp/pprint req)) "]"))
