@@ -52,7 +52,6 @@
                                                       :token token
                                                       :source responseF})))))}))
 
-
 (defn enable-signin []
   (if-let [signinLink (gdom/getElement "signin")]
     (set! (.-onclick signinLink) onClickHandler)))
@@ -63,13 +62,11 @@
   (swap! cm/app-state (fn [e]
                         (update-in e [:tags] (fn [f] (into [] data)))))
 
-
   (om/root vw/tags-view
            (:tags @cm/app-state)
            {:target (. js/document (getElementById "tags"))}))
 
 (defn availabilities-handler [e xhr data]
-
 
   (swap! cm/app-state (fn [e]
                         (update-in e [:availabilities] (fn [f] (into [] data)))))
