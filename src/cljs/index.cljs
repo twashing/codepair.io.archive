@@ -5,6 +5,7 @@
             [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]
             [sablono.core :as html :refer-macros [html]]
+            [om-material-ui.core :as mui :include-macros true]
             [codepair :as cp]
             [common :as cm]
             [view :as vw]
@@ -81,9 +82,9 @@
 
     ;; set the container into which our listings will go
     (om/root (fn [state owner]
-               (om/component (html [:div {:id "one"}
-                                    [:div {:id listings-container}]
-                                    [:div "thing"]])))
+               (om/component (html [:div {:id "landing-container"}
+                                    (mui/toolbar "thing")
+                                    [:div {:id listings-container}]])))
              @cm/app-state
              {:target (. js/document (getElementById "app-container"))})
 
