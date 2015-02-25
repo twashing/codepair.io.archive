@@ -27,46 +27,57 @@
     (.watch navigatorId
             (clj->js {:loggedInUser currentUser
                       :onlogin verifyAssertion
-                      :onlogout cp/signoutUser}))
+                      :onlogout cm/signoutUser}))
     (.request navigatorId)))
 
 
 (defn verifyAssertion [assertion]
 
   (ul/console-log (str "verifyAssertion CALLED / assertion: " assertion))
-  (cp/edn-xhr
+  (cm/edn-xhr
    {:method :post
     :url "/verify-assertion"
     :data {:assertion assertion}
-    :on-complete (partial cp/basicHandler
+    :on-complete (partial cm/basicHandler
                           (fn [e xhr]
                             (let [data (.getResponseText xhr)
                                   responseF  (reader/read-string data)]
 
                               (user-handler e xhr responseF))))}))
 
-(defn login-button [state owner]
-  (om/component (html [:div {:on-click loginClickHandler}
-                       "login"])))
-
-(defn logout-button [state owner]
-  (om/component (html [:div {}
-                       "logout"])))
 
 (defn enable-signin []
-  (om/root login-button
+  (om/root (fn [state owner]
+             (om/component (html [:div {:on-click loginClickHandler}
+                                  "login"])))
            (:user @cm/app-state)
            {:target (. js/document (getElementById "aauth"))}))
 
 (defn enable-signout []
-  (om/root logout-button
+  (om/root (fn [state owner]
+             (om/component (html [:div {}
+                                  "logout"])))
            (:user @cm/app-state)
            {:target (. js/document (getElementById "aauth"))}))
 
+(defn show-listings []
+
+  )
+
+(defn show-landing []
+
+  )
 
 (defn session-check []
 
   (if (nil? (:user @cm/app-state))
+
+    (show-listings)
+
+    (show-landing))
+
+
+  #_(if (nil? (:user @cm/app-state))
     (enable-signin)
     (enable-signout)))
 
@@ -101,6 +112,6 @@
 
  (fn [_]
 
-   (cm/load-tags tags-handler)
-   (cm/load-availabilities availabilities-handler)
+   #_(cm/load-tags tags-handler)
+   #_(cm/load-availabilities availabilities-handler)
    (cm/load-user-data user-handler)))

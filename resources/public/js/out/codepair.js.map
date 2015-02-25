@@ -2,15 +2,6 @@
  "file":
  "/home/twashing/Projects/codepair.io/resources/public/js/out/codepair.js",
  "sources":["codepair.cljs"],
- "lineCount":44,
- "mappings":
- ";AAAA;;;;;;;;AAUA,iBAAA,2CAAA,mDAAA,MAAA,mDAAA,MAAA,oDAAA,OAAA,0DAAA,nSAAeA;AAMf,mBAAA,kBAAAC,rCAAMM;AAAN,AAAA,IAAAL,YAAAD;IAAAC,gBAAA,EAAA,AAAAC,+BAAAD,YAAA,AAAAE,0BAAAC,mBAAAH,WAAAA;kBAAA,AAAAI,wBAAAJ,cAAA,pDAAuCS;WAAvC,AAAAL,wBAAAJ,cAAA,7CAAkCQ;UAAlC,AAAAJ,wBAAAJ,cAAA,5CAA8BO;aAA9B,AAAAH,wBAAAJ,cAAA,/CAAuBM;AAAvB,AACE,IAAMI,MAAI,KAAAC;AAAV,AACE,AAACC,mBAAcF,IAAIG,4BACJ;kBAAKC;AAAL,AACE,OAACL,sBAAY,AAACM,kCAAmB,AAAkBL,uBACtCA;;;;AAC9B,oHAAA,iBAAA,9HAAGA,SACMH,IAAI,AAACT,yBAAMQ,QAAQ,wBAAA,iCAAA,vCAAME,MAAK,AAACQ,2BAAOR;;AAGnD,wBAAA,xBAAMS,+CAAcC,SAASJ,EAAEJ;AAA/B,AACE,IAAMS,MAAI,AAAkBT;IACtBU,SAAO,AAAYV;AADzB,AAGE,GAAI,yBAAA,zBAACW,+BAAMD;AACT,AAEE,OAACF,mBAASJ,EAAEJ;;AACd,AAEE,OAASY;;;AAEjB,uBAAA,vBAAMC;AAAN,AACE,2BAAA,3BAACC;;AAED,kCAAA,2CAAA,uDAAA,mDAAA,kDAAA,WAAA,7OAACnB,iTAGc,AAACoB,4BAAQR,sBACA,WAAKH,EAAEJ;AAAP,AACE,OAACc,2BAAe,eAAA",
- "names":
- ["codepair/meths", "p__9127", "map__9129", "cljs.core/seq?",
-  "cljs.core/apply", "cljs.core/hash-map", "cljs.core/get",
-  "codepair/edn-xhr", "method", "url", "data", "on-complete", "xhr",
-  "goog/net.XhrIo", "goog.events/listen",
-  "goog/net.EventType.COMPLETE", "e", "cljs.reader/read-string",
-  "cljs.core/pr-str", "codepair/basicHandler", "handlefn", "res",
-  "status", "cljs.core/=", "navigator/id", "codepair/signoutUser",
-  "util/console-log", "cljs.core/partial"]}
+ "lineCount":11,
+ "mappings":";AAAA",
+ "names":[]}
