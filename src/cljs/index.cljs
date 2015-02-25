@@ -78,11 +78,15 @@
 
 (defn show-landing []
   (let [listings-container "listings-container"]
+
+    ;; set the container into which our listings will go
     (om/root (fn [state owner]
-               (om/component (html [:div {:id listings-container}
-                                    "landing"])))
+               (om/component (html [:div {:id "one"}
+                                    [:div {:id listings-container}]
+                                    [:div "thing"]])))
              @cm/app-state
              {:target (. js/document (getElementById "app-container"))})
+
     (show-listings listings-container)))
 
 (defn session-check []
