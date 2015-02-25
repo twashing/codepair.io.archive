@@ -17,6 +17,8 @@
 (declare verifyAssertion
          loginClickHandler
          session-check
+         tags-handler
+         availabilities-handler
          user-handler)
 
 (defn loginClickHandler []
@@ -60,29 +62,38 @@
            (:user @cm/app-state)
            {:target (. js/document (getElementById "aauth"))}))
 
-(defn show-listings []
+(defn show-listings
+  ([]
+   (show-listings "app-container"))
 
-  )
+  ([element-container]
+   (om/root (fn [state owner]
+              (om/component (html [:div
+                                   [:div {:id "tags"}]
+                                   [:div {:id "availabilities"}]])))
+            @cm/app-state
+            {:target (. js/document (getElementById element-container))})
+   (cm/load-tags tags-handler)
+   (cm/load-availabilities availabilities-handler)))
 
 (defn show-landing []
-
-  )
+  (let [listings-container "listings-container"]
+    (om/root (fn [state owner]
+               (om/component (html [:div {:id listings-container}
+                                    "landing"])))
+             @cm/app-state
+             {:target (. js/document (getElementById "app-container"))})
+    (show-listings listings-container)))
 
 (defn session-check []
 
   (if (nil? (:user @cm/app-state))
-
-    (show-listings)
-
-    (show-landing))
-
-
-  #_(if (nil? (:user @cm/app-state))
-    (enable-signin)
-    (enable-signout)))
+    (do (show-listings)
+        (enable-signin))
+    (do (show-landing)
+        (enable-signout))))
 
 (defn tags-handler [e xhr data]
-
   (swap! cm/app-state (fn [e]
                         (update-in e [:tags] (fn [f] (into [] data)))))
 
@@ -91,7 +102,6 @@
            {:target (. js/document (getElementById "tags"))}))
 
 (defn availabilities-handler [e xhr data]
-
   (swap! cm/app-state (fn [e]
                         (update-in e [:availabilities] (fn [f] (into [] data)))))
 
@@ -100,18 +110,12 @@
            {:target (. js/document (getElementById "availabilities"))}))
 
 (defn user-handler [e xhr data]
-
   (swap! cm/app-state
          (fn [e]
            (update-in e [:user] (fn [f] data))))
 
   (session-check))
 
-
 (ul/ready
-
  (fn [_]
-
-   #_(cm/load-tags tags-handler)
-   #_(cm/load-availabilities availabilities-handler)
    (cm/load-user-data user-handler)))
