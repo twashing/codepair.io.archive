@@ -2,6 +2,7 @@
   (:require [cljs.reader :as reader]
             [goog.events :as events]
             [goog.dom :as gdom]
+            [goog.string :as gstr]
             [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]
             [sablono.core :as html :refer-macros [html]]
@@ -83,8 +84,23 @@
     ;; set the container into which our listings will go
     (om/root (fn [state owner]
                (om/component (html [:div {:id "landing-container"}
-                                    (mui/toolbar "thing")
-                                    [:div {:id listings-container}]])))
+
+                                    (mui/left-nav {:id "left-nav"
+                                                   :menu-items [{:route "z" :text "a"}]} )
+
+                                    ;; 1
+                                    #_(mui/toolbar
+                                     (gstr/unescapeEntities "&nbsp;")
+                                     ;;(mui/input {:id "search"} )
+                                     )
+
+                                    ;; 2
+                                    ;;(mui/left-nav)
+
+
+                                    [:div {:id listings-container}]
+
+                                    ])))
              @cm/app-state
              {:target (. js/document (getElementById "app-container"))})
 
