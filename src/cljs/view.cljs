@@ -55,6 +55,25 @@
     (str "*" existing-text)
     existing-text))
 
+(defn pay-with-stripe [planId description amount]
+  (let [;;stripe-script (.getElementById js/document "stripe-script")
+        ;;_ (.setAttribute stripe-script "data-description" description)
+        ;;_ (.setAttribute stripe-script "data-amount" amount)
+
+        ;;stripe-input (.getElementById js/document "planId")
+        ;;_ (aset stripe-input "value" planId)
+
+        stripe-buttons (.getElementsByClassName js/document "stripe-button-el")
+        pro (aget stripe-buttons 0)
+        ent (aget stripe-buttons 1)
+        stripe-button (if (= "professional" planId)
+                        pro
+                        ent)]
+
+    ;;(ul/console-log (str "sinput: " stripe-input))
+    ;;(ul/console-log (str "sbutton: " stripe-button))
+    (.click stripe-button)))
+
 (defn landing-view [listings-container]
   (om/component (html [:div {:id "landing-container"}
 
@@ -71,15 +90,15 @@
                        [:div {:class "tabs-content"}
 
                         [:div {:class "content active" :id "tab-listings"}
-                         [:p "Listings"]
+                         [:div {:id listings-container}]]
+
+                        [:div {:class "content" :id "tab-availabilities"}
+                         [:p "Availabilities"]
                          [:a {:class "button tiny"} "thing"]
                          [:div {:class "small-4 columns"}
                           [:label "Input Label"
                            [:input {:type "text" :placeholder "small-4 columns"} ]]]
-                         [:div {:id listings-container}]]
-
-                        [:div {:class "content" :id "tab-availabilities"}
-                         [:p "Availabilities"]]
+                         ]
 
                         [:div {:class "content" :id "tab-session"}
                          [:p "Session"]]
@@ -108,7 +127,8 @@
                             [:li {:class "bullet-item"} "Host your own availabilities"]
                             [:li {:class "bullet-item"} "Full Audio, Video, Text Messages and Screen Sharing"]
                             [:li {:class "cta-button"}
-                             [:a {:class (account-selected-button :professional "button")} "Subscribe"]]]]
+                             [:a {:class (account-selected-button :professional "button")
+                                  :on-click (fn [e] (pay-with-stripe "professional" "Professional Plan" "900"))} "Subscribe"]]]]
 
                           [:li
                            [:ul {:class "pricing-table"}
@@ -119,6 +139,7 @@
                             [:li {:class "bullet-item"} "Connect to any availabilitles. Host your own. Run group sessions."]
                             [:li {:class "bullet-item"} (gstr/unescapeEntities "&nbsp;")]
                             [:li {:class "cta-button"}
-                             [:a {:class (account-selected-button :enterprise "button")} "Subscribe"]]]]]]
+                             [:a {:class (account-selected-button :enterprise "button")
+                                  :on-click (fn [e] (pay-with-stripe "enterprise" "Enterprise Plan" "2400"))} "Subscribe"]]]]]]
 
                         ]])))
