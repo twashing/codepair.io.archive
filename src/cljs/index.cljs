@@ -84,18 +84,36 @@
     (om/root (fn [state owner]
                (om/component (html [:div {:id "landing-container"}
 
+                                    [:ul {:class "tabs" :data-tab true}
+                                     [:li {:class "tab-title active"}
+                                      [:a {:href "#tab-listings"} "Listings" ]]
+                                     [:li {:class "tab-title"}
+                                      [:a {:href "#tab-availabilities"} "Availabilities"]]
+                                     [:li {:class "tab-title"}
+                                      [:a {:href "#tab-session"} "Session"]]
+                                     [:li {:class "tab-title"}
+                                      [:a {:href "#tab-account"} "Account"]]]
 
-                                    ;; 1
-                                    #_(mui/toolbar
-                                     (gstr/unescapeEntities "&nbsp;")
-                                     ;;(mui/input {:id "search"} )
-                                     )
-
-                                    [:div {:id listings-container}]
-
-                                    ])))
+                                    [:div {:class "tabs-content"}
+                                     [:div {:class "content active" :id "tab-listings"}
+                                      [:p "Listings"]
+                                      [:a {:href "#" :class "button tiny"} "thing"]
+                                      [:div {:class "small-4 columns"}
+                                       [:label "Input Label"
+                                        [:input {:type "text" :placeholder "small-4 columns"} ]]]
+                                      [:div {:id listings-container}]]
+                                     [:div {:class "content" :id "tab-availabilities"}
+                                      [:p "Availabilities"]]
+                                     [:div {:class "content" :id "tab-session"}
+                                      [:p "Session"]]
+                                     [:div {:class "content" :id "tab-account"}
+                                      [:p "Account"]]]])))
              @cm/app-state
              {:target (. js/document (getElementById "app-container"))})
+
+    ;; Invoke after using a foundation component
+    ;; Refer to "Adding New Content After Page Load" here: http://foundation.zurb.com/docs/javascript.html
+    (.foundation (js/$ js/document) "tab" "reflow")
 
     (show-listings listings-container)))
 
