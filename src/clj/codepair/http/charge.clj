@@ -24,6 +24,7 @@
   (let [sktest (-> sh/file-config sh/environment-mode :stripe-key-secret)
         charge-token (-> req :params :stripeToken)
         stripe-email (-> req :params :stripeEmail)
+        account-level (-> req :params :accountlevel)
         result (common/with-token sktest
                  (common/execute
                   (customers/create-customer
@@ -31,6 +32,9 @@
                    (customers/email stripe-email)
                    (common/plan "professional"))))
         stripe-customer-id (:id result)
+
+        ;; if successful, update user
+        ;; ...
 
         session (:session req)]
 

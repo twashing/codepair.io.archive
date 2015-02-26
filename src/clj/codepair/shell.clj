@@ -19,7 +19,9 @@
             [bkell.config :as config]
 
             [codepair.component.shell :as csh]
-            [codepair.component.spittoon :as css]))
+            [codepair.component.spittoon :as css]
+            [codepair.http.server :as sv]
+            [codepair.http.handler :as hl]))
 
 
 (defn reload-project []
@@ -71,6 +73,10 @@
   ([] (db-init (:dev (config/load-edn "config-codepair.edn"))))
   ([env]
    (spit/db-init env)))
+
+
+(defn start-server []
+  (sv/start-server 3000 hl/app))
 
 
 (comment

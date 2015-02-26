@@ -12,6 +12,7 @@
                  [ring/ring-core "1.2.1"]
                  [ring/ring-devel "1.0.0"]
                  [ring/ring-jetty-adapter "1.2.1"]
+                 [ring-server "0.4.0"]
                  [slingshot "0.12.1"]
                  [cheshire "5.4.0"]
                  [clj-http "1.0.1"]

@@ -65,11 +65,15 @@
                                           {:method :post
                                            :url "/charge"
                                            :data {:stripeToken (.-id token)
-                                                  :stripeEmail (.-email token)}
+                                                  :stripeEmail (.-email token)
+                                                  :accountlevel (str ":" planId)}
                                            :on-complete (partial cm/basicHandler
                                                                  (fn [e xhr]
                                                                    (let [data (.getResponseText xhr)
                                                                          responseF  (reader/read-string data)]
+
+                                                                     ;; if successful, update user structure
+                                                                     ;; ...
 
                                                                      (+ 1 2)
                                                                      (+ 3 4)
