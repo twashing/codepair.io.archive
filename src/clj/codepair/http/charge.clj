@@ -16,16 +16,15 @@
             [codepair.shell :as sh]))
 
 
-(defn charge [req]
+(defn charge [req stripe-sk]
 
   ;; tie together with existing account
   ;; can't do this unless logged in
   ;; can only change plans if already under a plan
-  (let [sktest (-> sh/file-config sh/environment-mode :stripe-key-secret)
-        charge-token (-> req :params :stripeToken)
+  (let [charge-token (-> req :params :stripeToken)
         stripe-email (-> req :params :stripeEmail)
         account-level (-> req :params :accountlevel)
-        result (common/with-token sktest
+        result (common/with-token stripe-sk
                  (common/execute
                   (customers/create-customer
                    (common/card charge-token)

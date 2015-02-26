@@ -14,10 +14,16 @@
     (reset! server
             (rs/serve app
                       {:port port
-                       ;; :init init
-                       ;; :destroy destroy
                        :auto-reload? true
-                       :join true}))))
+                       :join true
+                       :open-browser? false}))))
 
 (defn stop-server []
   (.stop @server))
+
+(defn reset-server [& [port app]]
+  (if (nil? @server)
+    (start-server)
+    (do
+      (stop-server)
+      (start-server port app))))

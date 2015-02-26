@@ -16,149 +16,134 @@
             [codepair.http.domain :as hd]))
 
 
+(defn gen-get-datastore [ds]
+  (defn get-datastore []
+    ds))
 
-(defn get-datastore []
-  (-> sh/system :spittoon :db))
+(defroutes app-routes
 
-(defn gen-approutes
-  ([]
-   (gen-approutes (:dev (config/load-edn "config-codepair.edn"))))
+  (GET "/" [:as req]
 
-  ([env]
-   (gen-approutes env false))
+       (-> (ring-resp/response (slurp (io/resource "public/index.html")))
+           (ring-resp/content-type "text/html")))
 
-  ([env recreate?]
+  (GET "/session-status" [:as req]
 
-   (sh/start {:shell {}
-              :spittoon {:env env
-                         :recreate? recreate?}})
+       (timbre/info (str "/session-status request[" (:session req) "]"))
+       (ring-resp/response (pr-str (:session req))))
 
-   (defroutes app-routes
+  (GET "/user-data" [:as req]
 
-     (GET "/" [:as req]
+       (timbre/info (str "/user-data req[" (with-out-str (pp/pprint req)) "]"))
+       (ring-resp/response (pr-str (-> req :session :authentication-data))))
 
-          (-> (ring-resp/response (slurp (io/resource "public/index.html")))
-              (ring-resp/content-type "text/html")))
+  (POST "/charge" [:as req]
 
-     (GET "/session-status" [:as req]
+        (timbre/info (str "/charge req[" (with-out-str (pp/pprint req)) "]"))
+        (let [sk (-> sh/file-config sh/environment-mode :stripe-key-secret)
+              authentication-data (ch/charge req sk)
+              session (:session req)]
 
-          (timbre/info (str "/session-status request[" (:session req) "]"))
-          (ring-resp/response (pr-str (:session req))))
+          (-> (ring-resp/response (slurp (io/resource "public/landing.html")))
+              (ring-resp/content-type "text/html")
+              (assoc :session (assoc session :authentication-data authentication-data)))))
 
-     (GET "/user-data" [:as req]
+  (POST "/verify-assertion" [:as req]
 
-          (timbre/info (str "/user-data req[" (with-out-str (pp/pprint req)) "]"))
-          (ring-resp/response (pr-str (-> req :session :authentication-data))))
-
-     (POST "/charge" [:as req]
-
-           (timbre/info (str "/charge req[" (with-out-str (pp/pprint req)) "]"))
-           (let [authentication-data (ch/charge req)
-                 session (:session req)]
-
-             (-> (ring-resp/response (slurp (io/resource "public/landing.html")))
-                 (ring-resp/content-type "text/html")
-                 (assoc :session (assoc session :authentication-data authentication-data)))))
-
-     (POST "/verify-assertion" [:as req]
-
-           (timbre/info (str "/verify-assertion req[" (with-out-str (pp/pprint req)) "]"))
-           (let [ds (get-datastore)]
-             (au/verify-assertion ds req)))
+        (timbre/info (str "/verify-assertion req[" (with-out-str (pp/pprint req)) "]"))
+        (let [ds (get-datastore)]
+          (au/verify-assertion ds req)))
 
 
-     ;; Availabilities / Tags
-     (POST "/add-availability" [:as req]
+  ;; Availabilities / Tags
+  (POST "/add-availability" [:as req]
 
-           (timbre/info (str "/add-availability req[" (with-out-str (pp/pprint req)) "]"))
-           (let [ds (get-datastore)
-                result (hd/add-availability ds req)]
+        (timbre/info (str "/add-availability req[" (with-out-str (pp/pprint req)) "]"))
+        (let [ds (get-datastore)
+              result (hd/add-availability ds req)]
 
-            (-> (ring-resp/response (pr-str result))
-                (ring-resp/content-type "application/edn"))))
+          (-> (ring-resp/response (pr-str result))
+              (ring-resp/content-type "application/edn"))))
 
-     (GET "/find-availability" [:as req]
+  (GET "/find-availability" [:as req]
 
-           (timbre/info (str "/find-availability req[" (with-out-str (pp/pprint req)) "]"))
-           (let [ds (get-datastore)
-                result (hd/find-availability ds req)]
+       (timbre/info (str "/find-availability req[" (with-out-str (pp/pprint req)) "]"))
+       (let [ds (get-datastore)
+             result (hd/find-availability ds req)]
 
-            (-> (ring-resp/response (pr-str result))
-                (ring-resp/content-type "application/edn"))))
+         (-> (ring-resp/response (pr-str result))
+             (ring-resp/content-type "application/edn"))))
 
-     (POST "/update-availability" [:as req]
+  (POST "/update-availability" [:as req]
 
-           (timbre/info (str "/update-availability req[" (with-out-str (pp/pprint req)) "]"))
-           (let [ds (get-datastore)
-                result (hd/update-availability ds req)]
+        (timbre/info (str "/update-availability req[" (with-out-str (pp/pprint req)) "]"))
+        (let [ds (get-datastore)
+              result (hd/update-availability ds req)]
 
-            (-> (ring-resp/response (pr-str result))
-                (ring-resp/content-type "application/edn"))))
-
-
-     ;; Session
-     (POST "/add-session" [:as req]
-
-           (timbre/info (str "/add-session req[" (with-out-str (pp/pprint req)) "]"))
-           (let [ds (get-datastore)
-                result (hd/add-session ds req)]
-
-            (-> (ring-resp/response (pr-str result))
-                (ring-resp/content-type "application/edn"))))
-
-     (GET "/find-session" [:as req]
-
-           (timbre/info (str "/find-session req[" (with-out-str (pp/pprint req)) "]"))
-           (let [ds (get-datastore)
-                result (hd/find-session ds req)]
-
-            (-> (ring-resp/response (pr-str result))
-                (ring-resp/content-type "application/edn"))))
-
-     (POST "/update-session" [:as req]
-
-           (timbre/info (str "/update-session req[" (with-out-str (pp/pprint req)) "]"))
-           (let [ds (get-datastore)
-                result (hd/update-session ds req)]
-
-            (-> (ring-resp/response (pr-str result))
-                (ring-resp/content-type "application/edn"))))
+          (-> (ring-resp/response (pr-str result))
+              (ring-resp/content-type "application/edn"))))
 
 
-     ;; Listings
-     (GET "/list-availabilities" [:as req]
+  ;; Session
+  (POST "/add-session" [:as req]
 
-          (timbre/info (str "/list-availabilities req[" (with-out-str (pp/pprint req)) "]"))
-          (let [ds (get-datastore)
-                result (hd/list-availabilities ds req)]
+        (timbre/info (str "/add-session req[" (with-out-str (pp/pprint req)) "]"))
+        (let [ds (get-datastore)
+              result (hd/add-session ds req)]
 
-            (-> (ring-resp/response (pr-str result))
-                (ring-resp/content-type "application/edn"))))
+          (-> (ring-resp/response (pr-str result))
+              (ring-resp/content-type "application/edn"))))
 
-     (GET "/list-tags" [:as req]
+  (GET "/find-session" [:as req]
 
-          (timbre/info (str "/list-tags req[" (with-out-str (pp/pprint req)) "]"))
-          (let [ds (get-datastore)
-                result (hd/list-tags ds req)]
+       (timbre/info (str "/find-session req[" (with-out-str (pp/pprint req)) "]"))
+       (let [ds (get-datastore)
+             result (hd/find-session ds req)]
 
-            (-> (ring-resp/response (pr-str result))
-                (ring-resp/content-type "application/edn"))))
+         (-> (ring-resp/response (pr-str result))
+             (ring-resp/content-type "application/edn"))))
 
-     (GET "/list-sessions" [:as req]
+  (POST "/update-session" [:as req]
 
-          (timbre/info (str "/list-sessions req[" (with-out-str (pp/pprint req)) "]"))
-          (let [ds (get-datastore)
-                result (hd/list-sessions ds req)]
+        (timbre/info (str "/update-session req[" (with-out-str (pp/pprint req)) "]"))
+        (let [ds (get-datastore)
+              result (hd/update-session ds req)]
 
-            (-> (ring-resp/response (pr-str result))
-                (ring-resp/content-type "application/edn"))))
+          (-> (ring-resp/response (pr-str result))
+              (ring-resp/content-type "application/edn"))))
 
-     (route/files "/")
-     (route/resources "/")
-     (route/not-found "Not Found"))))
 
-(gen-approutes (:dev (config/load-edn "config-codepair.edn"))
-               true)
+  ;; Listings
+  (GET "/list-availabilities" [:as req]
+
+       (timbre/info (str "/list-availabilities req[" (with-out-str (pp/pprint req)) "]"))
+       (let [ds (get-datastore)
+             result (hd/list-availabilities ds req)]
+
+         (-> (ring-resp/response (pr-str result))
+             (ring-resp/content-type "application/edn"))))
+
+  (GET "/list-tags" [:as req]
+
+       (timbre/info (str "/list-tags req[" (with-out-str (pp/pprint req)) "]"))
+       (let [ds (get-datastore)
+             result (hd/list-tags ds req)]
+
+         (-> (ring-resp/response (pr-str result))
+             (ring-resp/content-type "application/edn"))))
+
+  (GET "/list-sessions" [:as req]
+
+       (timbre/info (str "/list-sessions req[" (with-out-str (pp/pprint req)) "]"))
+       (let [ds (get-datastore)
+             result (hd/list-sessions ds req)]
+
+         (-> (ring-resp/response (pr-str result))
+             (ring-resp/content-type "application/edn"))))
+
+  (route/files "/")
+  (route/resources "/")
+  (route/not-found "Not Found"))
 
 (def app
   (-> app-routes

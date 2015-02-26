@@ -75,9 +75,25 @@
    (spit/db-init env)))
 
 
-(defn start-server []
-  (sv/start-server 3000 hl/app))
+(defn start-server
+  ([]
+   (start-server false))
 
+  ([recreate?]
+   (start-server recreate? (:dev (config/load-edn "config-codepair.edn"))))
+
+  ([recreate? env]
+   (let [_ (start {:shell {}
+                   :spittoon {:env env
+                              :recreate? recreate?}})
+
+         ds (-> system :spittoon :db)]
+
+     (hl/gen-get-datastore ds)
+     (sv/start-server 3000 hl/app))))
+
+(defn reset-server []
+  (sv/reset-server 3000 hl/app))
 
 (comment
 
