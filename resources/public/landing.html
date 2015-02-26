@@ -1,1 +1,79 @@
-<h2>landing</h2>
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <!-- TypeKit -->
+    <script src="//use.typekit.net/zac5lnn.js"></script>
+    <script>try{Typekit.load();}catch(e){}</script>
+
+    <link rel="stylesheet" type="text/css" href="css/codepair.css">
+    <link rel="stylesheet" type="text/css" href="css/material.css">
+
+    <!-- Foundation -->
+    <link rel="stylesheet" href="css/foundation.css" />
+    <script src="/js/vendor/modernizr.js"></script>
+
+  </head>
+
+  <body>
+
+    <!-- Persona
+         Ensuring users of IE can't use Compatibility Mode, as this will break Persona.
+         (https://developer.mozilla.org/en-US/Persona/Quick_setup) -->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge"></meta>
+    <script src="https://login.persona.org/include.js"></script>
+
+    <div class="header">
+
+      <div class="tk-lust-script header-logo">Codepair.io</div>
+      <div class="tk-open-sans header-text">Pair Programming Made Easy</div>
+      <div class="tk-open-sans" id="aauth"></div>
+    </div>
+
+
+    <ul class="tabs" data-tab>
+      <li class="tab-title active"><a href="#panel1">Tab 1</a></li>
+      <li class="tab-title"><a href="#panel2">Tab 2</a></li>
+      <li class="tab-title"><a href="#panel3">Tab 3</a></li>
+      <li class="tab-title"><a href="#panel4">Tab 4</a></li>
+    </ul>
+    <div class="tabs-content">
+      <div class="content active" id="panel1">
+
+        <a href="#" class="button tiny">Default Button</a>
+
+          <div class="small-4 columns">
+            <label>Input Label
+              <input type="text" placeholder="small-4 columns" />
+            </label>
+          </div>
+
+        <p>This is the first panel of the basic tab example. You can place all sorts of content here including a grid.</p>
+      </div>
+      <div class="content" id="panel2">
+        <p>This is the second panel of the basic tab example. This is the second panel of the basic tab example.</p>
+      </div>
+      <div class="content" id="panel3">
+        <p>This is the third panel of the basic tab example. This is the third panel of the basic tab example.</p>
+      </div>
+      <div class="content" id="panel4">
+        <p>This is the fourth panel of the basic tab example. This is the fourth panel of the basic tab example.</p>
+      </div>
+    </div>
+
+    <!-- CodePair
+    <script src="js/out/goog/base.js" type="text/javascript"></script>
+    <script src="js/codepair.js" type="text/javascript"></script>
+    <script type="text/javascript">goog.require("index");</script>
+    -->
+
+    <script src="js/vendor/jquery.js"></script>
+    <script src="/js/vendor/fastclick.js"></script>
+    <script src="js/foundation.min.js"></script>
+    <script>
+      $(document).foundation();
+    </script>
+
+  </body>
+
+</html>
