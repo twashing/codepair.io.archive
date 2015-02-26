@@ -95,6 +95,7 @@
                                       [:a {:href "#tab-account"} "Account"]]]
 
                                     [:div {:class "tabs-content"}
+
                                      [:div {:class "content active" :id "tab-listings"}
                                       [:p "Listings"]
                                       [:a {:href "#" :class "button tiny"} "thing"]
@@ -102,12 +103,48 @@
                                        [:label "Input Label"
                                         [:input {:type "text" :placeholder "small-4 columns"} ]]]
                                       [:div {:id listings-container}]]
+
                                      [:div {:class "content" :id "tab-availabilities"}
                                       [:p "Availabilities"]]
+
                                      [:div {:class "content" :id "tab-session"}
                                       [:p "Session"]]
+
                                      [:div {:class "content" :id "tab-account"}
-                                      [:p "Account"]]]])))
+
+                                      [:ul {:class "small-block-grid-3"}
+
+                                       [:li
+                                        [:ul {:class "pricing-table"}
+                                         [:li {:class "title"} "Free"]
+                                         [:li {:class "price"} "$0"]
+                                         [:li {:class "description"} "Sign up and start using the service gratis"]
+                                         [:li {:class "bullet-item"} "Can only connect to others' availability"]
+                                         [:li {:class "bullet-item"} "A Professional Plan lets you host your own availabilities"]
+                                         [:li {:class "cta-button"}
+                                          [:a {:class "button" href "#"} "Subscribe"]]]]
+
+                                       [:li
+                                        [:ul {:class "pricing-table"}
+                                         [:li {:class "title"} "Professional"]
+                                         [:li {:class "price"} "$9"]
+                                         [:li {:class "description"} "Sign up and start using the service"]
+                                         [:li {:class "bullet-item"} "Host your own availabilities"]
+                                         [:li {:class "bullet-item"} "Full Audio, Video, Text Messages and Screen Sharing"]
+                                         [:li {:class "cta-button"}
+                                          [:a {:class "button" href "#"} "Subscribe"]]]]
+
+                                       [:li
+                                        [:ul {:class "pricing-table"}
+                                         [:li {:class "title"} "Enterprise"]
+                                         [:li {:class "price"} "$24"]
+                                         [:li {:class "description"} "Sign up your organization and enable enterprise wide problem solving"]
+                                         [:li {:class "bullet-item"} "Can connect to any availabilitles, Host your own, and run group sessions"]
+                                         [:li {:class "bullet-item"} (gstr/unescapeEntities "&nbsp;")]
+                                         [:li {:class "cta-button"}
+                                          [:a {:class "button" href "#"} "Subscribe"]]]]]]
+
+                                     ]])))
              @cm/app-state
              {:target (. js/document (getElementById "app-container"))})
 

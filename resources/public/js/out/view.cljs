@@ -3,7 +3,6 @@
             [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]
             [sablono.core :as html :refer-macros [html]]
-            [om-material-ui.core :as mui :include-macros true]
             [common :as cm]
             [util :as ul]))
 
