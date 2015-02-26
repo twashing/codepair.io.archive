@@ -29,7 +29,13 @@
 
         :lastname [{:type :string}]
 
-        :email [{:type :string}]}
+        :email [{:type :string}]
+
+        :accountlevel [{:type :enum
+                        :default :free
+                        :enum {:ns :user.accountlevel
+                               :values #{:free :professional :enterprise}}}]
+                }
 
  :tag {:name [{:type :string}]}
 

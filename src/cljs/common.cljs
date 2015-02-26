@@ -78,5 +78,11 @@
     :url "/user-data"
     :on-complete (localCommonHandler response-handler)}))
 
+(defn get-app-state []
+  @app-state)
+
+(defn get-account-level []
+  (:accountlevel (:user (get-app-state))))
+
 (defn ^:export printAppState []
   (ul/console-log (str @app-state)))

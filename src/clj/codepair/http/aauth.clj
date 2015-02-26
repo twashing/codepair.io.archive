@@ -22,7 +22,8 @@
                        {:groups
                         #{{:name (str "group-" username)
                            :users
-                           #{{:username username}}}}}}])
+                           #{{:username username
+                              :account-level :free}}}}}}])
 
                    ;; Return structure that system generates
                    (do
@@ -62,25 +63,24 @@
 
         ;; this will have the group-name and user-name
         (let [uresult (add-user-ifnil ds persona-response-email)
-              response-withuser (assoc persona-response :uresult uresult)]
+              response-withuser (assoc persona-response :uresult uresult)
+              groupname (-> response-withuser :uresult first :system :groups first :name)
+              username (-> response-withuser :uresult first :system :groups first :users first :username)
+              accountlevel (-> response-withuser :uresult first :system :groups first :users first :accountlevel)
+              token (java.util.UUID/randomUUID)
+              authentication-data {:groupname groupname
+                                   :username username
+                                   :accountlevel accountlevel
+                                   :token token}
+              responseF (-> (ring-resp/response (pr-str authentication-data))
+                            (ring-resp/content-type "application/edn")
+                            (assoc :session (assoc session :authentication-data
+                                                   (assoc authentication-data
+                                                     :stripe-customer-id "-INCOMPLETE-"))))]
 
-          (let [uresult (add-user-ifnil ds persona-response-email)
-                response-withuser (assoc persona-response :uresult uresult)
-                groupname (-> response-withuser :uresult first :system :groups first :name)
-                username (-> response-withuser :uresult first :system :groups first :users first :username)
-                token (java.util.UUID/randomUUID)
-                authentication-data {:groupname groupname
-                                     :username username
-                                     :token token}
-                responseF (-> (ring-resp/response (pr-str authentication-data))
-                              (ring-resp/content-type "application/edn")
-                              (assoc :session (assoc session :authentication-data
-                                                     (assoc authentication-data
-                                                       :stripe-customer-id "-INCOMPLETE-"))))]
+          (timbre/debug (str "/verify-assertion responseF[" (with-out-str (pp/pprint responseF)) "]"))
 
-            (timbre/debug (str "/verify-assertion responseF[" (with-out-str (pp/pprint responseF)) "]"))
-
-            responseF)))
+          responseF))
 
       (-> (ring-resp/response (pr-str {:body {:status persona-response-status}}))
           (ring-resp/status 401)

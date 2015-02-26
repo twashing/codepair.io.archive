@@ -26,6 +26,7 @@
              :firstname uname
              :lastname uname
              :email uname
+             :accountlevel :free
              :defaultgroup [[:group-new]]}}
 
    :owner [[:user-new]]})

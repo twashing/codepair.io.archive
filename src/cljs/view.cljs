@@ -36,17 +36,22 @@
                           [:div (:description (:availability ech))]])])))
 
 (defn account-selected-description [account-level existing-classes]
-  (if (= :free account-level)
+  (if (= (cm/get-account-level) account-level)
     (str existing-classes " account-selected-text")
     existing-classes))
 
 (defn account-selected-button [account-level existing-classes]
-  (if (= :free account-level)
+  (if (= (cm/get-account-level) account-level)
     (str existing-classes " disabled")
     existing-classes))
 
+(defn account-selected-title [account-level existing-classes]
+  (if (= (cm/get-account-level) account-level)
+    (str existing-classes " account-selected-title")
+    existing-classes))
+
 (defn account-selected-text [account-level existing-text]
-  (if (= :free account-level)
+  (if (= (cm/get-account-level) account-level)
     (str "*" existing-text)
     existing-text))
 
@@ -85,7 +90,7 @@
 
                           [:li
                            [:ul {:class "pricing-table"}
-                            [:li {:class "title"} "Free"]
+                            [:li {:class (account-selected-title :free "title")} "Free"]
                             [:li {:class "price"} "$0"]
                             [:li {:class (account-selected-description :free "description")}
                              (account-selected-text :free "Sign up and start using the service gratis")]
@@ -96,7 +101,7 @@
 
                           [:li
                            [:ul {:class "pricing-table"}
-                            [:li {:class "title"} "Professional"]
+                            [:li {:class (account-selected-title :professional "title")} "Professional"]
                             [:li {:class "price"} "$9"]
                             [:li {:class (account-selected-description :professional "description")}
                              (account-selected-text :professional "Sign up and start using the service")]
@@ -107,7 +112,7 @@
 
                           [:li
                            [:ul {:class "pricing-table"}
-                            [:li {:class "title"} "Enterprise"]
+                            [:li {:class (account-selected-title :enterprise "title")} "Enterprise"]
                             [:li {:class "price"} "$24"]
                             [:li {:class (account-selected-description :enterprise "description")}
                              (account-selected-text :enterprise "Sign up your organization and enable enterprise wide problem solving")]

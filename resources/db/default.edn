@@ -10,6 +10,7 @@
                         :firstname "codepair"
                         :lastname "codepair"
                         :email "codepair"
+                        :accountlevel :free
                         :defaultgroup [[:group-codepair]]}}
 
               :owner [[:user-codepair]]

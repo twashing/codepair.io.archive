@@ -42,17 +42,17 @@
 
      (GET "/session-status" [:as req]
 
-          (timbre/debug (str "/session-status request[" (:session req) "]"))
+          (timbre/info (str "/session-status request[" (:session req) "]"))
           (ring-resp/response (pr-str (:session req))))
 
      (GET "/user-data" [:as req]
 
-          (timbre/debug (str "/user-data req[" (with-out-str (pp/pprint req)) "]"))
+          (timbre/info (str "/user-data req[" (with-out-str (pp/pprint req)) "]"))
           (ring-resp/response (pr-str (-> req :session :authentication-data))))
 
      (POST "/charge" [:as req]
 
-           (timbre/debug (str "/charge req[" (with-out-str (pp/pprint req)) "]"))
+           (timbre/info (str "/charge req[" (with-out-str (pp/pprint req)) "]"))
            (let [authentication-data (ch/charge req)
                  session (:session req)]
 
@@ -62,7 +62,7 @@
 
      (POST "/verify-assertion" [:as req]
 
-           (timbre/debug (str "/verify-assertion req[" (with-out-str (pp/pprint req)) "]"))
+           (timbre/info (str "/verify-assertion req[" (with-out-str (pp/pprint req)) "]"))
            (let [ds (get-datastore)]
              (au/verify-assertion ds req)))
 
@@ -70,7 +70,7 @@
      ;; Availabilities / Tags
      (POST "/add-availability" [:as req]
 
-           (timbre/debug (str "/add-availability req[" (with-out-str (pp/pprint req)) "]"))
+           (timbre/info (str "/add-availability req[" (with-out-str (pp/pprint req)) "]"))
            (let [ds (get-datastore)
                 result (hd/add-availability ds req)]
 
@@ -79,7 +79,7 @@
 
      (GET "/find-availability" [:as req]
 
-           (timbre/debug (str "/find-availability req[" (with-out-str (pp/pprint req)) "]"))
+           (timbre/info (str "/find-availability req[" (with-out-str (pp/pprint req)) "]"))
            (let [ds (get-datastore)
                 result (hd/find-availability ds req)]
 
@@ -88,7 +88,7 @@
 
      (POST "/update-availability" [:as req]
 
-           (timbre/debug (str "/update-availability req[" (with-out-str (pp/pprint req)) "]"))
+           (timbre/info (str "/update-availability req[" (with-out-str (pp/pprint req)) "]"))
            (let [ds (get-datastore)
                 result (hd/update-availability ds req)]
 
@@ -99,7 +99,7 @@
      ;; Session
      (POST "/add-session" [:as req]
 
-           (timbre/debug (str "/add-session req[" (with-out-str (pp/pprint req)) "]"))
+           (timbre/info (str "/add-session req[" (with-out-str (pp/pprint req)) "]"))
            (let [ds (get-datastore)
                 result (hd/add-session ds req)]
 
@@ -108,7 +108,7 @@
 
      (GET "/find-session" [:as req]
 
-           (timbre/debug (str "/find-session req[" (with-out-str (pp/pprint req)) "]"))
+           (timbre/info (str "/find-session req[" (with-out-str (pp/pprint req)) "]"))
            (let [ds (get-datastore)
                 result (hd/find-session ds req)]
 
@@ -117,7 +117,7 @@
 
      (POST "/update-session" [:as req]
 
-           (timbre/debug (str "/update-session req[" (with-out-str (pp/pprint req)) "]"))
+           (timbre/info (str "/update-session req[" (with-out-str (pp/pprint req)) "]"))
            (let [ds (get-datastore)
                 result (hd/update-session ds req)]
 
@@ -128,7 +128,7 @@
      ;; Listings
      (GET "/list-availabilities" [:as req]
 
-          (timbre/debug (str "/list-availabilities req[" (with-out-str (pp/pprint req)) "]"))
+          (timbre/info (str "/list-availabilities req[" (with-out-str (pp/pprint req)) "]"))
           (let [ds (get-datastore)
                 result (hd/list-availabilities ds req)]
 
@@ -137,7 +137,7 @@
 
      (GET "/list-tags" [:as req]
 
-          (timbre/debug (str "/list-tags req[" (with-out-str (pp/pprint req)) "]"))
+          (timbre/info (str "/list-tags req[" (with-out-str (pp/pprint req)) "]"))
           (let [ds (get-datastore)
                 result (hd/list-tags ds req)]
 
@@ -146,7 +146,7 @@
 
      (GET "/list-sessions" [:as req]
 
-          (timbre/debug (str "/list-sessions req[" (with-out-str (pp/pprint req)) "]"))
+          (timbre/info (str "/list-sessions req[" (with-out-str (pp/pprint req)) "]"))
           (let [ds (get-datastore)
                 result (hd/list-sessions ds req)]
 
