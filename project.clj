@@ -20,7 +20,6 @@
                  [im.chit/adi "0.3.1"]
                  [om "0.8.0-rc1"]
                  [sablono "0.2.22"]
-                 [om-material-ui "0.1.1"]
 
                  ;; meant to override [clj-time "0.6.0"] in ring-core
                  [clj-time "0.8.0"]

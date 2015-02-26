@@ -15,4 +15,4 @@ goog.addDependency("../sablono/core.js", ['sablono.core'], ['goog.dom', 'sablono
 goog.addDependency("../om/core.js", ['om.core'], ['goog.dom', 'cljs.core', 'om.dom', 'goog.ui.IdGenerator']);
 goog.addDependency("../common.js", ['common'], ['goog.dom', 'goog.net.XhrIo', 'cljs.core', 'goog.events.EventType', 'util', 'cljs.reader', 'goog.events', 'codepair']);
 goog.addDependency("../view.js", ['view'], ['om_material_ui.core', 'goog.dom', 'cljs.core', 'om.dom', 'sablono.core', 'util', 'om.core', 'common']);
-goog.addDependency("../index.js", ['index'], ['om_material_ui.core', 'goog.dom', 'view', 'goog.net.XhrIo', 'goog.string', 'cljs.core', 'om.dom', 'sablono.core', 'goog.events.EventType', 'util', 'om.core', 'common', 'cljs.reader', 'goog.events', 'codepair']);
+goog.addDependency("../index.js", ['index'], ['goog.dom', 'view', 'goog.net.XhrIo', 'goog.string', 'cljs.core', 'om.dom', 'sablono.core', 'goog.events.EventType', 'util', 'om.core', 'common', 'cljs.reader', 'goog.events', 'codepair']);

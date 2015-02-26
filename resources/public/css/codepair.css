@@ -19,6 +19,7 @@ body {
     display: block;
     box-shadow: 0px 5px 5px #aaaaaa;
     position: relative;
+    z-index: 1;
 }
 .header-logo {
     font-size: 30px;
@@ -37,4 +38,8 @@ body {
     -webkit-justify-content: flex-end;
     justify-content: flex-end;
     float: right;
+}
+
+.tab-title {
+    width: 25%;
 }

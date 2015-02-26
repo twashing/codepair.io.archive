@@ -6,7 +6,6 @@
             [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]
             [sablono.core :as html :refer-macros [html]]
-            [om-material-ui.core :as mui :include-macros true]
             [codepair :as cp]
             [common :as cm]
             [view :as vw]
@@ -85,18 +84,12 @@
     (om/root (fn [state owner]
                (om/component (html [:div {:id "landing-container"}
 
-                                    (mui/left-nav {:id "left-nav"
-                                                   :menu-items [{:route "z" :text "a"}]} )
 
                                     ;; 1
                                     #_(mui/toolbar
                                      (gstr/unescapeEntities "&nbsp;")
                                      ;;(mui/input {:id "search"} )
                                      )
-
-                                    ;; 2
-                                    ;;(mui/left-nav)
-
 
                                     [:div {:id listings-container}]
 

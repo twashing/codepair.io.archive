@@ -18,8 +18,7 @@ This should be sufficient to run the tests
 [ok] Bound layout to session
   - `/index` when logged out
   - `/landing` when logged in
-
-3. Landing Page Outline
+[ok] Landing Page Outline
   - all listings
   - your availabilities
   - your session(s)
