@@ -43,3 +43,7 @@ body {
 .tab-title {
     width: 25%;
 }
+.account-selected-text {
+    color: darkgreen !important;
+    font-weight: bold !important;
+}

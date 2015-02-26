@@ -1,5 +1,6 @@
 (ns view
   (:require [goog.dom :as gdom]
+            [goog.string :as gstr]
             [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]
             [sablono.core :as html :refer-macros [html]]
@@ -33,3 +34,86 @@
                          [:div
                           [:div (:title (:availability ech))]
                           [:div (:description (:availability ech))]])])))
+
+(defn account-selected-description [account-level existing-classes]
+  (if (= :free account-level)
+    (str existing-classes " account-selected-text")
+    existing-classes))
+
+(defn account-selected-button [account-level existing-classes]
+  (if (= :free account-level)
+    (str existing-classes " disabled")
+    existing-classes))
+
+(defn account-selected-text [account-level existing-text]
+  (if (= :free account-level)
+    (str "*" existing-text)
+    existing-text))
+
+(defn landing-view [listings-container]
+  (om/component (html [:div {:id "landing-container"}
+
+                       [:ul {:class "tabs" :data-tab true}
+                        [:li {:class "tab-title active"}
+                         [:a {:href "#tab-listings"} "Listings" ]]
+                        [:li {:class "tab-title"}
+                         [:a {:href "#tab-availabilities"} "Availabilities"]]
+                        [:li {:class "tab-title"}
+                         [:a {:href "#tab-session"} "Session"]]
+                        [:li {:class "tab-title"}
+                         [:a {:href "#tab-account"} "Account"]]]
+
+                       [:div {:class "tabs-content"}
+
+                        [:div {:class "content active" :id "tab-listings"}
+                         [:p "Listings"]
+                         [:a {:class "button tiny"} "thing"]
+                         [:div {:class "small-4 columns"}
+                          [:label "Input Label"
+                           [:input {:type "text" :placeholder "small-4 columns"} ]]]
+                         [:div {:id listings-container}]]
+
+                        [:div {:class "content" :id "tab-availabilities"}
+                         [:p "Availabilities"]]
+
+                        [:div {:class "content" :id "tab-session"}
+                         [:p "Session"]]
+
+                        [:div {:class "content" :id "tab-account"}
+
+                         [:ul {:class "small-block-grid-3"}
+
+                          [:li
+                           [:ul {:class "pricing-table"}
+                            [:li {:class "title"} "Free"]
+                            [:li {:class "price"} "$0"]
+                            [:li {:class (account-selected-description :free "description")}
+                             (account-selected-text :free "Sign up and start using the service gratis")]
+                            [:li {:class "bullet-item"} "Can only connect to others' availability"]
+                            [:li {:class "bullet-item"} "A Professional Plan lets you host your own availabilities"]
+                            [:li {:class "cta-button"}
+                             [:a {:class (account-selected-button :free "button")} "Subscribe"]]]]
+
+                          [:li
+                           [:ul {:class "pricing-table"}
+                            [:li {:class "title"} "Professional"]
+                            [:li {:class "price"} "$9"]
+                            [:li {:class (account-selected-description :professional "description")}
+                             (account-selected-text :professional "Sign up and start using the service")]
+                            [:li {:class "bullet-item"} "Host your own availabilities"]
+                            [:li {:class "bullet-item"} "Full Audio, Video, Text Messages and Screen Sharing"]
+                            [:li {:class "cta-button"}
+                             [:a {:class (account-selected-button :professional "button")} "Subscribe"]]]]
+
+                          [:li
+                           [:ul {:class "pricing-table"}
+                            [:li {:class "title"} "Enterprise"]
+                            [:li {:class "price"} "$24"]
+                            [:li {:class (account-selected-description :enterprise "description")}
+                             (account-selected-text :enterprise "Sign up your organization and enable enterprise wide problem solving")]
+                            [:li {:class "bullet-item"} "Connect to any availabilitles. Host your own. Run group sessions."]
+                            [:li {:class "bullet-item"} (gstr/unescapeEntities "&nbsp;")]
+                            [:li {:class "cta-button"}
+                             [:a {:class (account-selected-button :enterprise "button")} "Subscribe"]]]]]]
+
+                        ]])))
