@@ -33,38 +33,6 @@
 
     <div id="app-container"></div>
 
-    <!-- Stripe
-    <script src="https://checkout.stripe.com/checkout.js"></script>
-
-    <form action="/charge" method="POST">
-      <script
-         id="stripe-professional"
-         src="https://checkout.stripe.com/checkout.js"
-         class="stripe-button"
-         data-key="pk_test_CT5VaR5BAIH2ZneC0wGLTh9b",
-         data-image="/square-image.png"
-         data-name="CodePair.io"
-         data-description="Professional Plan"
-         data-amount="900">
-      </script>
-      <input type="hidden" name="planId" value="professional">
-    </form>
-
-    <form action="/charge" method="POST">
-      <script
-         id="stripe-enterprise"
-         src="https://checkout.stripe.com/checkout.js"
-         class="stripe-button"
-         data-key="pk_test_CT5VaR5BAIH2ZneC0wGLTh9b",
-         data-image="/square-image.png"
-         data-name="CodePair.io"
-         data-description="Professional Plan"
-         data-amount="2400">
-      </script>
-      <input type="hidden" name="planId" value="enterprise">
-    </form>
--->
-
 
     <!-- Material UI
 
@@ -89,36 +57,6 @@
 
     <!-- Stripe -->
     <script src="https://checkout.stripe.com/checkout.js"></script>
-    <button id="customButton">Purchase</button>
-
-    <script>
-      var handler = StripeCheckout.configure({
-        key: 'pk_test_CT5VaR5BAIH2ZneC0wGLTh9b',
-        //image: '/img/documentation/checkout/marketplace.png',
-        token: function(token) {
-
-          // Use the token to create the charge with a server-side script.
-          // You can access the token ID with `token.id`
-
-        }
-      });
-
-      $('#customButton').on('click', function(e) {
-
-        // Open Checkout with further options
-        handler.open({
-          name: 'Stripe.com',
-          description: '2 widgets',
-          amount: 2000
-        });
-        e.preventDefault();
-      });
-
-      // Close Checkout on page navigation
-      $(window).on('popstate', function() {
-        handler.close();
-      });
-    </script>
 
 
     <!-- CodePair -->

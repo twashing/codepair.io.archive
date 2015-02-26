@@ -56,23 +56,36 @@
     existing-text))
 
 (defn pay-with-stripe [planId description amount]
-  (let [;;stripe-script (.getElementById js/document "stripe-script")
-        ;;_ (.setAttribute stripe-script "data-description" description)
-        ;;_ (.setAttribute stripe-script "data-amount" amount)
 
-        ;;stripe-input (.getElementById js/document "planId")
-        ;;_ (aset stripe-input "value" planId)
+  (let [stripe-config (clj->js {:key "pk_test_CT5VaR5BAIH2ZneC0wGLTh9b"
+                                :token (fn [token]
 
-        stripe-buttons (.getElementsByClassName js/document "stripe-button-el")
-        pro (aget stripe-buttons 0)
-        ent (aget stripe-buttons 1)
-        stripe-button (if (= "professional" planId)
-                        pro
-                        ent)]
+                                         (ul/console-log (str "token recieved: " token))
+                                         (cm/edn-xhr
+                                          {:method :post
+                                           :url "/charge"
+                                           :data {:stripeToken (.-id token)
+                                                  :stripeEmail (.-email token)}
+                                           :on-complete (partial cm/basicHandler
+                                                                 (fn [e xhr]
+                                                                   (let [data (.getResponseText xhr)
+                                                                         responseF  (reader/read-string data)]
 
-    ;;(ul/console-log (str "sinput: " stripe-input))
-    ;;(ul/console-log (str "sbutton: " stripe-button))
-    (.click stripe-button)))
+                                                                     (+ 1 2)
+                                                                     (+ 3 4)
+                                                                     #_(user-handler e xhr responseF))))})
+
+                                         )})
+        handler (.configure js/StripeCheckout stripe-config)]
+
+    (.open handler (clj->js {:name "Stripe.com"
+                              :description description
+                              :amount amount}))
+
+    (.on  (js/$ js/window)
+          "popstate"
+          (fn [] (.close handler)))))
+
 
 (defn landing-view [listings-container]
   (om/component (html [:div {:id "landing-container"}
@@ -128,7 +141,10 @@
                             [:li {:class "bullet-item"} "Full Audio, Video, Text Messages and Screen Sharing"]
                             [:li {:class "cta-button"}
                              [:a {:class (account-selected-button :professional "button")
-                                  :on-click (fn [e] (pay-with-stripe "professional" "Professional Plan" "900"))} "Subscribe"]]]]
+                                  :on-click (fn [e]
+                                              (pay-with-stripe "professional" "Professional Plan" "900")
+                                              (.preventDefault e))}
+                              "Subscribe"]]]]
 
                           [:li
                            [:ul {:class "pricing-table"}
@@ -140,6 +156,9 @@
                             [:li {:class "bullet-item"} (gstr/unescapeEntities "&nbsp;")]
                             [:li {:class "cta-button"}
                              [:a {:class (account-selected-button :enterprise "button")
-                                  :on-click (fn [e] (pay-with-stripe "enterprise" "Enterprise Plan" "2400"))} "Subscribe"]]]]]]
+                                  :on-click (fn [e]
+                                              (pay-with-stripe "enterprise" "Enterprise Plan" "2400")
+                                              (.preventDefault e))}
+                              "Subscribe"]]]]]]
 
                         ]])))
