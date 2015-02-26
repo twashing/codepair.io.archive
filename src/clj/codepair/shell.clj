@@ -87,10 +87,14 @@
                    :spittoon {:env env
                               :recreate? recreate?}})
 
-         ds (-> system :spittoon :db)]
+         _ (hl/gen-get-datastore (-> system :spittoon :db))
 
-     (hl/gen-get-datastore ds)
-     (sv/start-server 3000 hl/app))))
+         app (hl/generate-app file-config environment-mode)]
+
+     (sv/start-server 3000 app))))
+
+(defn stop-server []
+  (sv/stop-server))
 
 (defn reset-server []
   (sv/reset-server 3000 hl/app))
