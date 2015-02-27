@@ -31,10 +31,20 @@
 (defn availabilities-view [state owner]
 
   (om/component (html [:div {:id "availabilities-pane"}
-                       (for [ech @state]
-                         [:div
-                          [:div (:title (:availability ech))]
-                          [:div (:description (:availability ech))]])])))
+                       [:table
+                        [:thead
+                         [:tr
+                          [:th "Title"]
+                          [:th "Description"]
+                          [:th "tags"]]]
+                        [:tbody
+
+                         (for [ech @state]
+                           [:tr
+                            [:td (:title (:availability ech))]
+                            [:td (:description (:availability ech))]
+                            [:td (for [tg (:tags (:availability ech))]
+                                   [:div (:name tg)])]])]]])))
 
 (defn account-selected-description [account-level existing-classes]
   (if (= (cm/get-account-level) account-level)
@@ -76,9 +86,9 @@
                                                                      (cm/user-handler e xhr responseF))))}))})
         handler (.configure js/StripeCheckout stripe-config)]
 
-    (.open handler (clj->js {:name "Stripe.com"
-                              :description description
-                              :amount amount}))
+    (.open handler (clj->js {:name "Codepair.io"
+                             :description description
+                             :amount amount}))
 
     (.on  (js/$ js/window)
           "popstate"

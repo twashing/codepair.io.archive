@@ -50,3 +50,7 @@ body {
 .account-selected-title {
     background-color: #888 !important;
 }
+
+[class*="block-grid-"] {
+    margin: 0 !important;
+}
