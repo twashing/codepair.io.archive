@@ -25,13 +25,14 @@
 
   (om/component (html [:div {:id "tags-pane"}
                        (for [ech @state]
-                         [:div {:on-click tag-filter-handler}
+                         [:div {:class "tag-item"
+                                :on-click tag-filter-handler}
                           (:name (:tag ech))])])))
 
 (defn availabilities-view [state owner]
 
   (om/component (html [:div {:id "availabilities-pane"}
-                       [:table
+                       [:table {:class "availabilities-table"}
                         [:thead
                          [:tr
                           [:th "Title"]
