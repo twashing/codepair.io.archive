@@ -103,13 +103,13 @@
 
                        [:ul {:class "tabs" :data-tab true}
                         [:li {:class "tab-title active"}
-                         [:a {:href "#tab-listings"} "Listings" ]]
+                         [:a {:href "#tab-listings" :id "tab-listings-link"} "Listings" ]]
                         [:li {:class "tab-title"}
-                         [:a {:href "#tab-availabilities"} "Availabilities"]]
+                         [:a {:href "#tab-availabilities" :id "tab-availabilities-link"} "Availabilities"]]
                         [:li {:class "tab-title"}
-                         [:a {:href "#tab-session"} "Session"]]
+                         [:a {:href "#tab-session" :id "tab-session-link"} "Session"]]
                         [:li {:class "tab-title"}
-                         [:a {:href "#tab-account"} "Account"]]]
+                         [:a {:href "#tab-account" :id "tab-account-link"} "Account"]]]
 
                        [:div {:class "tabs-content"}
 

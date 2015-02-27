@@ -5,6 +5,7 @@
             [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]
             [sablono.core :as html :refer-macros [html]]
+            [secretary.core :as secretary :refer-macros [defroute]]
             [codepair :as cp]
             [common :as cm]
             [view :as vw]
@@ -96,7 +97,26 @@
     ;; Refer to "Adding New Content After Page Load" here: http://foundation.zurb.com/docs/javascript.html
     (.foundation (js/$ js/document) "tab" "reflow")
 
-    (show-listings listings-container)))
+    (show-listings listings-container)
+
+    (defroute "/listings" {:as params}
+      (js/console.log (str "Listings Called: " params))
+      (.click (js/$ "#tab-listings-link")))
+
+    (defroute "/availabilities" {:as params}
+      (js/console.log (str "Availabilities Called: " params))
+      (.click (js/$ "#tab-availabilities-link")))
+
+    (defroute "/session" {:as params}
+      (js/console.log (str "Session Called: " params))
+      (.click (js/$ "#tab-session-link")))
+
+    (defroute "/account" {:as params}
+      (js/console.log (str "Account Called: " params))
+      (.click (js/$ "#tab-account-link")))))
+
+(defn ^:export route [loc]
+  (secretary/dispatch! loc))
 
 (defn session-check []
 
