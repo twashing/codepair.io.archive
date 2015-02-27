@@ -99,21 +99,29 @@
 
     (show-listings listings-container)
 
+
+    (secretary/set-config! :prefix "#")
+
     (defroute "/listings" {:as params}
       (js/console.log (str "Listings Called: " params))
-      (.click (js/$ "#tab-listings-link")))
+      (vw/switch-tab "#tab-listings-link" "/#"))
 
     (defroute "/availabilities" {:as params}
       (js/console.log (str "Availabilities Called: " params))
-      (.click (js/$ "#tab-availabilities-link")))
+      (vw/switch-tab "#tab-availabilities-link" "/#availabilities"))
 
     (defroute "/session" {:as params}
       (js/console.log (str "Session Called: " params))
-      (.click (js/$ "#tab-session-link")))
+      (vw/switch-tab "#tab-session-link" "/#session"))
 
     (defroute "/account" {:as params}
       (js/console.log (str "Account Called: " params))
-      (.click (js/$ "#tab-account-link")))))
+      (vw/switch-tab "#tab-account-link" "/#account"))
+
+    #_(let [h (History.)]
+      (goog.events/listen h EventType.NAVIGATE #(secretary/dispatch! (.-token %)))
+      (doto h
+            (.setEnabled true)))))
 
 (defn ^:export route [loc]
   (secretary/dispatch! loc))

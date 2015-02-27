@@ -5,6 +5,7 @@
             [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]
             [sablono.core :as html :refer-macros [html]]
+            [secretary.core :as secretary :refer-macros [defroute]]
             [common :as cm]
             [util :as ul]))
 
@@ -97,19 +98,30 @@
           "popstate"
           (fn [] (.close handler)))))
 
+(defn switch-tab [tab-link loc]
+  (.click (js/$ tab-link))
+  (set! (.-location js/window) loc))
 
 (defn landing-view [listings-container]
   (om/component (html [:div {:id "landing-container"}
 
                        [:ul {:class "tabs" :data-tab true}
                         [:li {:class "tab-title active"}
-                         [:a {:href "#tab-listings" :id "tab-listings-link"} "Listings" ]]
+                         [:a {:id "tab-listings-link"
+                              :href "#tab-listings"
+                              :on-click (fn [_] (secretary/dispatch! "/listings"))} "Listings" ]]
                         [:li {:class "tab-title"}
-                         [:a {:href "#tab-availabilities" :id "tab-availabilities-link"} "Availabilities"]]
+                         [:a {:id "tab-availabilities-link"
+                              :href "#tab-availabilities"
+                              :on-click (fn [_] (secretary/dispatch! "/availabilities"))} "Availabilities"]]
                         [:li {:class "tab-title"}
-                         [:a {:href "#tab-session" :id "tab-session-link"} "Session"]]
+                         [:a {:id "tab-session-link"
+                              :href "#tab-session"
+                              :on-click (fn [_] (secretary/dispatch! "/session"))} "Session"]]
                         [:li {:class "tab-title"}
-                         [:a {:href "#tab-account" :id "tab-account-link"} "Account"]]]
+                         [:a {:id "tab-account-link"
+                              :href "#tab-account"
+                              :on-click (fn [_] (secretary/dispatch! "/account"))} "Account"]]]
 
                        [:div {:class "tabs-content"}
 
