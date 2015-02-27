@@ -51,6 +51,11 @@
                           (fn [e xhr]
                             (ul/console-log (str "signoutUser completed"))))}))
 
+(defn user-handler [e xhr data]
+  (swap! app-state
+         (fn [e]
+           (update-in e [:user] (fn [f] data)))))
+
 (defn localCommonHandler [response-handler]
   (partial basicHandler
            (fn [e xhr]

@@ -20,13 +20,12 @@
 (defn charge [req ds stripe-sk]
 
   (let [params (-> req :body slurp read-string)
-        _  #spy/p params
-
         charge-token (-> params :stripeToken)
         stripe-email (-> params :stripeEmail)
         account-level (-> params :accountlevel)
+        account-level-kw (keyword account-level)
 
-        result #spy/p (common/with-token stripe-sk
+        result (common/with-token stripe-sk
                  (common/execute
                   (customers/create-customer
                    (common/card charge-token)
@@ -36,11 +35,12 @@
 
         session (:session req)]
 
-    ;; if successful, update user
-    (if true
-      (us/update-user ds stripe-email {:accountlevel account-level}))
+    (timbre/info (str "Stripe Result: " (with-out-str (pp/pprint (keys result)))))
 
-    (timbre/debug (str "/charge result[" (with-out-str (pp/pprint result)) "]"))
+    ;; if successful, update user
+    (if-not (:delinquent result)
+      (us/update-user ds stripe-email {:accountlevel account-level-kw}))
 
     (assoc (:authentication-data session)
-      :stripe-customer-id stripe-customer-id)))
+      :stripe-customer-id stripe-customer-id
+      :accountlevel account-level-kw)))

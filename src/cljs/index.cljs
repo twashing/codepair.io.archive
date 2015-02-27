@@ -45,7 +45,8 @@
                             (let [data (.getResponseText xhr)
                                   responseF  (reader/read-string data)]
 
-                              (user-handler e xhr responseF))))}))
+                              (cm/user-handler e xhr responseF)
+                              (session-check))))}))
 
 
 (defn enable-signin []
@@ -115,13 +116,9 @@
            (:availabilities @cm/app-state)
            {:target (. js/document (getElementById "availabilities"))}))
 
-(defn user-handler [e xhr data]
-  (swap! cm/app-state
-         (fn [e]
-           (update-in e [:user] (fn [f] data))))
-
-  (session-check))
-
 (ul/ready
  (fn [_]
-   (cm/load-user-data user-handler)))
+   (cm/load-user-data
+    (fn [e xhr data]
+      (cm/user-handler e xhr data)
+      (session-check)))))

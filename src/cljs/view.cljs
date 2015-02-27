@@ -1,5 +1,6 @@
 (ns view
-  (:require [goog.dom :as gdom]
+  (:require [cljs.reader :as reader]
+            [goog.dom :as gdom]
             [goog.string :as gstr]
             [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]
@@ -66,20 +67,13 @@
                                            :url "/charge"
                                            :data {:stripeToken (.-id token)
                                                   :stripeEmail (.-email token)
-                                                  :accountlevel (str ":" planId)}
+                                                  :accountlevel planId}
                                            :on-complete (partial cm/basicHandler
                                                                  (fn [e xhr]
                                                                    (let [data (.getResponseText xhr)
                                                                          responseF  (reader/read-string data)]
 
-                                                                     ;; if successful, update user structure
-                                                                     ;; ...
-
-                                                                     (+ 1 2)
-                                                                     (+ 3 4)
-                                                                     #_(user-handler e xhr responseF))))})
-
-                                         )})
+                                                                     (cm/user-handler e xhr responseF))))}))})
         handler (.configure js/StripeCheckout stripe-config)]
 
     (.open handler (clj->js {:name "Stripe.com"
