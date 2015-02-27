@@ -30,6 +30,7 @@ This should be sufficient to run the tests
   - tags all lower case, no dashes or spaces
   - create button & workflow
   - page routing (between all, availabilities, sessions)
+  
   - logout
   - mouse pointer over login / logout links
   - put "all" into tag filter

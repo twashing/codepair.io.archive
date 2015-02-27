@@ -39,6 +39,12 @@
          (timbre/info (str "/user-data req[" (with-out-str (pp/pprint req)) "]"))
          (ring-resp/response (pr-str (-> req :session :authentication-data))))
 
+    (GET "/signout" [:as req]
+
+         (timbre/info (str "/signout req[" (with-out-str (pp/pprint req)) "]"))
+         (-> (ring-resp/redirect "/")
+             (assoc :session nil)))
+
     (POST "/charge" [:as req]
 
           (timbre/info (str "/charge req[" (with-out-str (pp/pprint req)) "]"))

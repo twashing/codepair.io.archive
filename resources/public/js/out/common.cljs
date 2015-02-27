@@ -49,7 +49,8 @@
     :url "/signout"
     :on-complete (partial basicHandler
                           (fn [e xhr]
-                            (ul/console-log (str "signoutUser completed"))))}))
+                            (ul/console-log (str "signoutUser completed"))
+                            (set! (.-location js/window) "/")))}))
 
 (defn user-handler [e xhr data]
   (swap! app-state

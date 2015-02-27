@@ -32,6 +32,12 @@
                       :onlogout cm/signoutUser}))
     (.request navigatorId)))
 
+(defn logoutClickHandler []
+  (let [currentUser "twashing@gmail.com"
+        navigatorId js/navigator.id]
+
+    (ul/console-log "Signin CLICKED")
+    (.logout navigatorId)))
 
 (defn verifyAssertion [assertion]
 
@@ -58,7 +64,7 @@
 
 (defn enable-signout []
   (om/root (fn [state owner]
-             (om/component (html [:div {}
+             (om/component (html [:div {:on-click logoutClickHandler}
                                   "logout"])))
            (:user @cm/app-state)
            {:target (. js/document (getElementById "aauth"))}))

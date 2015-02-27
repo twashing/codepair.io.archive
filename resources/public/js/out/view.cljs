@@ -14,9 +14,11 @@
 (defn tag-filter-handler [e]
 
   (let [tag-name (.-textContent (.-target e))
-        filtered-availabilities (filterv (fn [x]
-                                           (some #{tag-name} (map :name (:tags (:availability x)))))
-                                         (:availabilities @cm/app-state))]
+        filtered-availabilities (if (= "*all*" tag-name)
+                                  (:availabilities @cm/app-state)
+                                  (filterv (fn [x]
+                                             (some #{tag-name} (map :name (:tags (:availability x)))))
+                                           (:availabilities @cm/app-state)))]
     (om/root availabilities-view
              filtered-availabilities
              {:target (. js/document (getElementById "availabilities"))})))
@@ -24,7 +26,7 @@
 (defn tags-view [state owner]
 
   (om/component (html [:div {:id "tags-pane"}
-                       (for [ech @state]
+                       (for [ech (cons {:tag {:name "*all*"}} @state)]
                          [:div {:class "tag-item"
                                 :on-click tag-filter-handler}
                           (:name (:tag ech))])])))

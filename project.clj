@@ -8,7 +8,6 @@
                  [org.clojure/clojurescript "0.0-2505"]
                  [org.clojure/core.async "0.1.346.0-17112a-alpha"]
                  [compojure "1.3.1"]
-                 ;[ring/ring-defaults "0.1.3"]
                  [ring/ring-core "1.2.1"]
                  [ring/ring-devel "1.0.0"]
                  [ring/ring-jetty-adapter "1.2.1"]
@@ -41,12 +40,7 @@
                    :plugins [[lein-midje "3.1.1"]]}}
 
   :cljsbuild {:builds [{:id "codepair"
-
-                        ;; The path to the top-level ClojureScript source directory:
                         :source-paths ["src/cljs/"]
-
-                        ;; The standard ClojureScript compiler options:
-                        ;; (See the ClojureScript compiler documentation for details.)
                         :compiler {
                                    :output-to "resources/public/js/codepair.js"
                                    :output-dir "resources/public/js/out/"
@@ -56,5 +50,4 @@
                                    :optimizations :none
                                    :pretty-print true}}]}
 
-  :jvm-opts ^:replace ["-Xmx1024m" "-server"]
-  )
+  :jvm-opts ^:replace ["-Xmx1024m" "-server"])
