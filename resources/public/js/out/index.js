@@ -48,108 +48,108 @@ return index.session_check.call(null);
 });
 index.enable_signin = (function enable_signin(){
 return om.core.root.call(null,(function (state,owner){
-if(typeof index.t8206 !== 'undefined'){
+if(typeof index.t9328 !== 'undefined'){
 } else {
 
 /**
 * @constructor
 */
-index.t8206 = (function (owner,state,enable_signin,meta8207){
+index.t9328 = (function (owner,state,enable_signin,meta9329){
 this.owner = owner;
 this.state = state;
 this.enable_signin = enable_signin;
-this.meta8207 = meta8207;
+this.meta9329 = meta9329;
 this.cljs$lang$protocol_mask$partition1$ = 0;
 this.cljs$lang$protocol_mask$partition0$ = 393216;
 })
-index.t8206.prototype.om$core$IRender$ = true;
+index.t9328.prototype.om$core$IRender$ = true;
 
-index.t8206.prototype.om$core$IRender$render$arity$1 = (function (this__5894__auto__){
+index.t9328.prototype.om$core$IRender$render$arity$1 = (function (this__5894__auto__){
 var self__ = this;
 var this__5894__auto____$1 = this;
 return React.DOM.div({"onClick": index.loginClickHandler},"login");
 });
 
-index.t8206.prototype.cljs$core$IMeta$_meta$arity$1 = (function (_8208){
+index.t9328.prototype.cljs$core$IMeta$_meta$arity$1 = (function (_9330){
 var self__ = this;
-var _8208__$1 = this;
-return self__.meta8207;
+var _9330__$1 = this;
+return self__.meta9329;
 });
 
-index.t8206.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = (function (_8208,meta8207__$1){
+index.t9328.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = (function (_9330,meta9329__$1){
 var self__ = this;
-var _8208__$1 = this;
-return (new index.t8206(self__.owner,self__.state,self__.enable_signin,meta8207__$1));
+var _9330__$1 = this;
+return (new index.t9328(self__.owner,self__.state,self__.enable_signin,meta9329__$1));
 });
 
-index.t8206.cljs$lang$type = true;
+index.t9328.cljs$lang$type = true;
 
-index.t8206.cljs$lang$ctorStr = "index/t8206";
+index.t9328.cljs$lang$ctorStr = "index/t9328";
 
-index.t8206.cljs$lang$ctorPrWriter = (function (this__4209__auto__,writer__4210__auto__,opt__4211__auto__){
-return cljs.core._write.call(null,writer__4210__auto__,"index/t8206");
+index.t9328.cljs$lang$ctorPrWriter = (function (this__4209__auto__,writer__4210__auto__,opt__4211__auto__){
+return cljs.core._write.call(null,writer__4210__auto__,"index/t9328");
 });
 
-index.__GT_t8206 = (function __GT_t8206(owner__$1,state__$1,enable_signin__$1,meta8207){
-return (new index.t8206(owner__$1,state__$1,enable_signin__$1,meta8207));
+index.__GT_t9328 = (function __GT_t9328(owner__$1,state__$1,enable_signin__$1,meta9329){
+return (new index.t9328(owner__$1,state__$1,enable_signin__$1,meta9329));
 });
 
 }
 
-return (new index.t8206(owner,state,enable_signin,null));
+return (new index.t9328(owner,state,enable_signin,null));
 }),new cljs.core.Keyword(null,"user","user",1532431356).cljs$core$IFn$_invoke$arity$1(cljs.core.deref.call(null,common.app_state)),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"target","target",253001721),document.getElementById("aauth")], null));
 });
 index.enable_signout = (function enable_signout(){
 return om.core.root.call(null,(function (state,owner){
-if(typeof index.t8212 !== 'undefined'){
+if(typeof index.t9334 !== 'undefined'){
 } else {
 
 /**
 * @constructor
 */
-index.t8212 = (function (owner,state,enable_signout,meta8213){
+index.t9334 = (function (owner,state,enable_signout,meta9335){
 this.owner = owner;
 this.state = state;
 this.enable_signout = enable_signout;
-this.meta8213 = meta8213;
+this.meta9335 = meta9335;
 this.cljs$lang$protocol_mask$partition1$ = 0;
 this.cljs$lang$protocol_mask$partition0$ = 393216;
 })
-index.t8212.prototype.om$core$IRender$ = true;
+index.t9334.prototype.om$core$IRender$ = true;
 
-index.t8212.prototype.om$core$IRender$render$arity$1 = (function (this__5894__auto__){
+index.t9334.prototype.om$core$IRender$render$arity$1 = (function (this__5894__auto__){
 var self__ = this;
 var this__5894__auto____$1 = this;
 return React.DOM.div({"onClick": index.logoutClickHandler},"logout");
 });
 
-index.t8212.prototype.cljs$core$IMeta$_meta$arity$1 = (function (_8214){
+index.t9334.prototype.cljs$core$IMeta$_meta$arity$1 = (function (_9336){
 var self__ = this;
-var _8214__$1 = this;
-return self__.meta8213;
+var _9336__$1 = this;
+return self__.meta9335;
 });
 
-index.t8212.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = (function (_8214,meta8213__$1){
+index.t9334.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = (function (_9336,meta9335__$1){
 var self__ = this;
-var _8214__$1 = this;
-return (new index.t8212(self__.owner,self__.state,self__.enable_signout,meta8213__$1));
+var _9336__$1 = this;
+return (new index.t9334(self__.owner,self__.state,self__.enable_signout,meta9335__$1));
 });
 
-index.t8212.cljs$lang$type = true;
+index.t9334.cljs$lang$type = true;
 
-index.t8212.cljs$lang$ctorStr = "index/t8212";
+index.t9334.cljs$lang$ctorStr = "index/t9334";
 
-index.t8212.cljs$lang$ctorPrWriter = (function (this__4209__auto__,writer__4210__auto__,opt__4211__auto__){
-return cljs.core._write.call(null,writer__4210__auto__,"index/t8212");
+index.t9334.cljs$lang$ctorPrWriter = (function (this__4209__auto__,writer__4210__auto__,opt__4211__auto__){
+return cljs.core._write.call(null,writer__4210__auto__,"index/t9334");
 });
 
-index.__GT_t8212 = (function __GT_t8212(owner__$1,state__$1,enable_signout__$1,meta8213){
-return (new index.t8212(owner__$1,state__$1,enable_signout__$1,meta8213));
+index.__GT_t9334 = (function __GT_t9334(owner__$1,state__$1,enable_signout__$1,meta9335){
+return (new index.t9334(owner__$1,state__$1,enable_signout__$1,meta9335));
 });
 
 }
 
-return (new index.t8212(owner,state,enable_signout,null));
+return (new index.t9334(owner,state,enable_signout,null));
 }),new cljs.core.Keyword(null,"user","user",1532431356).cljs$core$IFn$_invoke$arity$1(cljs.core.deref.call(null,common.app_state)),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"target","target",253001721),document.getElementById("aauth")], null));
 });
 index.show_listings = (function() {
@@ -159,56 +159,56 @@ return show_listings.call(null,"app-container");
 });
 var show_listings__1 = (function (element_container){
 om.core.root.call(null,(function (state,owner){
-if(typeof index.t8220 !== 'undefined'){
+if(typeof index.t9342 !== 'undefined'){
 } else {
 
 /**
 * @constructor
 */
-index.t8220 = (function (owner,state,element_container,show_listings,meta8221){
+index.t9342 = (function (owner,state,element_container,show_listings,meta9343){
 this.owner = owner;
 this.state = state;
 this.element_container = element_container;
 this.show_listings = show_listings;
-this.meta8221 = meta8221;
+this.meta9343 = meta9343;
 this.cljs$lang$protocol_mask$partition1$ = 0;
 this.cljs$lang$protocol_mask$partition0$ = 393216;
 })
-index.t8220.prototype.om$core$IRender$ = true;
+index.t9342.prototype.om$core$IRender$ = true;
 
-index.t8220.prototype.om$core$IRender$render$arity$1 = (function (this__5894__auto__){
+index.t9342.prototype.om$core$IRender$render$arity$1 = (function (this__5894__auto__){
 var self__ = this;
 var this__5894__auto____$1 = this;
-return React.DOM.div(null,React.DOM.div({"id": "tags"}),React.DOM.div({"id": "availabilities"}));
+return React.DOM.div(null,React.DOM.nav({"className": "top-bar", "data-topbar": true, "role": "navigation"},React.DOM.ul({"className": "left", "id": "listing-search-field"},React.DOM.li({"className": "has-form"},React.DOM.div({"className": "row collapse"},React.DOM.div({"className": "large-8 small-9 columns"},sablono.interpreter.input.call(null,{"type": "text", "placeholder": "Find Availabilities"})),React.DOM.div({"className": "large-4 small-3 columns"},React.DOM.a({"className": "alert button expand", "href": "#"},"Search"))))),React.DOM.ul({"className": "right", "id": "listing-create-button"},React.DOM.li({"className": "has-form show-for-large-up"},React.DOM.a({"className": "button", "href": "http://foundation.zurb.com/docs"},"Create")))),React.DOM.div({"id": "tags"}),React.DOM.div({"id": "availabilities"}));
 });
 
-index.t8220.prototype.cljs$core$IMeta$_meta$arity$1 = (function (_8222){
+index.t9342.prototype.cljs$core$IMeta$_meta$arity$1 = (function (_9344){
 var self__ = this;
-var _8222__$1 = this;
-return self__.meta8221;
+var _9344__$1 = this;
+return self__.meta9343;
 });
 
-index.t8220.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = (function (_8222,meta8221__$1){
+index.t9342.prototype.cljs$core$IWithMeta$_with_meta$arity$2 = (function (_9344,meta9343__$1){
 var self__ = this;
-var _8222__$1 = this;
-return (new index.t8220(self__.owner,self__.state,self__.element_container,self__.show_listings,meta8221__$1));
+var _9344__$1 = this;
+return (new index.t9342(self__.owner,self__.state,self__.element_container,self__.show_listings,meta9343__$1));
 });
 
-index.t8220.cljs$lang$type = true;
+index.t9342.cljs$lang$type = true;
 
-index.t8220.cljs$lang$ctorStr = "index/t8220";
+index.t9342.cljs$lang$ctorStr = "index/t9342";
 
-index.t8220.cljs$lang$ctorPrWriter = (function (this__4209__auto__,writer__4210__auto__,opt__4211__auto__){
-return cljs.core._write.call(null,writer__4210__auto__,"index/t8220");
+index.t9342.cljs$lang$ctorPrWriter = (function (this__4209__auto__,writer__4210__auto__,opt__4211__auto__){
+return cljs.core._write.call(null,writer__4210__auto__,"index/t9342");
 });
 
-index.__GT_t8220 = (function __GT_t8220(owner__$1,state__$1,element_container__$1,show_listings__$1,meta8221){
-return (new index.t8220(owner__$1,state__$1,element_container__$1,show_listings__$1,meta8221));
+index.__GT_t9342 = (function __GT_t9342(owner__$1,state__$1,element_container__$1,show_listings__$1,meta9343){
+return (new index.t9342(owner__$1,state__$1,element_container__$1,show_listings__$1,meta9343));
 });
 
 }
 
-return (new index.t8220(owner,state,element_container,show_listings,null));
+return (new index.t9342(owner,state,element_container,show_listings,null));
 }),cljs.core.deref.call(null,common.app_state),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"target","target",253001721),document.getElementById(element_container)], null));
 
 common.load_tags.call(null,index.tags_handler);
@@ -243,22 +243,18 @@ index.show_listings.call(null,listings_container);
 
 secretary.core.set_config_BANG_.call(null,new cljs.core.Keyword(null,"prefix","prefix",-265908465),"#");
 
-var action__4634__auto___8242 = ((function (listings_container){
+var action__4634__auto___9364 = ((function (listings_container){
 return (function (params__4635__auto__){
 if(cljs.core.map_QMARK_.call(null,params__4635__auto__)){
-var map__8234 = params__4635__auto__;
-var map__8234__$1 = ((cljs.core.seq_QMARK_.call(null,map__8234))?cljs.core.apply.call(null,cljs.core.hash_map,map__8234):map__8234);
-var params = map__8234__$1;
-console.log([cljs.core.str("Listings Called: "),cljs.core.str(params)].join(''));
-
+var map__9356 = params__4635__auto__;
+var map__9356__$1 = ((cljs.core.seq_QMARK_.call(null,map__9356))?cljs.core.apply.call(null,cljs.core.hash_map,map__9356):map__9356);
+var params = map__9356__$1;
 return view.switch_tab.call(null,"#tab-listings-link","/#");
 } else {
 if(cljs.core.vector_QMARK_.call(null,params__4635__auto__)){
-var map__8235 = params__4635__auto__;
-var map__8235__$1 = ((cljs.core.seq_QMARK_.call(null,map__8235))?cljs.core.apply.call(null,cljs.core.hash_map,map__8235):map__8235);
-var params = map__8235__$1;
-console.log([cljs.core.str("Listings Called: "),cljs.core.str(params)].join(''));
-
+var map__9357 = params__4635__auto__;
+var map__9357__$1 = ((cljs.core.seq_QMARK_.call(null,map__9357))?cljs.core.apply.call(null,cljs.core.hash_map,map__9357):map__9357);
+var params = map__9357__$1;
 return view.switch_tab.call(null,"#tab-listings-link","/#");
 } else {
 return null;
@@ -266,25 +262,21 @@ return null;
 }
 });})(listings_container))
 ;
-secretary.core.add_route_BANG_.call(null,"/listings",action__4634__auto___8242);
+secretary.core.add_route_BANG_.call(null,"/listings",action__4634__auto___9364);
 
 
-var action__4634__auto___8243 = ((function (listings_container){
+var action__4634__auto___9365 = ((function (listings_container){
 return (function (params__4635__auto__){
 if(cljs.core.map_QMARK_.call(null,params__4635__auto__)){
-var map__8236 = params__4635__auto__;
-var map__8236__$1 = ((cljs.core.seq_QMARK_.call(null,map__8236))?cljs.core.apply.call(null,cljs.core.hash_map,map__8236):map__8236);
-var params = map__8236__$1;
-console.log([cljs.core.str("Availabilities Called: "),cljs.core.str(params)].join(''));
-
+var map__9358 = params__4635__auto__;
+var map__9358__$1 = ((cljs.core.seq_QMARK_.call(null,map__9358))?cljs.core.apply.call(null,cljs.core.hash_map,map__9358):map__9358);
+var params = map__9358__$1;
 return view.switch_tab.call(null,"#tab-availabilities-link","/#availabilities");
 } else {
 if(cljs.core.vector_QMARK_.call(null,params__4635__auto__)){
-var map__8237 = params__4635__auto__;
-var map__8237__$1 = ((cljs.core.seq_QMARK_.call(null,map__8237))?cljs.core.apply.call(null,cljs.core.hash_map,map__8237):map__8237);
-var params = map__8237__$1;
-console.log([cljs.core.str("Availabilities Called: "),cljs.core.str(params)].join(''));
-
+var map__9359 = params__4635__auto__;
+var map__9359__$1 = ((cljs.core.seq_QMARK_.call(null,map__9359))?cljs.core.apply.call(null,cljs.core.hash_map,map__9359):map__9359);
+var params = map__9359__$1;
 return view.switch_tab.call(null,"#tab-availabilities-link","/#availabilities");
 } else {
 return null;
@@ -292,25 +284,21 @@ return null;
 }
 });})(listings_container))
 ;
-secretary.core.add_route_BANG_.call(null,"/availabilities",action__4634__auto___8243);
+secretary.core.add_route_BANG_.call(null,"/availabilities",action__4634__auto___9365);
 
 
-var action__4634__auto___8244 = ((function (listings_container){
+var action__4634__auto___9366 = ((function (listings_container){
 return (function (params__4635__auto__){
 if(cljs.core.map_QMARK_.call(null,params__4635__auto__)){
-var map__8238 = params__4635__auto__;
-var map__8238__$1 = ((cljs.core.seq_QMARK_.call(null,map__8238))?cljs.core.apply.call(null,cljs.core.hash_map,map__8238):map__8238);
-var params = map__8238__$1;
-console.log([cljs.core.str("Session Called: "),cljs.core.str(params)].join(''));
-
+var map__9360 = params__4635__auto__;
+var map__9360__$1 = ((cljs.core.seq_QMARK_.call(null,map__9360))?cljs.core.apply.call(null,cljs.core.hash_map,map__9360):map__9360);
+var params = map__9360__$1;
 return view.switch_tab.call(null,"#tab-session-link","/#session");
 } else {
 if(cljs.core.vector_QMARK_.call(null,params__4635__auto__)){
-var map__8239 = params__4635__auto__;
-var map__8239__$1 = ((cljs.core.seq_QMARK_.call(null,map__8239))?cljs.core.apply.call(null,cljs.core.hash_map,map__8239):map__8239);
-var params = map__8239__$1;
-console.log([cljs.core.str("Session Called: "),cljs.core.str(params)].join(''));
-
+var map__9361 = params__4635__auto__;
+var map__9361__$1 = ((cljs.core.seq_QMARK_.call(null,map__9361))?cljs.core.apply.call(null,cljs.core.hash_map,map__9361):map__9361);
+var params = map__9361__$1;
 return view.switch_tab.call(null,"#tab-session-link","/#session");
 } else {
 return null;
@@ -318,25 +306,21 @@ return null;
 }
 });})(listings_container))
 ;
-secretary.core.add_route_BANG_.call(null,"/session",action__4634__auto___8244);
+secretary.core.add_route_BANG_.call(null,"/session",action__4634__auto___9366);
 
 
 var action__4634__auto__ = ((function (listings_container){
 return (function (params__4635__auto__){
 if(cljs.core.map_QMARK_.call(null,params__4635__auto__)){
-var map__8240 = params__4635__auto__;
-var map__8240__$1 = ((cljs.core.seq_QMARK_.call(null,map__8240))?cljs.core.apply.call(null,cljs.core.hash_map,map__8240):map__8240);
-var params = map__8240__$1;
-console.log([cljs.core.str("Account Called: "),cljs.core.str(params)].join(''));
-
+var map__9362 = params__4635__auto__;
+var map__9362__$1 = ((cljs.core.seq_QMARK_.call(null,map__9362))?cljs.core.apply.call(null,cljs.core.hash_map,map__9362):map__9362);
+var params = map__9362__$1;
 return view.switch_tab.call(null,"#tab-account-link","/#account");
 } else {
 if(cljs.core.vector_QMARK_.call(null,params__4635__auto__)){
-var map__8241 = params__4635__auto__;
-var map__8241__$1 = ((cljs.core.seq_QMARK_.call(null,map__8241))?cljs.core.apply.call(null,cljs.core.hash_map,map__8241):map__8241);
-var params = map__8241__$1;
-console.log([cljs.core.str("Account Called: "),cljs.core.str(params)].join(''));
-
+var map__9363 = params__4635__auto__;
+var map__9363__$1 = ((cljs.core.seq_QMARK_.call(null,map__9363))?cljs.core.apply.call(null,cljs.core.hash_map,map__9363):map__9363);
+var params = map__9363__$1;
 return view.switch_tab.call(null,"#tab-account-link","/#account");
 } else {
 return null;
@@ -348,22 +332,22 @@ secretary.core.add_route_BANG_.call(null,"/account",action__4634__auto__);
 
 return ((function (action__4634__auto__,listings_container){
 return (function() { 
-var G__8245__delegate = function (args__4633__auto__){
+var G__9367__delegate = function (args__4633__auto__){
 return cljs.core.apply.call(null,secretary.core.render_route_STAR_,"/account",args__4633__auto__);
 };
-var G__8245 = function (var_args){
+var G__9367 = function (var_args){
 var args__4633__auto__ = null;
 if (arguments.length > 0) {
   args__4633__auto__ = cljs.core.array_seq(Array.prototype.slice.call(arguments, 0),0);
 } 
-return G__8245__delegate.call(this,args__4633__auto__);};
-G__8245.cljs$lang$maxFixedArity = 0;
-G__8245.cljs$lang$applyTo = (function (arglist__8246){
-var args__4633__auto__ = cljs.core.seq(arglist__8246);
-return G__8245__delegate(args__4633__auto__);
+return G__9367__delegate.call(this,args__4633__auto__);};
+G__9367.cljs$lang$maxFixedArity = 0;
+G__9367.cljs$lang$applyTo = (function (arglist__9368){
+var args__4633__auto__ = cljs.core.seq(arglist__9368);
+return G__9367__delegate(args__4633__auto__);
 });
-G__8245.cljs$core$IFn$_invoke$arity$variadic = G__8245__delegate;
-return G__8245;
+G__9367.cljs$core$IFn$_invoke$arity$variadic = G__9367__delegate;
+return G__9367;
 })()
 ;
 ;})(action__4634__auto__,listings_container))

@@ -77,12 +77,24 @@
   ([element-container]
    (om/root (fn [state owner]
               (om/component (html [:div
+                                   [:nav {:class "top-bar" :data-topbar true :role "navigation"}
+                                    [:ul {:class "left" :id "listing-search-field"}
+                                     [:li {:class "has-form"}
+                                      [:div {:class "row collapse"}
+                                       [:div {:class "large-8 small-9 columns"}
+                                        [:input {:type "text" :placeholder "Find Availabilities"}]]
+                                       [:div {:class "large-4 small-3 columns"}
+                                        [:a {:href "#" :class "alert button expand"} "Search"]]]]]
+                                    [:ul {:class "right" :id "listing-create-button"}
+                                     [:li {:class "has-form show-for-large-up"}
+                                      [:a {:href "http://foundation.zurb.com/docs" :class "button"} "Create"]]]]
                                    [:div {:id "tags"}]
                                    [:div {:id "availabilities"}]])))
             @cm/app-state
             {:target (. js/document (getElementById element-container))})
    (cm/load-tags tags-handler)
    (cm/load-availabilities availabilities-handler)))
+
 
 (defn show-landing []
   (let [listings-container "listings-container"]
@@ -103,19 +115,15 @@
     (secretary/set-config! :prefix "#")
 
     (defroute "/listings" {:as params}
-      (js/console.log (str "Listings Called: " params))
       (vw/switch-tab "#tab-listings-link" "/#"))
 
     (defroute "/availabilities" {:as params}
-      (js/console.log (str "Availabilities Called: " params))
       (vw/switch-tab "#tab-availabilities-link" "/#availabilities"))
 
     (defroute "/session" {:as params}
-      (js/console.log (str "Session Called: " params))
       (vw/switch-tab "#tab-session-link" "/#session"))
 
     (defroute "/account" {:as params}
-      (js/console.log (str "Account Called: " params))
       (vw/switch-tab "#tab-account-link" "/#account"))
 
     #_(let [h (History.)]

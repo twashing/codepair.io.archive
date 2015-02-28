@@ -41,8 +41,15 @@ body {
     cursor: pointer;
 }
 
+#tab-listings {
+    padding-top: 0px;
+}
 .tab-title {
     width: 25%;
+}
+#listing-search-field , #listing-create-button {
+    margin: 0;
+    padding: 0 14.25px;
 }
 .account-selected-text {
     //color: darkgreen !important;
@@ -57,7 +64,7 @@ body {
 }
 
 #tags , #availabilities {
-    padding: 8px;
+    padding: 8px 14.25px;
 }
 #tags-pane , #availabilities-pane {
     overflow:auto;
