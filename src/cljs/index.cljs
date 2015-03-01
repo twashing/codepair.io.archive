@@ -55,7 +55,6 @@
                               (cm/user-handler e xhr responseF)
                               (session-check))))}))
 
-
 (defn enable-signin []
   (om/root (fn [state owner]
              (om/component (html [:div {:on-click loginClickHandler}
@@ -82,12 +81,18 @@
                                      [:li {:class "has-form"}
                                       [:div {:class "row collapse"}
                                        [:div {:class "large-8 small-9 columns"}
-                                        [:input {:type "text" :placeholder "Find Availabilities"}]]
+                                        [:input {:type "text" :id "search-field" :placeholder "Find Availabilities"}]]
                                        [:div {:class "large-4 small-3 columns"}
-                                        [:a {:href "#" :class "alert button expand"} "Search"]]]]]
-                                    [:ul {:class "right" :id "listing-create-button"}
-                                     [:li {:class "has-form show-for-large-up"}
-                                      [:a {:href "http://foundation.zurb.com/docs" :class "button"} "Create"]]]]
+                                        [:a {:href "#"
+                                             :class "alert button expand"
+                                             :on-click (fn [e]
+                                                         (cm/search-availabilities availabilities-handler
+                                                          (.val (js/$ "#search-field"))))}
+                                         "Search"]]]]]
+                                    (if (cm/user-logged-in?)
+                                      [:ul {:class "right" :id "listing-create-button"}
+                                       [:li {:class "has-form show-for-large-up"}
+                                        [:a {:href "http://foundation.zurb.com/docs" :class "button"} "Create"]]])]
                                    [:div {:id "tags"}]
                                    [:div {:id "availabilities"}]])))
             @cm/app-state
@@ -136,7 +141,7 @@
 
 (defn session-check []
 
-  (if (nil? (:user @cm/app-state))
+  (if (not (cm/user-logged-in?))
     (do (show-listings)
         (enable-signin))
     (do (show-landing)

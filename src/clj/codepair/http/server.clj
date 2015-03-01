@@ -3,7 +3,7 @@
             [codepair.http.handler :as hl]))
 
 
-(defonce server (atom nil))
+(def server (atom nil))
 
 (defn start-server [& [port app]]
   (let [port (if port

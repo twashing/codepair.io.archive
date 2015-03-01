@@ -52,6 +52,11 @@
 
     (av/update-availability ds gname title availability)))
 
+(defn search-availabilities [ds req]
+
+  (let [search-term (-> req :params :searchterm)]
+
+    (av/search-availabilities ds search-term)))
 
 
 ;; Sessions

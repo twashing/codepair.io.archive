@@ -13,6 +13,9 @@
                       :availabilities []
                       :tags []}))
 
+(defn user-logged-in? []
+  (not (nil? (:user @app-state))))
+
 (def ^:private meths
   {:get "GET"
    :put "PUT"
@@ -76,6 +79,13 @@
   (edn-xhr
    {:method :get
     :url "/list-availabilities"
+    :on-complete (localCommonHandler response-handler)}))
+
+(defn search-availabilities [response-handler search-term]
+  (edn-xhr
+   {:method :get
+    :url (str "/search-availabilities?searchterm=" search-term)
+    :data {:searchterm search-term}
     :on-complete (localCommonHandler response-handler)}))
 
 (defn load-user-data [response-handler]

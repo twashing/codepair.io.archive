@@ -64,6 +64,48 @@
 (defn find-request [ds id]
   (adi/select ds id :ids {:request :checked}))
 
+(defn search-availabilities [ds search-term]
+
+  (timbre/debug (str "search-availabilities CALLED: searchterm: " search-term))
+  (let [allAs #spy/p (adi/select ds {:availability {:title '_}})
+        reS (re-pattern search-term)]
+
+    (filterv (fn [x]
+               (or (re-find reS (-> x :availability :title))
+                   (re-find reS (-> x :availability :description))))
+             allAs)))
+
+#_(defmacro extract-adi-searchterm [searchterm]
+  '(into '()
+        (reverse
+         (concat (quote (?fulltext))
+                 [searchterm]))))
+
+#_(defn search-availabilities [ds search-term]
+
+  (timbre/debug (str "search-availabilities CALLED: searchterm: " '(into '()
+                                                                         (reverse
+                                                                          (concat (quote (?fulltext))
+                                                                                  [searchterm])))))
+  (let [r1 (adi/select ds {:availability
+                           {:title '(into '()
+                                          (reverse
+                                           (concat (quote (?fulltext))
+                                                   [searchterm])))}})
+
+        _ (timbre/debug (str "sanity check 1: " r1))
+        r2 (adi/select ds {:availability
+                           {:description '(into '()
+                                                (reverse
+                                                 (concat (quote (?fulltext))
+                                                         [searchterm])))}})
+
+        _ (timbre/debug (str "sanity check 2: " r2))]
+
+    (timbre/debug (str "r1: " r1))
+    (timbre/debug (str "r2: " r2))
+    (into #{} (concat r1 r2))))
+
 
 ;; Update
 (defn update-availability [ds gname title availability]

@@ -9,19 +9,22 @@ goog.require('goog.net.XhrIo');
 goog.require('codepair');
 goog.require('cljs.reader');
 common.app_state = cljs.core.atom.call(null,new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"user","user",1532431356),cljs.core.PersistentArrayMap.EMPTY,new cljs.core.Keyword(null,"availabilities","availabilities",-9113555),cljs.core.PersistentVector.EMPTY,new cljs.core.Keyword(null,"tags","tags",1771418977),cljs.core.PersistentVector.EMPTY], null));
+common.user_logged_in_QMARK_ = (function user_logged_in_QMARK_(){
+return !((new cljs.core.Keyword(null,"user","user",1532431356).cljs$core$IFn$_invoke$arity$1(cljs.core.deref.call(null,common.app_state)) == null));
+});
 common.meths = new cljs.core.PersistentArrayMap(null, 4, [new cljs.core.Keyword(null,"get","get",1683182755),"GET",new cljs.core.Keyword(null,"put","put",1299772570),"PUT",new cljs.core.Keyword(null,"post","post",269697687),"POST",new cljs.core.Keyword(null,"delete","delete",-1768633620),"DELETE"], null);
-common.edn_xhr = (function edn_xhr(p__6992){
-var map__6994 = p__6992;
-var map__6994__$1 = ((cljs.core.seq_QMARK_.call(null,map__6994))?cljs.core.apply.call(null,cljs.core.hash_map,map__6994):map__6994);
-var on_complete = cljs.core.get.call(null,map__6994__$1,new cljs.core.Keyword(null,"on-complete","on-complete",-1531183971));
-var data = cljs.core.get.call(null,map__6994__$1,new cljs.core.Keyword(null,"data","data",-232669377));
-var url = cljs.core.get.call(null,map__6994__$1,new cljs.core.Keyword(null,"url","url",276297046));
-var method = cljs.core.get.call(null,map__6994__$1,new cljs.core.Keyword(null,"method","method",55703592));
+common.edn_xhr = (function edn_xhr(p__7689){
+var map__7691 = p__7689;
+var map__7691__$1 = ((cljs.core.seq_QMARK_.call(null,map__7691))?cljs.core.apply.call(null,cljs.core.hash_map,map__7691):map__7691);
+var on_complete = cljs.core.get.call(null,map__7691__$1,new cljs.core.Keyword(null,"on-complete","on-complete",-1531183971));
+var data = cljs.core.get.call(null,map__7691__$1,new cljs.core.Keyword(null,"data","data",-232669377));
+var url = cljs.core.get.call(null,map__7691__$1,new cljs.core.Keyword(null,"url","url",276297046));
+var method = cljs.core.get.call(null,map__7691__$1,new cljs.core.Keyword(null,"method","method",55703592));
 var xhr = (new goog.net.XhrIo());
-goog.events.listen(xhr,goog.net.EventType.COMPLETE,((function (xhr,map__6994,map__6994__$1,on_complete,data,url,method){
+goog.events.listen(xhr,goog.net.EventType.COMPLETE,((function (xhr,map__7691,map__7691__$1,on_complete,data,url,method){
 return (function (e){
 return on_complete.call(null,cljs.reader.read_string.call(null,xhr.getResponseText()),xhr);
-});})(xhr,map__6994,map__6994__$1,on_complete,data,url,method))
+});})(xhr,map__7691,map__7691__$1,on_complete,data,url,method))
 );
 
 return xhr.send(url,common.meths.call(null,method),(cljs.core.truth_(data)?cljs.core.pr_str.call(null,data):null),{"Content-Type": "application/edn"});
@@ -63,6 +66,9 @@ return common.edn_xhr.call(null,new cljs.core.PersistentArrayMap(null, 3, [new c
 });
 common.load_availabilities = (function load_availabilities(response_handler){
 return common.edn_xhr.call(null,new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"method","method",55703592),new cljs.core.Keyword(null,"get","get",1683182755),new cljs.core.Keyword(null,"url","url",276297046),"/list-availabilities",new cljs.core.Keyword(null,"on-complete","on-complete",-1531183971),common.localCommonHandler.call(null,response_handler)], null));
+});
+common.search_availabilities = (function search_availabilities(response_handler,search_term){
+return common.edn_xhr.call(null,new cljs.core.PersistentArrayMap(null, 4, [new cljs.core.Keyword(null,"method","method",55703592),new cljs.core.Keyword(null,"get","get",1683182755),new cljs.core.Keyword(null,"url","url",276297046),[cljs.core.str("/search-availabilities?searchterm="),cljs.core.str(search_term)].join(''),new cljs.core.Keyword(null,"data","data",-232669377),new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"searchterm","searchterm",-719160813),search_term], null),new cljs.core.Keyword(null,"on-complete","on-complete",-1531183971),common.localCommonHandler.call(null,response_handler)], null));
 });
 common.load_user_data = (function load_user_data(response_handler){
 return common.edn_xhr.call(null,new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"method","method",55703592),new cljs.core.Keyword(null,"get","get",1683182755),new cljs.core.Keyword(null,"url","url",276297046),"/user-data",new cljs.core.Keyword(null,"on-complete","on-complete",-1531183971),common.localCommonHandler.call(null,response_handler)], null));

@@ -37,7 +37,8 @@
                                :values #{:free :professional :enterprise}}}]
                 }
 
- :tag {:name [{:type :string}]}
+ :tag {:name [{:type :string
+               :fulltext true}]}
 
  :request {:user [{:type :ref
                    :ref {:ns :user}
@@ -59,8 +60,10 @@
                         :default :ongoing
                         :enum {:ns :availability.time
                                :values #{:ongoing}}}]
-                :title [{:type :string}]
-                :description [{:type :string}]
+                :title [{:type :string
+                         :fulltext true}]
+                :description [{:type :string
+                               :fulltext true}]
                 :tags [{:type :ref
                         :ref {:ns :tag}
                         :cardinality :many}]

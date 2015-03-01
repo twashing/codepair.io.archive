@@ -4,6 +4,7 @@
             [alembic.still]
             [taoensso.timbre :as timbre]
             [hara.component :as hco]
+            [adi.core :as adi]
             [clj-stripe.util :as util]
             [clj-stripe.common :as common]
             [clj-stripe.plans :as plans]
@@ -118,5 +119,39 @@
       (common/card "A card token obtained with stripe.js")
       (customers/email "twashing@gmail.com")
       (common/plan "professional"))))
+
+  (def ds (-> system :spittoon :db))
+  (def searchterm "Java")
+
+
+  (defmacro foo [searchterm]
+    '(concat (quote (?fulltext)) [searchterm]))
+
+  (defmacro extract-adi-searchterm [searchterm]
+    '(into '() (reverse (concat (quote (?fulltext)) [searchterm]))))
+
+  (type (foo "Java"))
+
+  (type '(?fulltext "Java"))
+
+
+  ;; (quote (codepair.shell/?fulltext "Java"))
+
+
+  (adi/select ds {:availability
+                  {:title (foo "Java")}})
+
+  (adi/select ds {:availability
+                  {:description (foo "environment")}})
+
+
+  (adi/select ds {:availability
+                  {:title '(?fulltext "Java")}})
+
+  (adi/select ds {:availability
+                  {:description '(?fulltext "environment")}})
+
+  (adi/select ds {:availability {:title '_}})
+
 
   )

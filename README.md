@@ -28,7 +28,9 @@ This should be sufficient to run the tests
 
 5. *CRU* availability
   - tags all lower case, no dashes or spaces
+  
   - create button & workflow
+  - search button & workflow
   
   - page routing (between all, availabilities, sessions)  
   - logout
