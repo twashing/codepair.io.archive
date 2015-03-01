@@ -6,7 +6,6 @@
             [om.dom :as dom :include-macros true]
             [sablono.core :as html :refer-macros [html]]
             [secretary.core :as secretary :refer-macros [defroute]]
-            [codepair :as cp]
             [common :as cm]
             [view :as vw]
             [util :as ul])
@@ -20,7 +19,6 @@
          loginClickHandler
          session-check
          tags-handler
-         availabilities-handler
          user-handler)
 
 (defn loginClickHandler []
@@ -87,7 +85,7 @@
                                         [:a {:href "#"
                                              :class "alert button expand"
                                              :on-click (fn [e]
-                                                         (cm/search-availabilities availabilities-handler
+                                                         (cm/search-availabilities cm/availabilities-handler
                                                           (.val (js/$ "#search-field"))))}
                                          "Search"]]]]]
                                     (if (cm/user-logged-in?)
@@ -99,7 +97,7 @@
             @cm/app-state
             {:target (. js/document (getElementById element-container))})
    (cm/load-tags tags-handler)
-   (cm/load-availabilities availabilities-handler)))
+   (cm/load-availabilities cm/availabilities-handler)))
 
 
 (defn show-landing []
@@ -156,20 +154,6 @@
            (:tags @cm/app-state)
            {:target (. js/document (getElementById "tags"))}))
 
-(defn availabilities-handler [e xhr data]
-
-  (swap! cm/app-state (fn [e]
-                        (update-in e [:availabilities] (fn [f] (into [] data)))))
-
-  (om/root vw/availabilities-view
-           (:availabilities @cm/app-state)
-           {:target (. js/document (getElementById "availabilities"))
-            ;;:shared {:tx-chan tx-pub-chan}
-            ;;:tx-listen
-            #_(fn [tx-data root-cursor]
-                (put! tx-chan [tx-data root-cursor]))})
-
-  )
 
 (ul/ready
  (fn [_]

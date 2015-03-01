@@ -38,14 +38,12 @@
     (av/add-availability ds gname availability)))
 
 (defn find-availability [ds req]
-
   (let [gname (-> req :params :groupname)
         title (-> req :params :title)]
 
     (av/find-availability-by-title ds gname title)))
 
 (defn update-availability [ds req]
-
   (let [gname (-> req :params :groupname)
         title (-> req :params :title)
         availability (-> req :params :availability read-string)]
@@ -53,11 +51,12 @@
     (av/update-availability ds gname title availability)))
 
 (defn search-availabilities [ds req]
-
   (let [search-term (-> req :params :searchterm)]
-
     (av/search-availabilities ds search-term)))
 
+(defn search-availabilities-bytag [ds req]
+  (let [searchterm (-> req :params :searchterm)]
+    (av/find-availability-by-tag ds searchterm)))
 
 ;; Sessions
 (defn add-session [ds req]

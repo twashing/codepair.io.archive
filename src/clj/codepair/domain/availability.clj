@@ -33,6 +33,29 @@
                                 opts)]
      (apply adi/select select-args))))
 
+(defn find-availability-by-tag [ds tag]
+  (adi/select ds
+              {:availability
+               {:tags
+                {:name tag}}}
+              :ids
+              :pull {:availability
+                     {:tags
+                      {:name :checked}}}))
+
+#_(defn find-availability-by-tag
+  ([ds gname tag]
+   (find-availability-by-tag ds gname tag [:ids :pull {:availability
+                                                       {:tags
+                                                        {:name :checked}}}]))
+  ([ds gname tag opts]
+   (let [select-args (set/union [ds
+                                 {:availability
+                                  {:tags
+                                   {:name tag}}}]
+                                opts)]
+     (apply adi/select select-args))))
+
 (defn find-user-for-availability
   ([ds availability]
    (find-user-for-availability ds availability [:ids {:user :checked}]))

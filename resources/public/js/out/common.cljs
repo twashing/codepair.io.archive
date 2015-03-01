@@ -2,7 +2,8 @@
   (:require [cljs.reader :as reader]
             [goog.events :as events]
             [goog.dom :as gdom]
-            [codepair :as cp]
+            [om.core :as om :include-macros true]
+            [view :as vw]
             [util :as ul])
   (:import [goog.net XhrIo]
            goog.net.EventType
@@ -60,6 +61,14 @@
          (fn [e]
            (update-in e [:user] (fn [f] data)))))
 
+(defn availabilities-handler [e xhr data]
+  (swap! app-state (fn [e]
+                     (update-in e [:availabilities] (fn [f] (into [] data)))))
+
+  (om/root vw/availabilities-view
+           (:availabilities @app-state)
+           {:target (. js/document (getElementById "availabilities"))}))
+
 (defn localCommonHandler [response-handler]
   (partial basicHandler
            (fn [e xhr]
@@ -85,6 +94,13 @@
   (edn-xhr
    {:method :get
     :url (str "/search-availabilities?searchterm=" search-term)
+    :data {:searchterm search-term}
+    :on-complete (localCommonHandler response-handler)}))
+
+(defn search-availabilities-bytag [response-handler search-term]
+  (edn-xhr
+   {:method :get
+    :url (str "/search-availabilities-bytag?searchterm=" search-term)
     :data {:searchterm search-term}
     :on-complete (localCommonHandler response-handler)}))
 

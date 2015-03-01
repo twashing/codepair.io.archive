@@ -102,6 +102,17 @@
            (-> (ring-resp/response (pr-str result))
                (ring-resp/content-type "application/edn"))))
 
+    (GET "/search-availabilities-bytag" [:as req]
+
+         (timbre/info (str "/search-availabilities-bytag req[" (with-out-str (pp/pprint req)) "]"))
+         (let [ds (get-datastore)
+               result (hd/search-availabilities-bytag ds req)]
+
+           (timbre/info (str "/search-availabilities RESULT[" (with-out-str (pp/pprint result)) "]"))
+           (-> (ring-resp/response (pr-str result))
+               (ring-resp/content-type "application/edn"))))
+
+
     ;; Session
     (POST "/add-session" [:as req]
 

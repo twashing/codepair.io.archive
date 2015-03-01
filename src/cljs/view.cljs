@@ -15,12 +15,18 @@
 (defn tag-filter-handler [e]
 
   (let [tag-name (.-textContent (.-target e))
-        filtered-availabilities (if (= "*all*" tag-name)
+
+        #_filtered-availabilities
+        #_(if (= "*all*" tag-name)
                                   (:availabilities @cm/app-state)
                                   (filterv (fn [x]
                                              (some #{tag-name} (map :name (:tags (:availability x)))))
-                                           (:availabilities @cm/app-state)))]
-    (om/root availabilities-view
+                                           (:availabilities @cm/app-state)))
+        ]
+
+    (cm/search-availabilities-bytag cm/availabilities-handler tag-name)
+
+    #_(om/root availabilities-view
              filtered-availabilities
              {:target (. js/document (getElementById "availabilities"))})))
 
