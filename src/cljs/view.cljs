@@ -43,11 +43,20 @@
                           [:th "tags"]]]
                         [:tbody
 
-                         (for [ech @state]
-                           [:tr
-                            [:td (:title (:availability ech))]
-                            [:td (:description (:availability ech))]
-                            [:td (for [tg (:tags (:availability ech))]
+                         (for [ech state]
+                           ;;(ul/console-log (str "type: " (type ech)))
+                           [:tr {:on-click (fn [e]
+
+                                             (om/transact! ech
+                                                           [:availability :title]
+                                                           (fn [f]
+                                                             (ul/console-log (str f))
+                                                             "thing"))
+
+                                             )}
+                            [:td (:title (:availability @ech))]
+                            [:td (:description (:availability @ech))]
+                            [:td (for [tg (:tags (:availability @ech))]
                                    [:div (:name tg)])]])]]])))
 
 (defn account-selected-description [account-level existing-classes]

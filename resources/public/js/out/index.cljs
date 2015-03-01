@@ -10,6 +10,7 @@
             [common :as cm]
             [view :as vw]
             [util :as ul])
+  (:require-macros [cljs.core.async.macros :as asyncm :refer (go go-loop)])
   (:import [goog.net XhrIo]
            goog.net.EventType
            [goog.events EventType]))
@@ -156,12 +157,19 @@
            {:target (. js/document (getElementById "tags"))}))
 
 (defn availabilities-handler [e xhr data]
+
   (swap! cm/app-state (fn [e]
                         (update-in e [:availabilities] (fn [f] (into [] data)))))
 
   (om/root vw/availabilities-view
            (:availabilities @cm/app-state)
-           {:target (. js/document (getElementById "availabilities"))}))
+           {:target (. js/document (getElementById "availabilities"))
+            ;;:shared {:tx-chan tx-pub-chan}
+            ;;:tx-listen
+            #_(fn [tx-data root-cursor]
+                (put! tx-chan [tx-data root-cursor]))})
+
+  )
 
 (ul/ready
  (fn [_]

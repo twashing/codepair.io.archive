@@ -67,7 +67,10 @@
 (defn search-availabilities [ds search-term]
 
   (timbre/debug (str "search-availabilities CALLED: searchterm: " search-term))
-  (let [allAs #spy/p (adi/select ds {:availability {:title '_}})
+  (let [allAs (adi/select ds {:availability {:title '_}}
+                          :pull {:availability
+                                 {:tags
+                                  {:name :checked}}})
         reS (re-pattern search-term)]
 
     (filterv (fn [x]

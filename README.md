@@ -27,11 +27,13 @@ This should be sufficient to run the tests
 
 
 5. *CRU* availability
-  - tags all lower case, no dashes or spaces
-  
+
+  - logout breaks occasionally
+  - tags should do a DB search as well
   - create button & workflow
-  - search button & workflow
+    - tags all lower case, no dashes or spaces
   
+  - search button & workflow
   - page routing (between all, availabilities, sessions)  
   - logout
   - mouse pointer over login / logout links
