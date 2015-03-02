@@ -48,6 +48,13 @@
                  :value (:description (:availability state))}]]]
 
    [:div {:class "row"}
+    [:label "Tags"
+     [:input {:id "availability-tags"
+              :type "text"
+              :placeholder "space delimited tags, should all be lower case, with no dashes or spaces"
+              :value (:title (:availability state))}]]]
+
+   [:div {:class "row"}
     [:a {:id "availability-save"
          :class "button tiny right"
          :on-click (fn [e] (ul/console-log e))}
@@ -94,6 +101,12 @@
 
                                                (.val (js/$ "#availability-description")
                                                      (:description (:availability ech)))
+
+                                               (.val (js/$ "#availability-tags")
+                                                     (s/trim (reduce (fn [x y]
+                                                                       (str x "  " (:name y)))
+                                                                     ""
+                                                                     (:tags (:availability ech)))))
 
                                                (.click (js/$ "#availability-save")
                                                        updatefn)
