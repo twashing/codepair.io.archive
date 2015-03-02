@@ -34,14 +34,23 @@
      (apply adi/select select-args))))
 
 (defn find-availability-by-tag [ds tag]
-  (adi/select ds
+  (if (= "*all*" tag)
+    (adi/select ds
               {:availability
                {:tags
-                {:name tag}}}
+                {:name '_}}}
               :ids
               :pull {:availability
                      {:tags
-                      {:name :checked}}}))
+                      {:name :checked}}})
+    (adi/select ds
+                {:availability
+                 {:tags
+                  {:name tag}}}
+                :ids
+                :pull {:availability
+                       {:tags
+                        {:name :checked}}})))
 
 #_(defn find-availability-by-tag
   ([ds gname tag]

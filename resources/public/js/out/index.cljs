@@ -85,7 +85,7 @@
                                         [:a {:href "#"
                                              :class "alert button expand"
                                              :on-click (fn [e]
-                                                         (cm/search-availabilities cm/availabilities-handler
+                                                         (cm/search-availabilities vw/availabilities-handler
                                                           (.val (js/$ "#search-field"))))}
                                          "Search"]]]]]
                                     (if (cm/user-logged-in?)
@@ -97,7 +97,7 @@
             @cm/app-state
             {:target (. js/document (getElementById element-container))})
    (cm/load-tags tags-handler)
-   (cm/load-availabilities cm/availabilities-handler)))
+   (cm/load-availabilities vw/availabilities-handler)))
 
 
 (defn show-landing []

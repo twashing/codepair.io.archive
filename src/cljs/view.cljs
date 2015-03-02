@@ -13,22 +13,16 @@
 (declare availabilities-view)
 
 (defn tag-filter-handler [e]
+  (cm/search-availabilities-bytag cm/availabilities-handler tag-name))
 
-  (let [tag-name (.-textContent (.-target e))
+(defn availabilities-handler [e xhr data]
+  (swap! cm/app-state (fn [e]
+                     (update-in e [:availabilities] (fn [f] (into [] data)))))
 
-        #_filtered-availabilities
-        #_(if (= "*all*" tag-name)
-                                  (:availabilities @cm/app-state)
-                                  (filterv (fn [x]
-                                             (some #{tag-name} (map :name (:tags (:availability x)))))
-                                           (:availabilities @cm/app-state)))
-        ]
-
-    (cm/search-availabilities-bytag cm/availabilities-handler tag-name)
-
-    #_(om/root availabilities-view
-             filtered-availabilities
-             {:target (. js/document (getElementById "availabilities"))})))
+  (om/root availabilities-view
+           #_(:availabilities (cm/get-app-state))
+           (:availabilities @cm/app-state)
+           {:target (. js/document (getElementById "availabilities"))}))
 
 (defn tags-view [state owner]
 
@@ -49,21 +43,23 @@
                           [:th "tags"]]]
                         [:tbody
 
-                         (for [ech state]
-                           ;;(ul/console-log (str "type: " (type ech)))
-                           [:tr {:on-click (fn [e]
+                         (let [stat (om/ref-cursor (:availabilities (cm/get-app-state)))]
 
-                                             (om/transact! ech
-                                                           [:availability :title]
-                                                           (fn [f]
-                                                             (ul/console-log (str f))
-                                                             "thing"))
+                           (for [ech stat]
 
-                                             )}
-                            [:td (:title (:availability @ech))]
-                            [:td (:description (:availability @ech))]
-                            [:td (for [tg (:tags (:availability @ech))]
-                                   [:div (:name tg)])]])]]])))
+                             [:tr {:on-click (fn [e]
+                                               (om/transact! ech
+                                                             [:availability :title]
+                                                             (fn [f]
+                                                               (ul/console-log (str f))
+                                                               "thing"))
+                                               (om/set-state! owner [:availability :title]  "thing")
+
+                                               )}
+                              [:td (:title (:availability @ech))]
+                              [:td (:description (:availability @ech))]
+                              [:td (for [tg (:tags (:availability @ech))]
+                                     [:div (:name tg)])]]))]]])))
 
 (defn account-selected-description [account-level existing-classes]
   (if (= (cm/get-account-level) account-level)
