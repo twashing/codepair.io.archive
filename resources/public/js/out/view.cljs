@@ -1,5 +1,6 @@
 (ns view
-  (:require [cljs.reader :as reader]
+  (:require [clojure.string :as s]
+            [cljs.reader :as reader]
             [goog.dom :as gdom]
             [goog.string :as gstr]
             [om.core :as om :include-macros true]
@@ -20,8 +21,7 @@
                      (update-in e [:availabilities] (fn [f] (into [] data)))))
 
   (om/root availabilities-view
-           #_(:availabilities (cm/get-app-state))
-           (:availabilities @cm/app-state)
+           (cm/get-app-state)
            {:target (. js/document (getElementById "availabilities"))}))
 
 (defn tags-view [state owner]
@@ -32,8 +32,31 @@
                                 :on-click tag-filter-handler}
                           (:name (:tag ech))])])))
 
-(defn availabilities-view [state owner]
+(defn availability-view-nominal [state owner]
 
+  [:div {:id "availability-pane"}
+
+   [:div {:class "row"}
+    [:label "Title"
+     [:input {:id "availability-title"
+              :type "text"
+              :value (:title (:availability state))}]]]
+
+   [:div {:class "row"}
+    [:label "Description"
+     [:textarea {:id "availability-description"
+                 :value (:description (:availability state))}]]]
+
+   [:div {:class "row"}
+    [:a {:id "availability-save"
+         :class "button tiny right"
+         :on-click (fn [e] (ul/console-log e))}
+     "save"]]])
+
+(defn availability-view [state owner]
+  (om/component (html (availability-view-nominal state owner))))
+
+(defn availabilities-view [state owner]
   (om/component (html [:div {:id "availabilities-pane"}
                        [:table {:class "availabilities-table"}
                         [:thead
@@ -43,23 +66,43 @@
                           [:th "tags"]]]
                         [:tbody
 
-                         (let [stat (om/ref-cursor (:availabilities (cm/get-app-state)))]
+                         (for [ech (om/ref-cursor (:availabilities state))]
 
-                           (for [ech stat]
+                           [:tr {:on-click (fn [e]
+                                             (let [updatefn (fn []
+                                                              (ul/console-log (str "save clicked"))
 
-                             [:tr {:on-click (fn [e]
-                                               (om/transact! ech
-                                                             [:availability :title]
-                                                             (fn [f]
-                                                               (ul/console-log (str f))
-                                                               "thing"))
-                                               (om/set-state! owner [:availability :title]  "thing")
+                                                              (let [title (.val (js/$ "#availability-title"))
+                                                                    description (.val (js/$ "#availability-description"))]
 
-                                               )}
-                              [:td (:title (:availability @ech))]
-                              [:td (:description (:availability @ech))]
-                              [:td (for [tg (:tags (:availability @ech))]
-                                     [:div (:name tg)])]]))]]])))
+                                                                (om/transact! ech
+                                                                              [:availability :title]
+                                                                              (fn [_] title))
+
+                                                                (om/transact! ech
+                                                                              [:availability :title]
+                                                                              (fn [_] description))
+
+                                                                (om/set-state! owner [:availability :title]  title)
+                                                                (om/set-state! owner [:availability :description] description)
+
+                                                                (secretary/dispatch! "/listings")))]
+
+
+                                               (.val (js/$ "#availability-title")
+                                                     (:title (:availability ech)))
+
+                                               (.val (js/$ "#availability-description")
+                                                     (:description (:availability ech)))
+
+                                               (.click (js/$ "#availability-save")
+                                                       updatefn)
+
+                                               (secretary/dispatch! "/availabilities")))}
+                            [:td (:title (:availability @ech))]
+                            [:td (:description (:availability @ech))]
+                            [:td (for [tg (:tags (:availability @ech))]
+                                   [:div (:name tg)])]])]]])))
 
 (defn account-selected-description [account-level existing-classes]
   (if (= (cm/get-account-level) account-level)
@@ -140,12 +183,8 @@
                          [:div {:id listings-container}]]
 
                         [:div {:class "content" :id "tab-availabilities"}
-                         [:p "Availabilities"]
-                         [:a {:class "button tiny"} "thing"]
-                         [:div {:class "small-4 columns"}
-                          [:label "Input Label"
-                           [:input {:type "text" :placeholder "small-4 columns"} ]]]
-                         ]
+                         [:div {:id "availability-container"}
+                          (availability-view-nominal (constantly nil nil nil))]]
 
                         [:div {:class "content" :id "tab-session"}
                          [:p "Session"]]
