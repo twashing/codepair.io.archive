@@ -80,18 +80,27 @@
                                                               (ul/console-log (str "save clicked"))
 
                                                               (let [title (.val (js/$ "#availability-title"))
-                                                                    description (.val (js/$ "#availability-description"))]
+                                                                    description (.val (js/$ "#availability-description"))
+                                                                    tags (mapv (fn [e] {:name e})
+                                                                               (filter #(re-find #"\w" %)
+                                                                                       (s/split (.val (js/$ "#availability-tags"))
+                                                                                                #"\s")))]
 
                                                                 (om/transact! ech
                                                                               [:availability :title]
                                                                               (fn [_] title))
 
                                                                 (om/transact! ech
-                                                                              [:availability :title]
+                                                                              [:availability :description]
                                                                               (fn [_] description))
+
+                                                                (om/transact! ech
+                                                                              [:availability :tags]
+                                                                              (fn [_] tags))
 
                                                                 (om/set-state! owner [:availability :title]  title)
                                                                 (om/set-state! owner [:availability :description] description)
+                                                                (om/set-state! owner [:availability :tags] tags)
 
                                                                 (secretary/dispatch! "/listings")))]
 
