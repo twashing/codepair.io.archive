@@ -28,8 +28,10 @@ This should be sufficient to run the tests
 
 5. *CRU* availability
 
+  - restrict updates to availabilities that you own
   - create button & workflow
     - tags all lower case, no dashes or spaces
+  - retrieve, update availability 
   
   - logout breaks occasionally
   - tags should do a DB search as well

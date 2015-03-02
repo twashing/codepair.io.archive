@@ -44,9 +44,9 @@
     (av/find-availability-by-title ds gname title)))
 
 (defn update-availability [ds req]
-  (let [gname (-> req :params :groupname)
-        title (-> req :params :title)
-        availability (-> req :params :availability read-string)]
+  (let [availability (-> req :body slurp read-string)
+        gname (-> req :params :groupname)
+        title (-> req :params :title)]
 
     (av/update-availability ds gname title availability)))
 

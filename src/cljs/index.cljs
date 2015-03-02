@@ -91,7 +91,7 @@
                                     (if (cm/user-logged-in?)
                                       [:ul {:class "right" :id "listing-create-button"}
                                        [:li {:class "has-form show-for-large-up"}
-                                        [:a {:href "http://foundation.zurb.com/docs" :class "button"} "Create"]]])]
+                                        [:a {:href "#" :class "button"} "Create"]]])]
                                    [:div {:id "tags"}]
                                    [:div {:id "availabilities"}]])))
             @cm/app-state
@@ -139,7 +139,6 @@
   (secretary/dispatch! loc))
 
 (defn session-check []
-
   (if (not (cm/user-logged-in?))
     (do (show-listings)
         (enable-signin))

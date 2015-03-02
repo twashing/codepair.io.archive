@@ -56,8 +56,7 @@
 
    [:div {:class "row"}
     [:a {:id "availability-save"
-         :class "button tiny right"
-         :on-click (fn [e] (ul/console-log e))}
+         :class "button tiny right"}
      "save"]]])
 
 (defn availability-view [state owner]
@@ -76,9 +75,24 @@
                          (for [ech (om/ref-cursor (:availabilities state))]
 
                            [:tr {:on-click (fn [e]
-                                             (let [updatefn (fn []
-                                                              (ul/console-log (str "save clicked"))
+                                             (let [syncfn (fn []
 
+                                                            (ul/console-log (str (om/get-state owner)))
+
+                                                            (let [availability (:availability (om/get-state owner))
+                                                                  title (:title (:availability ech))
+                                                                  group-name "codepair"
+                                                                  ;;(:groupname (:user (cm/get-app-state)))
+                                                                  ]
+                                                              (cm/edn-xhr
+                                                               {:method :post
+                                                                :url (str "/update-availability?groupname=" group-name "&title=" title)
+                                                                :data availability
+                                                                :on-complete
+                                                                (cm/localCommonHandler (fn [e xhr data]
+                                                                                         (ul/console-log (str "SUCCESS: " data))))})))
+
+                                                   updatefn (fn []
                                                               (let [title (.val (js/$ "#availability-title"))
                                                                     description (.val (js/$ "#availability-description"))
                                                                     tags (mapv (fn [e] {:name e})
@@ -102,7 +116,9 @@
                                                                 (om/set-state! owner [:availability :description] description)
                                                                 (om/set-state! owner [:availability :tags] tags)
 
-                                                                (secretary/dispatch! "/listings")))]
+                                                                (secretary/dispatch! "/listings")
+
+                                                                (syncfn)))]
 
 
                                                (.val (js/$ "#availability-title")
