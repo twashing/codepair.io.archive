@@ -117,6 +117,7 @@
                                                                      ""
                                                                      (:tags (:availability ech)))))
 
+                                               (.off (js/$ "#availability-save") "click")
                                                (.click (js/$ "#availability-save")
                                                        updatefn)
 
