@@ -51,7 +51,7 @@
     [:label "Tags"
      [:input {:id "availability-tags"
               :type "text"
-              :placeholder "space delimited tags, should all be lower case, with no dashes or spaces"
+              :placeholder "space delimited tags, lower case, no dashes or spaces"
               :value (:title (:availability state))}]]]
 
    [:div {:class "row"}
