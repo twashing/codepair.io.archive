@@ -36,13 +36,16 @@
 (defn find-availability-by-tag [ds tag]
   (if (= "*all*" tag)
     (adi/select ds
-              {:availability
-               {:tags
-                {:name '_}}}
-              :ids
-              :pull {:availability
-                     {:tags
-                      {:name :checked}}})
+                {:availability
+                 {:tags
+                  {:name '_}}}
+                :ids
+                :pull {:availability
+                       {:tags
+                        {:name :checked}
+                        :groups
+                        {:users
+                         {:username :checked}}}})
     (adi/select ds
                 {:availability
                  {:tags
@@ -50,7 +53,10 @@
                 :ids
                 :pull {:availability
                        {:tags
-                        {:name :checked}}})))
+                        {:name :checked}
+                        :groups
+                        {:users
+                         {:username :checked}}}})))
 
 #_(defn find-availability-by-tag
   ([ds gname tag]
@@ -102,7 +108,10 @@
   (let [allAs (adi/select ds {:availability {:title '_}}
                           :pull {:availability
                                  {:tags
-                                  {:name :checked}}})
+                                  {:name :checked}
+                                  :groups
+                                  {:users
+                                   {:username :checked}}}})
         reS (re-pattern search-term)]
 
     (filterv (fn [x]
@@ -171,7 +180,10 @@
                 {:name gname}}}
               :pull {:availability
                      {:tags
-                      {:name :checked}}}))
+                      {:name :checked}
+                      :groups
+                      {:users
+                       {:username :checked}}}}))
 
 (defn list-availabilities-all [ds]
   (adi/select ds

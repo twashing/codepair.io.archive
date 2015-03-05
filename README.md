@@ -27,14 +27,11 @@ This should be sufficient to run the tests
 
 
 5. *CRU* availability
-
-  - availabilities / order-by
-  - availabilities / order-by / created
-  - logout breaks occasionally
-  - tag filters broke
-
-  - restrict updates to availabilities that you own
   
+  - logout breaks occasionally
+  
+  - tag filters broke
+  - restrict updates to availabilities that you own
   - create button & workflow
     - tags all lower case, no dashes or spaces
     - pull username
@@ -73,6 +70,9 @@ This should be sufficient to run the tests
   - including unsubscribe back to free, from Professional or Enterprise
 
 - edn parsing after first signup
+- availabilities / order-by
+- availabilities / order-by / created
+
 
 ## License
 

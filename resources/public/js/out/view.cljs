@@ -11,10 +11,11 @@
             [util :as ul]))
 
 
-(declare availabilities-view)
+(declare availabilities-view
+         availabilities-handler)
 
 (defn tag-filter-handler [e]
-  (cm/search-availabilities-bytag cm/availabilities-handler tag-name))
+  (cm/search-availabilities-bytag availabilities-handler (.-textContent (.-target e))))
 
 (defn availabilities-handler [e xhr data]
   (swap! cm/app-state (fn [e]
@@ -144,10 +145,6 @@
                                                            updatefn)
 
                                                    (secretary/dispatch! "/availabilities")))]
-
-                             (ul/console-log (str "1: " currentUser))
-                             (ul/console-log (str "2: " availabilityUser))
-                             (ul/console-log (str "3: " (= currentUser availabilityUser)))
 
                              [:tr {:class (if (= currentUser availabilityUser)
                                             "availability-row" "")
