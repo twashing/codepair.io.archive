@@ -178,7 +178,7 @@
 
 (defn session-view-nominal [state owner]
   (html [:div {:id "session-pane"}
-         [:video {:autoplay true}]]))
+         [:video {:autoPlay true}]]))
 
 (defn session-view [state owner]
   (om/component (session-view-nominal state owner)))

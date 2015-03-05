@@ -150,7 +150,7 @@
 
     ;; 4.
     (let [video (.. js/document (querySelector "video"))
-          constraints (clj->js {:audio true
+          constraints (clj->js {:audio false
                                 :video true})
           _ (set! (.-getUserMedia js/navigator)
                   (or (.-getUserMedia js/navigator)
