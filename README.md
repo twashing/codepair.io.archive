@@ -34,10 +34,10 @@ This should be sufficient to run the tests
   - tag filters broke
 
   - restrict updates to availabilities that you own
+  
   - create button & workflow
     - tags all lower case, no dashes or spaces
     - pull username
-  
   - retrieve, update availability   
   - tags should do a DB search as well
   - search button & workflow

@@ -69,82 +69,95 @@
                          [:tr
                           [:th "Title"]
                           [:th "Description"]
-                          [:th "tags"]]]
+                          [:th "Tags"]
+                          [:th "User"]]]
                         [:tbody
 
                          (for [ech (om/ref-cursor (:availabilities state))]
 
-                           [:tr {:on-click (fn [e]
-                                             (let [syncfn (fn []
 
-                                                            (let [availability (:availability (om/get-state owner))
-                                                                  title (:title (:availability ech))
-                                                                  ;;(:groupname (:user (cm/get-app-state)))
-                                                                  group-name "codepair"]
+                           (let [availabilityUser (:username (first (:users (first (:groups (:availability @ech))))))
+                                 currentUser (:username (:user (cm/get-app-state)))
+                                 currentGroup (:groupname (:user (cm/get-app-state)))
+                                 updateHandler (fn [e]
+                                                 (let [syncfn (fn []
 
-                                                              (cm/edn-xhr
-                                                               {:method :post
-                                                                :url (str "/update-availability?groupname=" group-name
-                                                                          "&title=" title)
-                                                                :data availability
-                                                                :on-complete
-                                                                (cm/localCommonHandler
-                                                                 (fn [e xhr data]
-                                                                   (ul/console-log (str "SUCCESS: " data))))})))
+                                                                (let [availability (:availability (om/get-state owner))
+                                                                      title (:title (:availability ech))
+                                                                      group-name currentGroup]
 
-                                                   updatefn (fn []
-                                                              (let [title (.val (js/$ "#availability-title"))
-                                                                    description (.val (js/$ "#availability-description"))
-                                                                    tags (mapv (fn [e]
-                                                                                 {:name (-> e
-                                                                                            s/lower-case
-                                                                                            (s/replace #"\-" ""))})
-                                                                               (filter #(re-find #"\w" %)
-                                                                                       (s/split (.val (js/$ "#availability-tags"))
-                                                                                                #"\s")))]
+                                                                  (cm/edn-xhr
+                                                                   {:method :post
+                                                                    :url (str "/update-availability?groupname=" group-name
+                                                                              "&title=" title)
+                                                                    :data availability
+                                                                    :on-complete
+                                                                    (cm/localCommonHandler
+                                                                     (fn [e xhr data]
+                                                                       (ul/console-log (str "SUCCESS: " data))))})))
 
-                                                                (om/transact! ech
-                                                                              [:availability :title]
-                                                                              (fn [_] title))
+                                                       updatefn (fn []
+                                                                  (let [title (.val (js/$ "#availability-title"))
+                                                                        description (.val (js/$ "#availability-description"))
+                                                                        tags (mapv (fn [e]
+                                                                                     {:name (-> e
+                                                                                                s/lower-case
+                                                                                                (s/replace #"\-" ""))})
+                                                                                   (filter #(re-find #"\w" %)
+                                                                                           (s/split (.val (js/$ "#availability-tags"))
+                                                                                                    #"\s")))]
+                                                                    (om/transact! ech
+                                                                                  [:availability :title]
+                                                                                  (fn [_] title))
 
-                                                                (om/transact! ech
-                                                                              [:availability :description]
-                                                                              (fn [_] description))
+                                                                    (om/transact! ech
+                                                                                  [:availability :description]
+                                                                                  (fn [_] description))
 
-                                                                (om/transact! ech
-                                                                              [:availability :tags]
-                                                                              (fn [_] tags))
+                                                                    (om/transact! ech
+                                                                                  [:availability :tags]
+                                                                                  (fn [_] tags))
 
-                                                                (om/set-state! owner [:availability :title]  title)
-                                                                (om/set-state! owner [:availability :description] description)
-                                                                (om/set-state! owner [:availability :tags] tags)
+                                                                    (om/set-state! owner [:availability :title]  title)
+                                                                    (om/set-state! owner [:availability :description] description)
+                                                                    (om/set-state! owner [:availability :tags] tags)
 
-                                                                (secretary/dispatch! "/listings")
+                                                                    (secretary/dispatch! "/listings")
 
-                                                                (syncfn)))]
+                                                                    (syncfn)))]
 
 
-                                               (.val (js/$ "#availability-title")
-                                                     (:title (:availability ech)))
+                                                   (.val (js/$ "#availability-title")
+                                                         (:title (:availability ech)))
 
-                                               (.val (js/$ "#availability-description")
-                                                     (:description (:availability ech)))
+                                                   (.val (js/$ "#availability-description")
+                                                         (:description (:availability ech)))
 
-                                               (.val (js/$ "#availability-tags")
-                                                     (s/trim (reduce (fn [x y]
-                                                                       (str x "  " (:name y)))
-                                                                     ""
-                                                                     (:tags (:availability ech)))))
+                                                   (.val (js/$ "#availability-tags")
+                                                         (s/trim (reduce (fn [x y]
+                                                                           (str x "  " (:name y)))
+                                                                         ""
+                                                                         (:tags (:availability ech)))))
 
-                                               (.off (js/$ "#availability-save") "click")
-                                               (.click (js/$ "#availability-save")
-                                                       updatefn)
+                                                   (.off (js/$ "#availability-save") "click")
+                                                   (.click (js/$ "#availability-save")
+                                                           updatefn)
 
-                                               (secretary/dispatch! "/availabilities")))}
-                            [:td (:title (:availability @ech))]
-                            [:td (:description (:availability @ech))]
-                            [:td (for [tg (:tags (:availability @ech))]
-                                   [:div (:name tg)])]])]]])))
+                                                   (secretary/dispatch! "/availabilities")))]
+
+                             (ul/console-log (str "1: " currentUser))
+                             (ul/console-log (str "2: " availabilityUser))
+                             (ul/console-log (str "3: " (= currentUser availabilityUser)))
+
+                             [:tr {:class (if (= currentUser availabilityUser)
+                                            "availability-row" "")
+                                   :on-click (if (= currentUser availabilityUser)
+                                               updateHandler (constantly nil))}
+                              [:td (:title (:availability @ech))]
+                              [:td (:description (:availability @ech))]
+                              [:td (for [tg (:tags (:availability @ech))]
+                                     [:div (:name tg)])]
+                              [:td (:username (first (:users (first (:groups (:availability @ech))))))]]))]]])))
 
 (defn account-selected-description [account-level existing-classes]
   (if (= (cm/get-account-level) account-level)

@@ -112,8 +112,7 @@
                                                                                                           (s/split
                                                                                                            (.val (js/$ "#availability-tags"))
                                                                                                            #"\s")))}
-                                                                              ;;(:groupname (:user (cm/get-app-state)))
-                                                                              group-name "codepair"]
+                                                                              group-name (:groupname (:user (cm/get-app-state)))]
 
                                                                           (ul/console-log (str availability))
 

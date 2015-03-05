@@ -86,3 +86,11 @@ body {
 .availabilities-table {
     width: 100%;
 }
+
+.availability-row {
+    cursor: pointer;
+}
+.availability-row:hover {
+    cursor: normal;
+    background-color: #F5F5F5;
+}

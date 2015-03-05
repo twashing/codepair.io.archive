@@ -179,7 +179,10 @@
                {:time '_}}
               :pull {:availability
                      {:tags
-                      {:name :checked}}}))
+                      {:name :checked}
+                      :groups
+                      {:users
+                       {:username :checked}}}}))
 
 (defn list-tags-forgroup [ds gname]
   (adi/select ds
