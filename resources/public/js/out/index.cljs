@@ -23,22 +23,10 @@
          user-handler)
 
 (defn loginClickHandler []
-  (let [currentUser "twashing@gmail.com"
-        navigatorId js/navigator.id]
-
-    (ul/console-log "Signin CLICKED")
-    (.watch navigatorId
-            (clj->js {:loggedInUser currentUser
-                      :onlogin verifyAssertion
-                      :onlogout cm/signoutUser}))
-    (.request navigatorId)))
+  (.request  js/navigator.id))
 
 (defn logoutClickHandler []
-  (let [currentUser "twashing@gmail.com"
-        navigatorId js/navigator.id]
-
-    (ul/console-log "Signin CLICKED")
-    (.logout navigatorId)))
+  (.logout  js/navigator.id))
 
 (defn verifyAssertion [assertion]
 
@@ -183,6 +171,15 @@
   (secretary/dispatch! loc))
 
 (defn session-check []
+
+  (let [currentUser (:username (:user (cm/get-app-state)))
+        navigatorId js/navigator.id]
+
+    (.watch navigatorId
+            (clj->js {:loggedInUser currentUser
+                      :onlogin verifyAssertion
+                      :onlogout cm/signoutUser})))
+
   (if (not (cm/user-logged-in?))
     (do (show-listings)
         (enable-signin))

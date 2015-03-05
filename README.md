@@ -24,12 +24,7 @@ This should be sufficient to run the tests
   - your session(s)
   - stripe page
 [ok] Stripe page (update account level)
-
-
-5. *CRU* availability
-  
-  - logout breaks occasionally
-  
+[ok] *CRU* availability  
   - tag filters broke
   - restrict updates to availabilities that you own
   - create button & workflow
@@ -42,7 +37,10 @@ This should be sufficient to run the tests
   - logout
   - mouse pointer over login / logout links
   - put "all" into tag filter
+[ok] logout breaks occasionally
+[ok] remove "twashing@gmail.com" as current user
   
+
 --
 6. ***Integrate WebRTC (incl. signalling server), or Google Hangouts integration*** (http://clojurehackers.com/p/Marak/simple-peer, https://www.google.ca/search?q=setting+up+a+webrtc+server&oq=setting+up+a+webrtc+server&aqs=chrome..69i57.7031j0j7&sourceid=chrome&es_sm=91&ie=UTF-8, https://webrtchacks.com/own-phoneco-with-webrtc/, http://stackoverflow.com/questions/21354278/webrtc-to-setup-signaling-server, http://deeppai.com/2014/01/26/getting-started-with-webrtc/, https://www.google.ca/search?q=clojure+webrtc+signalling+server&oq=clojure+webrtc+signalling+server&aqs=chrome..69i57j69i64l2.13111j0j7&sourceid=chrome&es_sm=91&ie=UTF-8, http://www.html5rocks.com/en/tutorials/webrtc/infrastructure/)
   - Good video documentation: https://www.youtube.com/watch?v=5ci91dfKCyc
