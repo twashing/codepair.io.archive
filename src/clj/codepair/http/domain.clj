@@ -32,8 +32,8 @@
 (defn add-availability [ds req]
 
   (identity req)
-  (let [gname (-> req :params :groupname)
-        availability (-> req :params :availability read-string)]
+  (let [availability (-> req :body slurp read-string)
+        gname (-> req :params :groupname)]
 
     (av/add-availability ds gname availability)))
 

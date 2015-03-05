@@ -1,5 +1,6 @@
 (ns index
-  (:require [cljs.reader :as reader]
+  (:require [clojure.string :as s]
+            [cljs.reader :as reader]
             [goog.events :as events]
             [goog.dom :as gdom]
             [om.core :as om :include-macros true]
@@ -91,7 +92,42 @@
                                     (if (cm/user-logged-in?)
                                       [:ul {:class "right" :id "listing-create-button"}
                                        [:li {:class "has-form show-for-large-up"}
-                                        [:a {:href "#" :class "button"} "Create"]]])]
+                                        [:a {:href "#"
+                                             :class "button"
+                                             :on-click (fn [e]
+                                                         (let [syncfn (fn []
+
+                                                                        (let [availability {:time :ongoing
+                                                                                            :title (.val (js/$ "#availability-title"))
+                                                                                            :description
+                                                                                            (.val (js/$ "#availability-description"))
+
+                                                                                            :tags (mapv (fn [e] {:name e})
+                                                                                                        (filter #(re-find #"\w" %)
+                                                                                                                (s/split
+                                                                                                                 (.val
+                                                                                                     (js/$ "#availability-tags"))
+                                                                                                                 #"\s")))}
+                                                                              ;;(:groupname (:user (cm/get-app-state)))
+                                                                              group-name "codepair"]
+
+                                                                          (cm/edn-xhr
+                                                                           {:method :post
+                                                                            :url (str "/add-availability?groupname=" group-name)
+                                                                            :data availability
+                                                                            :on-complete
+                                                                            (cm/localCommonHandler
+                                                                             (fn [e xhr data]
+                                                                               (ul/console-log (str "SUCCESS: " data))
+                                                                               (set! (.-location js/window) "/")))})))]
+
+
+                                                           (.off (js/$ "#availability-save") "click")
+                                                           (.click (js/$ "#availability-save")
+                                                                   syncfn)
+
+                                                           (secretary/dispatch! "/availabilities")))}
+                                         "Create"]]])]
                                    [:div {:id "tags"}]
                                    [:div {:id "availabilities"}]])))
             @cm/app-state

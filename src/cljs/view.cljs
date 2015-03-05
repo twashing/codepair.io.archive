@@ -56,8 +56,8 @@
 
    [:div {:class "row"}
     [:a {:id "availability-save"
-         :class "button tiny right"}
-     "save"]]])
+         :class "button right"}
+     "Save"]]])
 
 (defn availability-view [state owner]
   (om/component (html (availability-view-nominal state owner))))
@@ -77,20 +77,20 @@
                            [:tr {:on-click (fn [e]
                                              (let [syncfn (fn []
 
-                                                            (ul/console-log (str (om/get-state owner)))
-
                                                             (let [availability (:availability (om/get-state owner))
                                                                   title (:title (:availability ech))
-                                                                  group-name "codepair"
                                                                   ;;(:groupname (:user (cm/get-app-state)))
-                                                                  ]
+                                                                  group-name "codepair"]
+
                                                               (cm/edn-xhr
                                                                {:method :post
-                                                                :url (str "/update-availability?groupname=" group-name "&title=" title)
+                                                                :url (str "/update-availability?groupname=" group-name
+                                                                          "&title=" title)
                                                                 :data availability
                                                                 :on-complete
-                                                                (cm/localCommonHandler (fn [e xhr data]
-                                                                                         (ul/console-log (str "SUCCESS: " data))))})))
+                                                                (cm/localCommonHandler
+                                                                 (fn [e xhr data]
+                                                                   (ul/console-log (str "SUCCESS: " data))))})))
 
                                                    updatefn (fn []
                                                               (let [title (.val (js/$ "#availability-title"))

@@ -13,4 +13,4 @@ goog.addDependency("../secretary/core.js", ['secretary.core'], ['cljs.core', 'cl
 goog.addDependency("../cljs/reader.js", ['cljs.reader'], ['goog.string', 'cljs.core', 'goog.string.StringBuffer']);
 goog.addDependency("../common.js", ['common'], ['goog.dom', 'goog.net.XhrIo', 'cljs.core', 'goog.events.EventType', 'util', 'om.core', 'cljs.reader', 'goog.events']);
 goog.addDependency("../view.js", ['view'], ['goog.dom', 'goog.string', 'cljs.core', 'om.dom', 'sablono.core', 'util', 'om.core', 'secretary.core', 'common', 'clojure.string', 'cljs.reader']);
-goog.addDependency("../index.js", ['index'], ['goog.dom', 'view', 'goog.net.XhrIo', 'cljs.core', 'om.dom', 'sablono.core', 'goog.events.EventType', 'util', 'om.core', 'secretary.core', 'common', 'cljs.reader', 'goog.events']);
+goog.addDependency("../index.js", ['index'], ['goog.dom', 'view', 'goog.net.XhrIo', 'cljs.core', 'om.dom', 'sablono.core', 'goog.events.EventType', 'util', 'om.core', 'secretary.core', 'common', 'clojure.string', 'cljs.reader', 'goog.events']);
