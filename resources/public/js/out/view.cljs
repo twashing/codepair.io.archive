@@ -176,6 +176,14 @@
     (str "*" existing-text)
     existing-text))
 
+(defn session-view-nominal [state owner]
+  (html [:div {:id "session-pane"}
+         [:video {:autoplay true}]]))
+
+(defn session-view [state owner]
+  (om/component (session-view-nominal state owner)))
+
+
 (defn pay-with-stripe [planId description amount]
 
   (let [stripe-config (clj->js {:key "pk_test_CT5VaR5BAIH2ZneC0wGLTh9b"
@@ -239,7 +247,9 @@
                           (availability-view-nominal (constantly nil nil nil))]]
 
                         [:div {:class "content" :id "tab-session"}
-                         [:p "Session"]]
+                         (session-view-nominal (constantly nil nil))]
+
+
 
                         [:div {:class "content" :id "tab-account"}
 

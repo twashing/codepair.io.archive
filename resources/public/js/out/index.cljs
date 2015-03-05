@@ -135,32 +135,45 @@
 (defn show-landing []
   (let [listings-container "listings-container"]
 
-    ;; set the container into which our listings will go
+    ;; 1. set the container into which our listings will go
     (om/root (fn [state owner]
                (vw/landing-view listings-container))
              @cm/app-state
              {:target (. js/document (getElementById "app-container"))})
 
-    ;; Invoke after using a foundation component
+    ;; 2. Invoke after using a foundation component
     ;; Refer to "Adding New Content After Page Load" here: http://foundation.zurb.com/docs/javascript.html
     (.foundation (js/$ js/document) "tab" "reflow")
 
+    ;; 3.
     (show-listings listings-container)
 
+    ;; 4.
+    (let [video (.. js/document (querySelector "video"))
+          constraints (clj->js {:audio true
+                                :video true})
+          _ (set! (.-getUserMedia js/navigator)
+                  (or (.-getUserMedia js/navigator)
+                      (.-webkitGetUserMedia js/navigator)
+                      (.-mozGetUserMedia js/navigator)))
 
+          successCallback (fn [stream]
+                            (set! (.-stream js/window) stream)
+                            (if (.-URL js/window)
+                              (set! (.-src video) (.. js/window.URL (createObjectURL stream)))
+                              (set! (.-src video) stream)))
+
+          errorCallback (fn [error]
+                          (ul/console-log (str "navigator.getUserMedia error: " error)))]
+
+      (.. js/navigator (getUserMedia constraints successCallback errorCallback)))
+
+    ;; 5.
     (secretary/set-config! :prefix "#")
-
-    (defroute "/listings" {:as params}
-      (vw/switch-tab "#tab-listings-link" "/#"))
-
-    (defroute "/availabilities" {:as params}
-      (vw/switch-tab "#tab-availabilities-link" "/#availabilities"))
-
-    (defroute "/session" {:as params}
-      (vw/switch-tab "#tab-session-link" "/#session"))
-
-    (defroute "/account" {:as params}
-      (vw/switch-tab "#tab-account-link" "/#account"))
+    (defroute "/listings" {:as params} (vw/switch-tab "#tab-listings-link" "/#"))
+    (defroute "/availabilities" {:as params} (vw/switch-tab "#tab-availabilities-link" "/#availabilities"))
+    (defroute "/session" {:as params} (vw/switch-tab "#tab-session-link" "/#session"))
+    (defroute "/account" {:as params} (vw/switch-tab "#tab-account-link" "/#account"))
 
     #_(let [h (History.)]
       (goog.events/listen h EventType.NAVIGATE #(secretary/dispatch! (.-token %)))
