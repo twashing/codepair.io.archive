@@ -95,7 +95,10 @@
                                                    updatefn (fn []
                                                               (let [title (.val (js/$ "#availability-title"))
                                                                     description (.val (js/$ "#availability-description"))
-                                                                    tags (mapv (fn [e] {:name e})
+                                                                    tags (mapv (fn [e]
+                                                                                 {:name (-> e
+                                                                                            s/lower-case
+                                                                                            (s/replace #"\-" ""))})
                                                                                (filter #(re-find #"\w" %)
                                                                                        (s/split (.val (js/$ "#availability-tags"))
                                                                                                 #"\s")))]

@@ -102,14 +102,20 @@
                                                                                             :description
                                                                                             (.val (js/$ "#availability-description"))
 
-                                                                                            :tags (mapv (fn [e] {:name e})
-                                                                                                        (filter #(re-find #"\w" %)
-                                                                                                                (s/split
-                                                                                                                 (.val
-                                                                                                     (js/$ "#availability-tags"))
-                                                                                                                 #"\s")))}
+                                                                                            :tags
+                                                                                            (mapv (fn [e]
+                                                                                                    {:name (-> e
+                                                                                                               s/lower-case
+                                                                                                               (s/replace #"\-" ""))})
+                                                                                                  (filter #(re-find #"\w" %)
+
+                                                                                                          (s/split
+                                                                                                           (.val (js/$ "#availability-tags"))
+                                                                                                           #"\s")))}
                                                                               ;;(:groupname (:user (cm/get-app-state)))
                                                                               group-name "codepair"]
+
+                                                                          (ul/console-log (str availability))
 
                                                                           (cm/edn-xhr
                                                                            {:method :post
@@ -121,6 +127,9 @@
                                                                                (ul/console-log (str "SUCCESS: " data))
                                                                                (set! (.-location js/window) "/")))})))]
 
+                                                           (.val (js/$ "#availability-title") "")
+                                                           (.val (js/$ "#availability-description") "")
+                                                           (.val (js/$ "#availability-tags") "")
 
                                                            (.off (js/$ "#availability-save") "click")
                                                            (.click (js/$ "#availability-save")
