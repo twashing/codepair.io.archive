@@ -151,7 +151,9 @@
     ;; 4.
     (let [video (.. js/document (querySelector "video"))
           constraints (clj->js {:audio false
-                                :video true})
+                                :video true
+                                :maxWidth 640
+                                maxHight 480})
           _ (set! (.-getUserMedia js/navigator)
                   (or (.-getUserMedia js/navigator)
                       (.-webkitGetUserMedia js/navigator)

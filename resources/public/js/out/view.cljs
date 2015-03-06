@@ -178,7 +178,15 @@
 
 (defn session-view-nominal [state owner]
   (html [:div {:id "session-pane"}
-         [:video {:autoPlay true}]]))
+         [:video {:id "localVideo" :autoPlay true}]
+         [:video {:id "remoteVideo" :autoPlay true}]
+
+         [:div
+          [:button {:id "startButton"} "Start"]
+          [:button {:id "callButton"} "Call"]
+          [:button {:id "hangupButton"} "Hang Up"]]
+
+         ]))
 
 (defn session-view [state owner]
   (om/component (session-view-nominal state owner)))
