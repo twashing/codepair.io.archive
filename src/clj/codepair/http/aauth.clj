@@ -5,7 +5,6 @@
             [taoensso.timbre :as timbre]
             [cheshire.core :as chesr]
             [clj-http.client :as client]
-            [codepair.shell :as sh]
             [codepair.domain.user :as us]))
 
 (defn add-user-ifnil [ds username]

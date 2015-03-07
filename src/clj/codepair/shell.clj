@@ -1,7 +1,5 @@
 (ns codepair.shell
   (:require [clojure.pprint :as pp]
-
-            [alembic.still]
             [taoensso.timbre :as timbre]
             [hara.component :as hco]
             [adi.core :as adi]
@@ -24,9 +22,6 @@
             [codepair.http.server :as sv]
             [codepair.http.handler :as hl]))
 
-
-(defn reload-project []
-  (alembic.still/load-project))
 
 ;; Codepair Log config
 (timbre/set-config! [:shared-appender-config :spit-filename] "logs/codepair.log")
@@ -131,7 +126,5 @@
 
   (require '[codepair.domain.availability :as av])
 
-  (av/find-availability-by-tag ds "purescript")
+  (av/find-availability-by-tag ds "purescript"))
 
-
-  )

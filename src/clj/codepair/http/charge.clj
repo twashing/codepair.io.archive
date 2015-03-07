@@ -13,7 +13,6 @@
             [clj-stripe.customers :as customers]
             [clj-stripe.invoices :as invoices]
             [clj-stripe.invoiceitems :as invoiceitems]
-            [codepair.shell :as sh]
             [codepair.domain.user :as us]))
 
 

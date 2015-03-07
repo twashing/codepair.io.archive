@@ -36,8 +36,7 @@
   :profiles {:dev {:source-paths ["src/cljs/" "src/clj/"]
                    :dependencies [[org.clojure/test.check "0.6.1"]
                                   [ring/ring-mock "0.2.0"]
-                                  [midje "1.6.3"]
-                                  [alembic "0.3.2"]]
+                                  [midje "1.6.3"]]
                    :plugins [[lein-midje "3.1.1"]]}}
 
   :cljsbuild {:builds [{:id "codepair"

@@ -1,6 +1,5 @@
 (ns codepair.http.server
-  (:require [ring.server.standalone :as rs]
-            [codepair.http.handler :as hl]))
+  (:require [ring.server.standalone :as rs]))
 
 
 (def server (atom nil))

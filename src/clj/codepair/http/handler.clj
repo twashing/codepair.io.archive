@@ -10,7 +10,6 @@
             [taoensso.timbre :as timbre]
 
             [bkell.config :as config]
-            [codepair.shell :as sh]
             [codepair.http.aauth :as au]
             [codepair.http.charge :as ch]
             [codepair.http.domain :as hd]))
