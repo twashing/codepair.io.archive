@@ -18,8 +18,12 @@ This should be sufficient to run the tests
   - Good video documentation: https://www.youtube.com/watch?v=5ci91dfKCyc
   - Signalling & STUN server
 
+- Sente
+- publish / subscribe mechanism
+
 --
 7. Devops
+  - restart interruptsoftware.com
   - point DNS records to Linode server
   - prod deploy **app**
   - prod deploy **db**
@@ -38,6 +42,7 @@ This should be sufficient to run the tests
 13. Office Hours
 14. Switch accounts
   - including unsubscribe back to free, from Professional or Enterprise
+
 
 - edn parsing after first signup
 - availabilities / order-by
