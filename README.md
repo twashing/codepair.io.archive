@@ -14,23 +14,44 @@ This should be sufficient to run the tests
 
 ## TODO
 
+
+1. Sente
+  - start / stop server (w/ http-kit)
+  - hot reloading
+  - async messages
+  - WebRTC Signalling
+  - A/V , Messaging / Screensharing
+
+2. https://github.com/cemerick/double-check
+  - Herbert Test Schemas
+
+3. Om Components
+4. Om / Cursor updates
+
+5. Sablono -> kioo
+
+5. CRUD Availabilities
+5. Unify Searches
+5. Request connection
+
 6. ***Integrate WebRTC (incl. signalling server), or Google Hangouts integration*** (http://clojurehackers.com/p/Marak/simple-peer, https://www.google.ca/search?q=setting+up+a+webrtc+server&oq=setting+up+a+webrtc+server&aqs=chrome..69i57.7031j0j7&sourceid=chrome&es_sm=91&ie=UTF-8, https://webrtchacks.com/own-phoneco-with-webrtc/, http://stackoverflow.com/questions/21354278/webrtc-to-setup-signaling-server, http://deeppai.com/2014/01/26/getting-started-with-webrtc/, https://www.google.ca/search?q=clojure+webrtc+signalling+server&oq=clojure+webrtc+signalling+server&aqs=chrome..69i57j69i64l2.13111j0j7&sourceid=chrome&es_sm=91&ie=UTF-8, http://www.html5rocks.com/en/tutorials/webrtc/infrastructure/)
   - Good video documentation: https://www.youtube.com/watch?v=5ci91dfKCyc
   - Signalling & STUN server
 
-- Sente
-- publish / subscribe mechanism
 
 --
 7. Devops
-  - restart interruptsoftware.com
   - point DNS records to Linode server
+  - restart interruptsoftware.com
+  - notify Stripe that I'm going live
+  
   - prod deploy **app**
   - prod deploy **db**
   - prod deploy **webrtc** solution
-  - notify Stripe that I'm going live
+
 8. Connect with someone
   - Accept a connection 
+
 9. Exit pairing (of others)
   - End session (of yours)
 
