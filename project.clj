@@ -7,8 +7,8 @@
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [org.clojure/clojurescript "0.0-2505"]
                  [org.clojure/core.async "0.1.346.0-17112a-alpha"]
-                 [io.pedestal/pedestal.service "0.3.1" :exclusions [clj-time]]
-                 [io.pedestal/pedestal.service-tools "0.3.1" :exclusions [clj-time]]
+                 [io.pedestal/pedestal.service "0.3.1" :exclusions [ring/ring-core clj-time com.fasterxml.jackson.core/jackson-annotations]]
+                 [io.pedestal/pedestal.service-tools "0.3.1" :exclusions [com.fasterxml.jackson.core/jackson-annotations clj-time]]
 
                  [io.pedestal/pedestal.jetty "0.3.1"]
                  [ch.qos.logback/logback-classic "1.1.2" :exclusions [[org.slf4j/slf4j-api]]]
@@ -16,25 +16,40 @@
                  [org.slf4j/jcl-over-slf4j "1.7.7"]
                  [org.slf4j/log4j-over-slf4j "1.7.7"]
 
-                 [im.chit/vinyasa "0.3.4" :exclusions [im.chit/hara.reflect]]
-                 [im.chit/vinyasa "0.3.4" :exclusions [im.chit/hara.namespace.import]]
-                 [im.chit/vinyasa "0.3.4" :exclusions [im.chit/hara.class.inheritance]]
-                 [im.chit/vinyasa "0.3.4" :exclusions [im.chit/hara.data.map]]
-                 [im.chit/vinyasa "0.3.4" :exclusions [im.chit/hara.common.checks]]
-                 [im.chit/vinyasa "0.3.4" :exclusions [im.chit/hara.common]]
-                 [im.chit/vinyasa "0.3.4" :exclusions [im.chit/hara.common.hash]]
-                 [im.chit/vinyasa "0.3.4" :exclusions [im.chit/hara.common.primitives]]
-                 [im.chit/vinyasa "0.3.4" :exclusions [im.chit/hara.common.error]]
-                 [im.chit/vinyasa "0.3.4" :exclusions [org.codehaus.plexus/plexus-utils]]
-                                                                                                                                                                          
-                 [compojure "1.3.1"]
+                 [im.chit/vinyasa "0.3.4" :exclusions [im.chit/hara.reflect
+                                                       im.chit/hara.namespace.import
+                                                       im.chit/hara.class.inheritance
+                                                       im.chit/hara.data.map
+                                                       im.chit/hara.common.checks
+                                                       im.chit/hara.common
+                                                       im.chit/hara.common.hash
+                                                       im.chit/hara.common.primitives
+                                                       im.chit/hara.common.error
+                                                       org.codehaus.plexus/plexus-utils]]
+                 [im.chit/hara.reflect "2.1.8" :exclusions [im.chit/hara.common.checks
+                                                            im.chit/hara.common
+                                                            im.chit/hara.common.error
+                                                            im.chit/hara.common.hash
+                                                            im.chit/hara.common.primitives]]
+                 [io.pedestal/pedestal.service-tools "0.3.1" :exclusions [ring/ring-core
+                                                                          com.fasterxml.jackson.core/jackson-annotations
+                                                                          clj-time]]
+                 
+                 [compojure "1.3.1" :exclusions [ring/ring-core]]
                  [ring/ring-core "1.2.1"]
                  [ring/ring-devel "1.0.0"]
                  [ring/ring-jetty-adapter "1.2.1"]
-                 [ring-server "0.4.0"]
+                 [ring-server "0.4.0" :exclusions [ring/ring-devel
+                                                   ring/ring-core hiccup
+                                                   clj-stacktrace ns-tracker
+                                                   ring/ring-servlet
+                                                   org.clojure/java.classpath
+                                                   ring/ring-jetty-adapter]]
                  [slingshot "0.12.1"]
-                 [cheshire "5.4.0"]
-                 [clj-http "1.0.1"]
+                 [cheshire "5.4.0"  :exclusions [com.fasterxml.jackson.core/jackson-core]]
+                 [clj-http "1.0.1"  :exclusions [com.cognitect/transit-clj
+                                                 com.cognitect/transit-java
+                                                 com.fasterxml.jackson.core/jackson-annotations]]
                  [com.taoensso/timbre "3.3.1"]
                  [im.chit/hara.component "2.1.7"]
                  [im.chit/adi "0.3.1"]
@@ -47,23 +62,22 @@
                  [abengoa/clj-stripe "1.0.4"]
                  [noisesmith/groundhog "0.0.3"]
 
-                 [bkell "0.1.2"]]
+                 [bkell "0.1.2"  :exclusions [org.clojure/clojure com.google.guava/guava]]]
 
   :resource-paths ["resources" "config"]
   :global-vars  {*warn-on-reflection* true
                  *assert* true}
-  :pedantic? :abort
+  ;;:pedantic? :abort
   :main ^{:skip-aot true} server-sent-events.server
-  :profiles {:dev {:aliases {"run-dev" ["trampoline" "run" "-m" "server-sent-events.server/run-dev"]}
-                   :dependencies [[io.pedestal/pedestal.service-tools "0.3.1"]]
-                   :source-paths ["dev"]}}
         
   :repl-options {:init-ns codepair.shell}
 
   :ring {:handler codepair.http.handler/app}
 
-  :profiles {:dev {:source-paths ["src/cljs/" "src/clj/"]
-                   :dependencies [[org.clojure/test.check "0.6.1"]
+  :profiles {:dev {:aliases {"run-dev" ["trampoline" "run" "-m" "server-sent-events.server/run-dev"]}
+                   :source-paths ["src/cljs/" "src/clj/" "dev"]
+                   :dependencies [[io.pedestal/pedestal.service-tools "0.3.1"]
+                                  [org.clojure/test.check "0.6.1"]
                                   [ring/ring-mock "0.2.0"]
                                   [midje "1.6.3"]]
                    :plugins [[lein-midje "3.1.1"]]}}

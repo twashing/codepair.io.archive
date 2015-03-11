@@ -15,10 +15,10 @@ This should be sufficient to run the tests
 ## TODO
 
 
-1. Sente
-  - start / stop server (w/ http-kit)
+1. Pedestal
+  - start / stop server
   - hot reloading
-  - async messages
+  [ok] async messages
   - WebRTC Signalling
   - A/V , Messaging / Screensharing
 
