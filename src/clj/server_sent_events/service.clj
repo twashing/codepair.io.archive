@@ -18,6 +18,10 @@
             [ring.util.response :as ring-resp]
             [clojure.core.async :as async]))
 
+(defn about-page
+  [request]
+  (ring-resp/response "Server Sent Service"))
+
 (defn send-counter
   "Counts down to 0, sending value of counter to sse context and
   recursing on a different thread; ends event stream when counter
@@ -46,14 +50,47 @@
   (let [{:keys [request response-channel]} ctx]
     (send-counter event-ch 10)))
 
-(defn about-page
-  [request]
-  (ring-resp/response "Server Sent Service"))
+
+(declare rtc-client rtc-recieve)
+(def rtc1-channel (atom nil))
+(def rtc2-channel (atom nil))
+
+(defn rtc1 [request]
+  (rtc-client rtc1-channel {}))
+
+(defn rtc2[request]
+  (rtc-recieve rtc2-channel {}))
+
+;; ======
+(defn rtc-client [event-ch data]  
+  (async/put! event-ch {:ok "ack"}))
+
+(defn rtc-client-ready
+  [event-ch ctx]
+  (let [{:keys [request response-channel]} ctx]
+
+    (swap! rtc2-channel (fn [x] event-ch))
+    (rtc-client event-ch {:ok "recieve-established"})))
+
+;; ======
+(defn rtc-recieve [event-ch data]
+  (async/put! event-ch {:ok "send"}))
+
+(defn rtc-recieve-ready [event-ch ctx]
+  (let [{:keys [request response-channel]} ctx]
+
+    (swap! rtc1-channel (fn [x] event-ch))
+    (rtc-recieve event-ch {:ok "send-established"})))
 
 ;; Wire root URL to sse event stream
 (defroutes routes
   [[["/" {:get [::send-counter (sse/start-event-stream sse-stream-ready)]}
-     ["/about" {:get about-page}]]]])
+     ["/about" {:get about-page}]]
+    
+    ["/rtc"    {:get [::rtc (sse/start-event-stream rtc-client-ready)]}]
+    ["/rtcack" {:get [::rtcack (sse/start-event-stream rtc-recieve-ready)]}]
+    ["/rtc1"   {:get rtc1}]
+    ["/rtc2"   {:get rtc2}]]])
 
 ;; You can use this fn or a per-request fn via io.pedestal.service.http.route/url-for
 (def url-for (route/url-for-routes routes))

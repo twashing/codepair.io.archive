@@ -41,14 +41,21 @@ function streamHandler(stream) {
 
     pc.createOffer(function(offer) {
 	pc.setLocalDescription(new RTCSessionDescription(offer), function() {
-	    // send the offer to a server to be forwarded to the friend you're calling.
-	    console.log("foo");
+
+	    $.get("/rtc2" , function(data, textStatus, jqXHR) {
+		    console.log("data: " + data + " / status: " + textStatus);
+		});
 	}, errorHandler);
     }, errorHandler);
 };
-
 var streamConfig = {video: true};
-
 navigator.getUserMedia = navigator.webkitGetUserMedia
-navigator.getUserMedia(streamConfig, streamHandler, errorHandler);
 
+$.get("/rtc", function(data, textStatus, jqXHR) {
+    console.log("data: " + data + " / textStatus: " + textStatus);
+});
+
+
+function begin () {
+    navigator.getUserMedia(streamConfig, streamHandler, errorHandler);
+} 
