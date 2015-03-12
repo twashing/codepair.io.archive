@@ -39,10 +39,11 @@
 (def rtc2-channel (atom nil))
 
 (defn rtc1 [request]
-  (rtc-client rtc1-channel {}))
+  (rtc-client @rtc1-channel {}))
 
 (defn rtc2[request]
-  (rtc-recieve rtc2-channel {}))
+  (rtc-recieve @rtc2-channel {:name "rtc2"
+                              :data "ok"}))
 
 ;; ======
 (defn rtc-client [event-ch data]  
@@ -58,14 +59,12 @@
 ;; ======
 (defn rtc-recieve [event-ch data]
   (async/put! event-ch data)
-  (async/close! event-ch))
+  #_(async/close! event-ch))
 
 (defn rtc-recieve-ready [event-ch ctx]
   (let [{:keys [request response-channel]} ctx]
 
-    #_(swap! rtc2-channel (constantly event-ch))
-    (rtc-recieve event-ch {:name "a"
-                           :data "b"})))
+    (swap! rtc2-channel (constantly event-ch))))
 
 ;; Wire root URL to sse event stream
 (defroutes routes
