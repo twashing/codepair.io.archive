@@ -3,19 +3,18 @@
   :url "codepair.io"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
-
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [org.clojure/clojurescript "0.0-2505"]
                  [org.clojure/core.async "0.1.346.0-17112a-alpha"]
-                 [io.pedestal/pedestal.service "0.3.1" :exclusions [ring/ring-core clj-time com.fasterxml.jackson.core/jackson-annotations]]
-                 [io.pedestal/pedestal.service-tools "0.3.1" :exclusions [com.fasterxml.jackson.core/jackson-annotations clj-time]]
-
+                 [io.pedestal/pedestal.service "0.3.1" :exclusions [ring/ring-core clj-time
+                                                                    com.fasterxml.jackson.core/jackson-annotations]]
+                 [io.pedestal/pedestal.service-tools "0.3.1" :exclusions [com.fasterxml.jackson.core/jackson-annotations
+                                                                          clj-time]]
                  [io.pedestal/pedestal.jetty "0.3.1"]
                  [ch.qos.logback/logback-classic "1.1.2" :exclusions [[org.slf4j/slf4j-api]]]
                  [org.slf4j/jul-to-slf4j "1.7.7"]
                  [org.slf4j/jcl-over-slf4j "1.7.7"]
                  [org.slf4j/log4j-over-slf4j "1.7.7"]
-
                  [im.chit/vinyasa "0.3.4" :exclusions [im.chit/hara.reflect
                                                        im.chit/hara.namespace.import
                                                        im.chit/hara.class.inheritance
@@ -33,8 +32,7 @@
                                                             im.chit/hara.common.primitives]]
                  [io.pedestal/pedestal.service-tools "0.3.1" :exclusions [ring/ring-core
                                                                           com.fasterxml.jackson.core/jackson-annotations
-                                                                          clj-time]]
-                 
+                                                                          clj-time]]                 
                  [compojure "1.3.1" :exclusions [ring/ring-core]]
                  [ring/ring-core "1.2.1"]
                  [ring/ring-devel "1.0.0"]
@@ -64,7 +62,7 @@
 
                  [bkell "0.1.2"  :exclusions [org.clojure/clojure com.google.guava/guava]]]
 
-  :resource-paths ["resources" "config"]
+  :resource-paths ["resources" "config" "dev"]
   :global-vars  {*warn-on-reflection* true
                  *assert* true}
   ;;:pedantic? :abort
@@ -75,7 +73,7 @@
   :ring {:handler codepair.http.handler/app}
 
   :profiles {:dev {:aliases {"run-dev" ["trampoline" "run" "-m" "server-sent-events.server/run-dev"]}
-                   :source-paths ["src/cljs/" "src/clj/" "dev"]
+                   :source-paths ["src/cljs/" "src/clj/" "dev/"]
                    :dependencies [[io.pedestal/pedestal.service-tools "0.3.1"]
                                   [org.clojure/test.check "0.6.1"]
                                   [ring/ring-mock "0.2.0"]

@@ -1,15 +1,3 @@
-; Copyright 2013 Relevance, Inc.
-; Copyright 2014 Cognitect, Inc.
-
-; The use and distribution terms for this software are covered by the
-; Eclipse Public License 1.0 (http://opensource.org/licenses/eclipse-1.0)
-; which can be found in the file epl-v10.html at the root of this distribution.
-;
-; By using this software in any fashion, you are agreeing to be bound by
-; the terms of this license.
-;
-; You must not remove this notice, or any other, from this software.
-
 (ns server-sent-events.server
   (:gen-class) ; for -main method in uberjar
   (:require [io.pedestal.http :as server]
@@ -26,8 +14,7 @@
   (-> service/service ;; start with production configuration
       (merge {:env :dev
               ;; do not block thread that starts web server
-              ::server/join? false
-              ;; Routes can be a function that resolve routes,
+              ::server/join? false?              ;; Routes can be a function that resolve routes,
               ;;  we can use this to set the routes to be reloadable
               ::server/routes #(deref #'service/routes)
               ;; all origins are allowed in dev mode
@@ -38,9 +25,13 @@
       server/create-server
       server/start))
 
+
+(defn start []
+  (server/start runnable-service))
+
+
 (defn -main
   "The entry-point for 'lein run'"
   [& args]
   (println "\nCreating your server...")
   (server/start runnable-service))
-
