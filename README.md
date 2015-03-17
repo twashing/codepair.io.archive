@@ -16,10 +16,15 @@ This should be sufficient to run the tests
 
 
 1. Pedestal
-  - start / stop server
-  - hot reloading
+
+  [ok] start / stop server
+  [ok] hot reloading
+
+  - different sessions can lookup other sessions by [sessionID, userName, groupName]
+  
   [ok] async messages
   - WebRTC Signalling
+  
   - A/V , Messaging / Screensharing
 
 2. https://github.com/cemerick/double-check

@@ -32,7 +32,7 @@
                                                             im.chit/hara.common.primitives]]
                  [io.pedestal/pedestal.service-tools "0.3.1" :exclusions [ring/ring-core
                                                                           com.fasterxml.jackson.core/jackson-annotations
-                                                                          clj-time]]                 
+                                                                          clj-time]]
                  [compojure "1.3.1" :exclusions [ring/ring-core]]
                  [ring/ring-core "1.2.1"]
                  [ring/ring-devel "1.0.0"]
@@ -67,7 +67,7 @@
                  *assert* true}
   ;;:pedantic? :abort
   :main ^{:skip-aot true} server-sent-events.server
-        
+
   :repl-options {:init-ns codepair.shell}
 
   :ring {:handler codepair.http.handler/app}

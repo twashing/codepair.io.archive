@@ -58,8 +58,7 @@
 
 ;; ======
 (defn rtc-recieve [event-ch data]
-  (async/put! event-ch data)
-  #_(async/close! event-ch))
+  (async/put! event-ch data))
 
 (defn rtc-recieve-ready [event-ch ctx]
   (let [{:keys [request response-channel]} ctx]
