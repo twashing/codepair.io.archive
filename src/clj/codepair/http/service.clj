@@ -16,7 +16,10 @@
             [io.pedestal.http.route :as route]
             [io.pedestal.http.route.definition :refer [defroutes]]
             [ring.util.response :as ring-resp]
-            [clojure.core.async :as async]))
+            [clojure.core.async :as async]
+
+            [codepair.http.server :as server])
+  (:import [org.eclipse.jetty.servlet ServletContextHandler]))
 
 (defn send-counter
   "Counts down to 0, sending value of counter to sse context and
@@ -76,4 +79,8 @@
               ;; Either :jetty or :tomcat (see comments in project.clj
               ;; to enable Tomcat)
               ::bootstrap/type :jetty
-              ::bootstrap/port 8080})
+              ::bootstrap/port 8080
+
+              ::bootstrap/container-options {:context-configurator
+                                             (fn [^ServletContextHandler context]
+                                               (.setHandler context (server/get-session-handler)))}})

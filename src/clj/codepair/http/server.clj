@@ -15,6 +15,30 @@
   (:require [io.pedestal.http :as server]
             [codepair.http.service :as service]))
 
+(def sessions (atom []))
+
+#_(defn get-session-handler []
+
+  (let [session-listener (reify javax.servlet.http.HttpSessionListener
+
+                           (sessionCreated [this event]
+                             (swap! sessions #(conj % (.getSession event))))
+
+                           (sessionDestroyed [this event]
+                             (swap! sessions (fn [sess]
+                                               (remove #(= (.getId (.getSession event))
+                                                           (.getId sess))
+                                                       sess)))))
+
+        ;; http://git.eclipse.org/c/jetty/org.eclipse.jetty.project.git/tree/jetty-server
+        ;; http://git.eclipse.org/c/jetty/org.eclipse.jetty.project.git/
+        session-manager (org.eclipse.jetty.server.session.HashSessionManager.)
+        session-handler (org.eclipse.jetty.server.session.SessionHandler. session-manager)
+        _ (.addEventListener session-handler session-listener)]
+
+    session-handler))
+
+
 ;; This is an adapted service map, that can be started and stopped
 ;; From the REPL you can call server/start and server/stop on this service
 (defonce runnable-service (server/create-server service/service))
@@ -43,3 +67,29 @@
   [& args]
   (println "\nCreating your server...")
   (server/start runnable-service))
+
+
+
+(comment
+
+  (def sessions (atom []))
+
+(def session-listener (reify javax.servlet.http.HttpSessionListener
+
+                         (sessionCreated [this event]
+                           (swap! sessions #(conj % (.getSession event))))
+
+                         (sessionDestroyed [this event]
+                           (swap! sessions (fn [sess]
+                                             (remove #(= (.getId (.getSession event))
+                                                         (.getId sess))
+                                                     sess))))))
+
+;; http://git.eclipse.org/c/jetty/org.eclipse.jetty.project.git/tree/jetty-server
+;; http://git.eclipse.org/c/jetty/org.eclipse.jetty.project.git/
+(def session-manager (org.eclipse.jetty.server.session.HashSessionManager.))
+(def session-handler (org.eclipse.jetty.server.session.SessionHandler. session-manager))
+
+;;(.setHandler context session-handler)
+;;(.addEventListener session-handler session-listener)
+)
