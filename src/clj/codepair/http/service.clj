@@ -83,5 +83,5 @@
 
               ::bootstrap/container-options {:context-configurator
                                              (fn ^ServletContextHandler [^ServletContextHandler context]
-                                               (.setHandler context (util/get-session-handler))
+                                               (.setSessionHandler context (util/get-session-handler))
                                                context)}})
