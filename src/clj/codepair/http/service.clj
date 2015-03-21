@@ -18,7 +18,7 @@
             [ring.util.response :as ring-resp]
             [clojure.core.async :as async]
 
-            [codepair.http.server :as server])
+            [codepair.http.util :as util])
   (:import [org.eclipse.jetty.servlet ServletContextHandler]))
 
 (defn send-counter
@@ -82,5 +82,6 @@
               ::bootstrap/port 8080
 
               ::bootstrap/container-options {:context-configurator
-                                             (fn [^ServletContextHandler context]
-                                               (.setHandler context (server/get-session-handler)))}})
+                                             (fn ^ServletContextHandler [^ServletContextHandler context]
+                                               (.setHandler context (util/get-session-handler))
+                                               context)}})
