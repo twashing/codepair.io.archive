@@ -22,6 +22,7 @@
         ;; http://git.eclipse.org/c/jetty/org.eclipse.jetty.project.git/
         session-manager (org.eclipse.jetty.server.session.HashSessionManager.)
         session-handler (org.eclipse.jetty.server.session.SessionHandler. session-manager)
+
         _ (.addEventListener session-handler session-listener)]
 
     session-handler))
