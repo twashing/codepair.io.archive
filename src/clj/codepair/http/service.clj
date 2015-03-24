@@ -83,5 +83,13 @@
 
               ::bootstrap/container-options {:context-configurator
                                              (fn ^ServletContextHandler [^ServletContextHandler context]
-                                               (.setSessionHandler context (util/get-session-handler))
+
+                                               ;;(.. context getSessionHandler (addEventListener (util/get-session-listener)))
+                                               ;;(.. context getSessionHandler (addEventListener (util/get-session-listener)))
+                                               ;;(.setSessionHandler context (util/get-session-handler))
+
+                                               (let [^org.eclipse.jetty.server.session.SessionHandler
+                                                     shandler (.getSessionHandler context)
+                                                     _ (.addEventListener shandler (util/get-session-listener))])
+
                                                context)}})
