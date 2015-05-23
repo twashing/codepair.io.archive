@@ -15,6 +15,9 @@
             [io.pedestal.http.sse :as sse]
             [io.pedestal.http.route :as route]
             [io.pedestal.http.route.definition :refer [defroutes]]
+            [io.pedestal.interceptor :refer [definterceptor]]
+            [io.pedestal.interceptor.helpers :as interceptor]
+
             [ring.util.response :as ring-resp]
             [clojure.core.async :as async]
 
@@ -57,11 +60,24 @@
   [request]
   (ring-resp/response "thing RESPONSE 2"))
 
+(def sessions (atom []))
+
+(definterceptor session-interceptor
+
+  (interceptor {:name ::session
+                :enter (fn [context]
+
+                         (swap! sessions (fn [x] (conj x (:request context))))
+
+                         #_(update-in context [:request] #(session/session-request % options)))
+                :leave (response-fn-adapter session/session-response options)}))
+
 ;; Wire root URL to sse event stream
 (defroutes routes
   [[["/" {:get [::send-counter (sse/start-event-stream sse-stream-ready)]}
      ["/about" {:get about-page}]
-     ["/thing" {:get thing}]]]])
+     ["/thing" ^:interceptors [session-interceptor]
+      {:get thing}]]]])
 
 ;; You can use this fn or a per-request fn via io.pedestal.service.http.route/url-for
 (def url-for (route/url-for-routes routes))
@@ -81,7 +97,7 @@
               ::bootstrap/type :jetty
               ::bootstrap/port 8080
 
-              ::bootstrap/container-options {:context-configurator
+              #_::bootstrap/container-options #_{:context-configurator
                                              (fn ^ServletContextHandler [^ServletContextHandler context]
 
                                                ;;(.. context getSessionHandler (addEventListener (util/get-session-listener)))
