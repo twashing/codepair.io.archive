@@ -1,0 +1,18 @@
+{:test {:db-schema-file "db/schema-adi.edn"
+        :db-default-file "db/default.edn"
+        :db-url "datomic:mem://codepair"
+        :stripe-key-secret ""
+        :stripe-key-public ""
+        :xirsys-token "6138901e-8af5-11e5-b14d-686ff2c4df32"}
+ :dev {:db-schema-file "db/schema-adi.edn"
+       :db-default-file "db/default.edn"
+       :db-url "datomic:mem://codepair"
+       :stripe-key-secret ""
+       :stripe-key-public ""
+       :xirsys-token "6138901e-8af5-11e5-b14d-686ff2c4df32"}
+ :prod {:db-schema-file "db/schema-adi.edn"
+        :db-default-file "db/default.edn"
+        :db-url "datomic:free://localhost:4334//codepair"
+        :stripe-key-secret ""
+        :stripe-key-public ""
+        :xirsys-token "6138901e-8af5-11e5-b14d-686ff2c4df32"}}
