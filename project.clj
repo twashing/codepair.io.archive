@@ -16,4 +16,5 @@
                    :dependencies [[org.clojure/test.check "0.9.0"]
                                   [ring/ring-mock "0.3.0"]
                                   [midje "1.8.2"]]
-                   :plugins [[lein-midje "3.1.1"]]}})
+                   :plugins [[lein-midje "3.1.1"]]}
+             :test {:dependencies [[ring/ring-mock "0.3.0"]]}})

@@ -1,12 +1,14 @@
 (ns codepair.http.server
   (:require [com.stuartsierra.component :as component]
-            [aleph.http :refer [start-server]]))
+            [aleph.http :refer [start-server]]
+            [bidi.ring :refer [make-handler]]
+            [yada.yada :refer [yada]]))
 
 
 (defrecord WebServer [port server]
   component/Lifecycle
   (start [component]
-    (let [handler (:handler component)
+    (let [handler (-> component :handler :handler)
           server (start-server handler {:port port :join? false})]
       (assoc component :server server)))
   (stop [component]
