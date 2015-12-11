@@ -8,7 +8,11 @@
                  [aleph "0.4.1-beta2"]
                  [yada "1.0.0-20150903.093751-9"]
                  [reloaded.repl "0.1.0"]
-                 [org.danielsz/system "0.2.0"]]
+                 [org.danielsz/system "0.2.0"]
+                 [bkell "0.1.2"]
+                 [clj-http "2.0.0"]
+                 [cheshire "5.5.0"]
+                 [weasel "0.7.0"]]
 
   :repl-options {:init-ns codepair.shell}
 
