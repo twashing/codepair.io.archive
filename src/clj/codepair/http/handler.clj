@@ -1,13 +1,18 @@
 (ns codepair.http.handler
   (:require [clojure.java.io :as io]
-            [bidi.ring :refer [make-handler]]
+            [bidi.ring :refer [make-handler ->Files ->Resources]]
             [yada.yada :refer [yada]]
             [com.stuartsierra.component :as component]
             [aleph.http :as http]
             [manifold.deferred :as d]
             [manifold.stream :as s]
             [manifold.bus :as b]
-            [bkell.config :as config]))
+            [bkell.config :as config]
+            [cemerick.url :as url :refer [url-encode url-decode]]            
+            [ring.util.response :refer (file-response url-response)]
+            [ring.middleware.content-type :refer (wrap-content-type)]
+            [ring.middleware.file-info :refer (wrap-file-info)]
+            [ring.middleware.not-modified :refer (wrap-not-modified)]))
 
 (defn generate-ice-handler [room]
   
@@ -38,9 +43,17 @@
 
 (defn generate-handler [state]
   (let [room (:room state)]
-    (make-handler ["/" {"" (fn  [req] {:content-type "text/html"
-                                       :body (slurp (io/resource "public/index.html"))})
-                        "room" (generate-ice-handler room)}])))
+    (make-handler ["/" {"" (fn [req]
+                             {:content-type "text/html"
+                              :body (slurp (io/resource "public/index.html"))})
+
+                        "room" (generate-ice-handler room)
+                        
+                        true (->
+                              (fn [req]
+                                (file-response (:uri req)
+                                               {:root "resources/public/"})))
+                        }])))
 
 (defrecord HttpHandler []
   component/Lifecycle

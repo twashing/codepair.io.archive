@@ -98,8 +98,45 @@
 
   (def ice (ches/parse-string (:body resp)))
 
+
+  ;; ====
+
+  (require '[cemerick.piggieback :as piggieback]
+           '[weasel.repl.websocket :as weasel]
+
+           '[figwheel-sidecar.auto-builder :as fig-auto]
+           '[figwheel-sidecar.core :as fig]
+
+           )
+  
+  (defn browser-repl []
+    (let [repl-env (weasel/repl-env :ip "172.28.128.3" :port 9001)]
+      (piggieback/cljs-repl :repl-env repl-env)))
   
 
+  (defn start-figwheel []
+    (let [server (fig/start-server { :css-dirs ["resources/public/css"] })
+          config {:builds [{:id "dev"
+                            :source-paths ["src/cljs" "env/dev/cljs"]
+                            :compiler {:output-to            "resources/public/js/app.js"
+                                       :output-dir           "resources/public/js/out"
+                                       :source-map           true
+                                       :optimizations        :none
+                                       :source-map-timestamp true
+                                       :preamble             ["react/react.min.js"]}}]
+                  :figwheel-server server}]
+
+      (fig-auto/autobuild* config)))
+
+  ;; ====
+
+  (bootstrap)
+
+  (require 'weasel.repl.websocket)
+
+  (cemerick.piggieback/cljs-repl (weasel.repl.websocket/repl-env :ip "172.28.128.3" :port 9001))
+
   )
+
 
 
