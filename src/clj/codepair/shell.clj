@@ -98,6 +98,8 @@
 
   (def ice (ches/parse-string (:body resp)))
 
+  (def peer-connection-config (get (ches/parse-string (:body resp))
+                                   "d"))
 
   ;; ====
 
@@ -136,6 +138,28 @@
 
   (cemerick.piggieback/cljs-repl (weasel.repl.websocket/repl-env :ip "172.28.128.3" :port 9001))
 
+  (def peer-config {"iceServers"
+                    [{"url" "stun:turn01.uswest.xirsys.com"}
+                     {"username" "92e3b7ae-a429-11e5-8f40-a76ff02b587d",
+                      "url" "turn:turn01.uswest.xirsys.com:443?transport=udp",
+                      "credential" "92e3b8d0-a429-11e5-98e0-1a2c5466029b"}
+                     {"username" "92e3b7ae-a429-11e5-8f40-a76ff02b587d",
+                      "url" "turn:turn01.uswest.xirsys.com:443?transport=tcp",
+                      "credential" "92e3b8d0-a429-11e5-98e0-1a2c5466029b"}
+                     {"username" "92e3b7ae-a429-11e5-8f40-a76ff02b587d",
+                      "url" "turn:turn01.uswest.xirsys.com:5349?transport=udp",
+                      "credential" "92e3b8d0-a429-11e5-98e0-1a2c5466029b"}
+                     {"username" "92e3b7ae-a429-11e5-8f40-a76ff02b587d",
+                      "url" "turn:turn01.uswest.xirsys.com:5349?transport=tcp",
+                      "credential" "92e3b8d0-a429-11e5-98e0-1a2c5466029b"}]})
+  
+  ;;(def webrtc (new js/SimpleWebRTC #js {:localVideoEl "localVideo" :remoteVideosEl "remotesVideos" :autoRequestMedia true :debug false :detectSpeakingEvents true :autoAdjustMic false :peerConnectionConfig peer-config}))
+
+  (.on webrtc
+       "readyToCall"
+       (fn []
+         (.joinRoom webrtc "main")))
+  
   )
 
 

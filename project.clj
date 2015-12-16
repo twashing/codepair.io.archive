@@ -19,6 +19,9 @@
   :cljsbuild {:builds [{:id "codepair"
                         :source-paths ["src/cljs/"]
                         :main "codepair.core"
+                        :foreign-libs [{:file "https://simplewebrtc.com/latest-v2.js"
+                                        :provides "com.simplewebrtc"}]
+                        #_:externs #_["resources/public/js/vendor/simplewebrtc-v2.js"]
                         :compiler {:output-to "resources/public/js/codepair.js"
                                    :output-dir "resources/public/js/out"
                                    :source-map "resources/public/js/out.js.map"
