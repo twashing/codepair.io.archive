@@ -6,13 +6,16 @@
 
   :dependencies [[org.clojure/clojure "1.8.0-RC2"]
                  [org.clojure/clojurescript "1.7.170"]
+                 [org.clojure/core.async "0.2.374"]
                  [aleph "0.4.1-beta2"]
+                 [cljs-ajax "0.5.2"]
+                 [jarohen/chord "0.7.0"]
                  [yada "1.0.0-20150903.093751-9"]
                  [reloaded.repl "0.1.0"]
                  [org.danielsz/system "0.2.0"]
                  [bkell "0.1.2"]
                  [clj-http "2.0.0"]
-                 [cheshire "5.5.0"]]  
+                 [cheshire "5.5.0"]]
 
   :repl-options {:init-ns codepair.shell}
 
@@ -21,7 +24,6 @@
                         :main "codepair.core"
                         :foreign-libs [{:file "https://simplewebrtc.com/latest-v2.js"
                                         :provides "com.simplewebrtc"}]
-                        #_:externs #_["resources/public/js/vendor/simplewebrtc-v2.js"]
                         :compiler {:output-to "resources/public/js/codepair.js"
                                    :output-dir "resources/public/js/out"
                                    :source-map "resources/public/js/out.js.map"
@@ -47,8 +49,7 @@
                    :figwheel {:http-server-root "public"
                               :server-port 3449
                               :css-dirs ["resources/public/css"]
-                              :ring-handler lc.server/http-handler}  
-                   }
+                              :ring-handler lc.server/http-handler}}
              
              :test {:dependencies [[ring/ring-mock "0.3.0"]]}}
 

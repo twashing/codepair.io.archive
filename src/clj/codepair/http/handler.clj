@@ -8,52 +8,73 @@
             [manifold.stream :as s]
             [manifold.bus :as b]
             [bkell.config :as config]
-            [cemerick.url :as url :refer [url-encode url-decode]]            
+            [clj-http.client :as client]
             [ring.util.response :refer (file-response url-response)]
             [ring.middleware.content-type :refer (wrap-content-type)]
             [ring.middleware.file-info :refer (wrap-file-info)]
             [ring.middleware.not-modified :refer (wrap-not-modified)]))
 
-(defn generate-ice-handler [room]
-  
+
+(def non-websocket-request
+  {:status 400
+   :headers {"content-type" "application/text"}
+   :body "Expected a websocket request."})
+
+(defn generate-chatroom-handler [chatrooms]
   (fn [req]
+
+    (d/let-flow [conn (d/catch
+                        (http/websocket-connection req)
+                        (fn [_] nil))]
+    (if-not conn
+      ;; if it wasn't a valid websocket handshake, return an error
+      non-websocket-request
+
+      ;; otherwise, take the first two messages, which give us the chatroom and name
+      (d/let-flow []
+        ;; take all messages from the chatroom, and feed them to the client
+        (s/connect
+         (b/subscribe chatrooms "main")
+         conn)
+        ;; take all messages from the client, prepend the name, and publish it to the "main" rooms
+        (s/consume
+         #(b/publish! chatrooms "main" %)
+         (->> conn
+              (s/map #(str name ": " %))
+              (s/buffer 100))))))))
+
+(defn generate-ice-handler [] 
+  (fn [req]
+    
     ;; make ICE request
     (let [conf (config/load-edn "config-codepair.edn")
-          resp @(http/post
+          resp (client/post
                  "https://service.xirsys.com/ice"
-                 {:body
-                  {:form-params
+                 {:form-params
                    {:ident "twashing"
                     :secret (-> conf :dev :xirsys-token)
                     :domain "codepair.io"
                     :application "main"
                     :room "main"
-                    :secure 1}}})]
+                    :secure 1}})]
 
-      (println resp)
-      
-      ;; subscribe requester to chatroom
-      (d/let-flow [socket (http/websocket-connection req)]
-        (s/connect
-         (b/subscribe room "main")
-         socket))
-      
       ;; return ICE details
       (select-keys resp [:status :body]))))
 
+(defn generate-index-response []
+  (fn [req]
+    {:content-type "text/html"
+     :body (slurp (io/resource "public/index.html"))}))
+
 (defn generate-handler [state]
   (let [room (:room state)]
-    (make-handler ["/" {"" (fn [req]
-                             {:content-type "text/html"
-                              :body (slurp (io/resource "public/index.html"))})
-
-                        "room" (generate-ice-handler room)
-                        
+    (make-handler ["/" {"" (generate-index-response)
+                        "ice" (generate-ice-handler)
+                        "chatroom" (generate-chatroom-handler room)                        
                         true (->
                               (fn [req]
                                 (file-response (:uri req)
-                                               {:root "resources/public/"})))
-                        }])))
+                                               {:root "resources/public/"})))}])))
 
 (defrecord HttpHandler []
   component/Lifecycle

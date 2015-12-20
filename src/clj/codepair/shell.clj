@@ -107,9 +107,7 @@
            '[weasel.repl.websocket :as weasel]
 
            '[figwheel-sidecar.auto-builder :as fig-auto]
-           '[figwheel-sidecar.core :as fig]
-
-           )
+           '[figwheel-sidecar.core :as fig])
   
   (defn browser-repl []
     (let [repl-env (weasel/repl-env :ip "172.28.128.3" :port 9001)]
