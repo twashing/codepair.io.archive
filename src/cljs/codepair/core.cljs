@@ -25,7 +25,7 @@
 
 (defn join-chatroom []
   (go
-    (let [{:keys [ws-channel]} (<! (ws-ch "ws://172.28.128.3/chatroom"))
+    (let [{:keys [ws-channel]} (<! (ws-ch "ws://172.28.128.3:8080/chatroom"))
           {:keys [message error]} (<! ws-channel)]
       (if error
         (js/console.log "Uh oh:" error)
