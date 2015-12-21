@@ -157,8 +157,21 @@
        "readyToCall"
        (fn []
          (.joinRoom webrtc "main")))
+
+
+  (use 'figwheel-sidecar.repl-api)
+
+  (start-figwheel!)
+  
+  (cljs-repl)
+
+
+  (require '[figwheel-sidecar.components.figwheel-server :as server])
+  (server/create-initial-state {:server-port 3449 :server-ip "172.28.128.3" :http-server-root "public/"})
+  (server/start-server {:server-port 3449 :server-ip "172.28.128.3" :http-server-root "public/"})
+
+  (require '[figwheel-sidecar.build-middleware.injection :as inj])
+  inj/extract-connection-script-figwheel-start
+  inj/hook
   
   )
-
-
-

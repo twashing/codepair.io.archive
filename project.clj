@@ -19,23 +19,32 @@
 
   :repl-options {:init-ns codepair.shell}
 
+  :source-paths ["src/clj/"]
+  
   :cljsbuild {:builds [{:id "codepair"
                         :source-paths ["src/cljs/"]
-                        :main "codepair.core"
+                        :figwheel {:build-id "codepair"
+                                   :websocket-url "ws://172.28.128.3:3449/figwheel-ws" }
                         :foreign-libs [{:file "https://simplewebrtc.com/latest-v2.js"
                                         :provides "com.simplewebrtc"}]
-                        :compiler {:output-to "resources/public/js/codepair.js"
+                        :compiler {:main "codepair.core"
+                                   :output-to "resources/public/js/codepair.js"
                                    :output-dir "resources/public/js/out"
                                    :source-map "resources/public/js/out.js.map"
-                                   :optimizations :whitespace
+                                   :optimizations :none
                                    :pretty-print true}}]}
-  
-  :profiles {:dev {:source-paths ["src/cljs/" "src/clj/"]
 
-                   :dependencies [[org.clojure/test.check "0.9.0"]
+  :figwheel {:http-server-root "public"
+             :server-host "172.28.128.3"
+             :server-port 3449
+             :websocket-url "172.28.128.3"
+             :websocket-host "172.28.128.3"
+             :css-dirs ["resources/public/css"]
+             :asset-path "resources/public"}
+  
+  :profiles {:dev {:dependencies [[org.clojure/test.check "0.9.0"]
                                   [ring/ring-mock "0.3.0"]
-                                  [midje "1.8.2"]
-                                  
+                                  [midje "1.8.2"]                                  
                                   [figwheel-sidecar "0.5.0-2"]
                                   [com.cemerick/piggieback "0.2.1"]
                                   [weasel "0.7.0" :exclusions [org.clojure/clojurescript]]]
@@ -44,12 +53,7 @@
 
                    :plugins [[lein-midje "3.1.1"]
                              [lein-figwheel "0.5.0-2"]
-                             [lein-cljsbuild "1.1.1"]]
-
-                   :figwheel {:http-server-root "public"
-                              :server-port 3449
-                              :css-dirs ["resources/public/css"]
-                              :ring-handler lc.server/http-handler}}
+                             [lein-cljsbuild "1.1.1"]]}
              
              :test {:dependencies [[ring/ring-mock "0.3.0"]]}}
 

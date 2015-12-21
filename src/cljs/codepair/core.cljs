@@ -9,8 +9,8 @@
 (.log js/console "Hello Clojurescript")
 
 ;; browser REPL
-(when-not (repl/alive?)
-  (repl/connect "ws://172.28.128.3:9001"))
+#_(when-not (repl/alive?)
+  (repl/connect "ws://172.28.128.3:3449"))
 
 
 (defn ice-handler [response]
