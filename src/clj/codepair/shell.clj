@@ -130,48 +130,20 @@
 
   ;; ====
 
-  (bootstrap)
-
   (require 'weasel.repl.websocket)
-
   (cemerick.piggieback/cljs-repl (weasel.repl.websocket/repl-env :ip "172.28.128.3" :port 9001))
-
-  (def peer-config {"iceServers"
-                    [{"url" "stun:turn01.uswest.xirsys.com"}
-                     {"username" "92e3b7ae-a429-11e5-8f40-a76ff02b587d",
-                      "url" "turn:turn01.uswest.xirsys.com:443?transport=udp",
-                      "credential" "92e3b8d0-a429-11e5-98e0-1a2c5466029b"}
-                     {"username" "92e3b7ae-a429-11e5-8f40-a76ff02b587d",
-                      "url" "turn:turn01.uswest.xirsys.com:443?transport=tcp",
-                      "credential" "92e3b8d0-a429-11e5-98e0-1a2c5466029b"}
-                     {"username" "92e3b7ae-a429-11e5-8f40-a76ff02b587d",
-                      "url" "turn:turn01.uswest.xirsys.com:5349?transport=udp",
-                      "credential" "92e3b8d0-a429-11e5-98e0-1a2c5466029b"}
-                     {"username" "92e3b7ae-a429-11e5-8f40-a76ff02b587d",
-                      "url" "turn:turn01.uswest.xirsys.com:5349?transport=tcp",
-                      "credential" "92e3b8d0-a429-11e5-98e0-1a2c5466029b"}]})
   
-  ;;(def webrtc (new js/SimpleWebRTC #js {:localVideoEl "localVideo" :remoteVideosEl "remotesVideos" :autoRequestMedia true :debug false :detectSpeakingEvents true :autoAdjustMic false :peerConnectionConfig peer-config}))
 
-  (.on webrtc
-       "readyToCall"
-       (fn []
-         (.joinRoom webrtc "main")))
-
-
+  (bootstrap)
+  
   (use 'figwheel-sidecar.repl-api)
-
   (start-figwheel!)
-  
   (cljs-repl)
-
-
-  (require '[figwheel-sidecar.components.figwheel-server :as server])
-  (server/create-initial-state {:server-port 3449 :server-ip "172.28.128.3" :http-server-root "public/"})
-  (server/start-server {:server-port 3449 :server-ip "172.28.128.3" :http-server-root "public/"})
 
   (require '[figwheel-sidecar.build-middleware.injection :as inj])
   inj/extract-connection-script-figwheel-start
   inj/hook
+
+  
   
   )

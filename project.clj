@@ -15,7 +15,8 @@
                  [org.danielsz/system "0.2.0"]
                  [bkell "0.1.2"]
                  [clj-http "2.0.0"]
-                 [cheshire "5.5.0"]]
+                 [cheshire "5.5.0"]
+                 [com.cognitect/transit-cljs "0.8.237"]]
 
   :repl-options {:init-ns codepair.shell}
 
@@ -31,6 +32,7 @@
                                    :output-to "resources/public/js/codepair.js"
                                    :output-dir "resources/public/js/out"
                                    :source-map "resources/public/js/out.js.map"
+                                   :asset-path "js/out"
                                    :optimizations :none
                                    :pretty-print true}}]}
 
@@ -39,8 +41,7 @@
              :server-port 3449
              :websocket-url "172.28.128.3"
              :websocket-host "172.28.128.3"
-             :css-dirs ["resources/public/css"]
-             :asset-path "resources/public"}
+             :css-dirs ["resources/public/css"]}
   
   :profiles {:dev {:dependencies [[org.clojure/test.check "0.9.0"]
                                   [ring/ring-mock "0.3.0"]
