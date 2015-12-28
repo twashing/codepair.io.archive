@@ -32,16 +32,20 @@
 
       ;; otherwise, take the first two messages, which give us the chatroom and name
       (d/let-flow []
+
         ;; take all messages from the chatroom, and feed them to the client
         (s/connect
          (b/subscribe chatrooms "main")
          conn)
+        
         ;; take all messages from the client, prepend the name, and publish it to the "main" rooms
         (s/consume
          #(b/publish! chatrooms "main" %)
          (->> conn
-              (s/map #(str name ": " %))
-              (s/buffer 100))))))))
+              #_(s/map #(str name ": " %))
+              (s/buffer 100)))
+
+        (b/publish! chatrooms "main" "joined room: main"))))))
 
 (defn generate-ice-handler [] 
   (fn [req]

@@ -41,6 +41,7 @@
              :server-port 3449
              :websocket-url "172.28.128.3"
              :websocket-host "172.28.128.3"
+             :nrepl-port 7888
              :css-dirs ["resources/public/css"]}
   
   :profiles {:dev {:dependencies [[org.clojure/test.check "0.9.0"]

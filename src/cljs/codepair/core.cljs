@@ -20,7 +20,8 @@
         
         reader (t/reader :json)
         ice-data (t/read reader response)
-        webrtc (new js/SimpleWebRTC #js {:localVideoEl "localVideo"
+        webrtc (new js/SimpleWebRTC #js {;;:url "ws://172.28.128.3:8080/chatroom"
+                                         :localVideoEl "localVideo"
                                          :remoteVideosEl "remotesVideos"
                                          :autoRequestMedia true
                                          :debug false
