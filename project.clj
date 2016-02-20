@@ -16,12 +16,14 @@
                  [bkell "0.1.2"]
                  [clj-http "2.0.0"]
                  [cheshire "5.5.0"]
-                 [com.cognitect/transit-cljs "0.8.237"]]
+                 [com.cognitect/transit-cljs "0.8.237"]
+                 [clj-aws-ec2 "0.5.0"]
+                 [jarohen/nomad "0.7.2"]]
 
   :repl-options {:init-ns codepair.shell}
 
   :source-paths ["src/clj/"]
-  
+
   :cljsbuild {:builds [{:id "codepair"
                         :source-paths ["src/cljs/"]
                         :figwheel {:build-id "codepair"
@@ -43,20 +45,22 @@
              :websocket-host "172.28.128.3"
              :nrepl-port 7888
              :css-dirs ["resources/public/css"]}
-  
+
   :profiles {:dev {:dependencies [[org.clojure/test.check "0.9.0"]
                                   [ring/ring-mock "0.3.0"]
-                                  [midje "1.8.2"]                                  
+                                  [midje "1.8.2"]
                                   [figwheel-sidecar "0.5.0-2"]
                                   [com.cemerick/piggieback "0.2.1"]
                                   [weasel "0.7.0" :exclusions [org.clojure/clojurescript]]]
-                   
+
                    :repl-options {:nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
 
                    :plugins [[lein-midje "3.1.1"]
                              [lein-figwheel "0.5.0-2"]
-                             [lein-cljsbuild "1.1.1"]]}
-             
+                             [lein-cljsbuild "1.1.1"]]
+
+                   :jvm-opts ["-Dnomad.env=dev"]}
+
              :test {:dependencies [[ring/ring-mock "0.3.0"]]}}
 
- )
+  )

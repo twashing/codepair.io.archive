@@ -7,8 +7,12 @@
             [system.core :refer [defsystem]]
             [com.stuartsierra.component :as component]
             [reloaded.repl :refer [system init start stop go]]
-            [manifold.bus :as bus]))
+            [manifold.bus :as bus]
+            [clojure.java.io :as io]
+            [nomad :refer [defconfig]]))
 
+
+(defconfig config-codepair (io/resource "config-codepair.edn"))
 
 (defn generate-state []
   {:room (bus/event-bus)})
@@ -60,7 +64,7 @@
            '[bkell.config :as config]
            '[clj-http.client :as client]
            '[cheshire.core :as ches])
-  
+
   (defmacro with-server [server & body]
     `(let [server# ~server]
        (try
@@ -108,11 +112,12 @@
 
            '[figwheel-sidecar.auto-builder :as fig-auto]
            '[figwheel-sidecar.core :as fig])
-  
+
   (defn browser-repl []
-    (let [repl-env (weasel/repl-env :ip "172.28.128.3" :port 9001)]
+    (let [repl-env (weasel/repl-env :ip (:ip-address (config-codepair))
+                                    :port 9001)]
       (piggieback/cljs-repl :repl-env repl-env)))
-  
+
 
   (defn start-figwheel []
     (let [server (fig/start-server { :css-dirs ["resources/public/css"] })
@@ -131,11 +136,12 @@
   ;; ====
 
   (require 'weasel.repl.websocket)
-  (cemerick.piggieback/cljs-repl (weasel.repl.websocket/repl-env :ip "172.28.128.3" :port 9001))
-  
+  (cemerick.piggieback/cljs-repl (weasel.repl.websocket/repl-env :ip (:ip-address (config-codepair))
+                                                                 :port 9001))
+
 
   (bootstrap)
-  
+
   (use 'figwheel-sidecar.repl-api)
   (start-figwheel!)
   (cljs-repl)
@@ -144,6 +150,6 @@
   inj/extract-connection-script-figwheel-start
   inj/hook
 
-  
-  
+
+
   )
