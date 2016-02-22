@@ -15,7 +15,8 @@
 (defconfig config-codepair (io/resource "config-codepair.edn"))
 
 (defn generate-state []
-  {:room (bus/event-bus)})
+  {:room (bus/event-bus)
+   :config-codepair config-codepair})
 
 
 (defrecord Shell []
@@ -83,7 +84,7 @@
 
   (defn run []
     (with-handler echo-handler
-      (let [c @(http/websocket-client "ws://localhost:8080")]
+      (let [c @(http/websocket-client "wss://localhost:8080")]
         (s/put! c "3")
         (println (str "1: " @(s/take! c))))
       (println (str "2: " (:status @(http/get "http://localhost:8080" {:throw-exceptions false}))))))
@@ -94,7 +95,7 @@
              "https://service.xirsys.com/ice"
              {:form-params
               {:ident "twashing"
-               :secret (-> conf :dev :xirsys-token)
+               :secret (:xirsys-token config-codepair)
                :domain "codepair.io"
                :application "main"
                :room "main"
@@ -139,8 +140,8 @@
   (cemerick.piggieback/cljs-repl (weasel.repl.websocket/repl-env :ip (:ip-address (config-codepair))
                                                                  :port 9001))
 
-
   (bootstrap)
+
 
   (use 'figwheel-sidecar.repl-api)
   (start-figwheel!)
@@ -149,7 +150,5 @@
   (require '[figwheel-sidecar.build-middleware.injection :as inj])
   inj/extract-connection-script-figwheel-start
   inj/hook
-
-
 
   )

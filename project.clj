@@ -27,7 +27,7 @@
   :cljsbuild {:builds [{:id "codepair"
                         :source-paths ["src/cljs/"]
                         :figwheel {:build-id "codepair"
-                                   :websocket-url "ws://172.28.128.3:3449/figwheel-ws" }
+                                   :websocket-url "wss://172.28.128.3:3449/figwheel-ws" }
                         :foreign-libs [{:file "https://simplewebrtc.com/latest-v2.js"
                                         :provides "com.simplewebrtc"}]
                         :compiler {:main "codepair.core"

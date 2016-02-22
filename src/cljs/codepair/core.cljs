@@ -9,15 +9,11 @@
 
 (.log js/console "Hello Clojurescript")
 
-;; browser REPL
-#_(when-not (repl/alive?)
-  (repl/connect "ws://172.28.128.3:3449"))
-
 
 (defn ice-handler [response]
 
   (let [_ (.log js/console (str response))
-        
+
         reader (t/reader :json)
         ice-data (t/read reader response)
         webrtc (new js/SimpleWebRTC #js {;;:url "ws://172.28.128.3:8080/chatroom"
@@ -43,12 +39,12 @@
     (.on webrtc
          "videoAdded"
          (fn [video peer]
-           
+
            (.log js/console (str "video added: " video))
 
            (let [remotes (.getElementById js/document "remotes")
                  container (.createElement js/document "div")]
-             
+
              ;; container.className = 'videoContainer';
              ;; container.id = 'container_' + webrtc.getDomId(peer);
 
@@ -65,11 +61,11 @@
 
 (defn join-chatroom []
   (go
-    (let [{:keys [ws-channel]} (<! (ws-ch "ws://172.28.128.3:8080/chatroom"))
+    (let [{:keys [ws-channel]} (<! (ws-ch "wss://172.28.128.3:8080/chatroom"))
           {:keys [message error]} (<! ws-channel)]
 
       (def latest-message message)
-      
+
       (if error
         (js/console.log "Uh oh:" error)
         (js/console.log "Hooray! Message:" (pr-str message))))))

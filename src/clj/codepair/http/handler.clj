@@ -12,7 +12,8 @@
             [ring.util.response :refer (file-response url-response)]
             [ring.middleware.content-type :refer (wrap-content-type)]
             [ring.middleware.file-info :refer (wrap-file-info)]
-            [ring.middleware.not-modified :refer (wrap-not-modified)]))
+            [ring.middleware.not-modified :refer (wrap-not-modified)]
+            [cider.nrepl.middleware.debug]))
 
 
 (def non-websocket-request
@@ -24,43 +25,44 @@
   (fn [req]
 
     (d/let-flow [conn (d/catch
-                        (http/websocket-connection req)
-                        (fn [_] nil))]
-    (if-not conn
-      ;; if it wasn't a valid websocket handshake, return an error
-      non-websocket-request
+                          (http/websocket-connection req)
+                          (fn [_] nil))]
+      (if-not conn
+        ;; if it wasn't a valid websocket handshake, return an error
+        non-websocket-request
 
-      ;; otherwise, take the first two messages, which give us the chatroom and name
-      (d/let-flow []
+        ;; otherwise, take the first two messages, which give us the chatroom and name
+        (d/let-flow []
 
-        ;; take all messages from the chatroom, and feed them to the client
-        (s/connect
-         (b/subscribe chatrooms "main")
-         conn)
-        
-        ;; take all messages from the client, prepend the name, and publish it to the "main" rooms
-        (s/consume
-         #(b/publish! chatrooms "main" %)
-         (->> conn
-              #_(s/map #(str name ": " %))
-              (s/buffer 100)))
+          ;; take all messages from the chatroom, and feed them to the client
+          (s/connect
+           (b/subscribe chatrooms "main")
+           conn)
 
-        (b/publish! chatrooms "main" "joined room: main"))))))
+          ;; take all messages from the client, prepend the name, and publish it to the "main" rooms
+          (s/consume
+           #(b/publish! chatrooms "main" %)
+           (->> conn
+                #_(s/map #(str name ": " %))
+                (s/buffer 100)))
 
-(defn generate-ice-handler [] 
+          (b/publish! chatrooms "main" "joined room: main"))))))
+
+(defn generate-ice-handler [config-codepair]
   (fn [req]
-    
+
+    #spy/d req
+
     ;; make ICE request
-    (let [conf (config/load-edn "config-codepair.edn")
-          resp (client/post
+    (let [ resp (client/post
                  "https://service.xirsys.com/ice"
                  {:form-params
-                   {:ident "twashing"
-                    :secret (-> conf :dev :xirsys-token)
-                    :domain "codepair.io"
-                    :application "main"
-                    :room "main"
-                    :secure 1}})]
+                  {:ident "twashing"
+                   :secret #spy/d (:xirsys-token (config-codepair))
+                   :domain "codepair.io"
+                   :application "main"
+                   :room "main"
+                   :secure 1}})]
 
       ;; return ICE details
       (select-keys resp [:status :body]))))
@@ -71,14 +73,16 @@
      :body (slurp (io/resource "public/index.html"))}))
 
 (defn generate-handler [state]
-  (let [room (:room state)]
+  (let [room (:room state)
+        config-codepair (:config-codepair state)]
     (make-handler ["/" {"" (generate-index-response)
-                        "ice" (generate-ice-handler)
-                        "chatroom" (generate-chatroom-handler room)                        
+                        "ice" (generate-ice-handler config-codepair)
+                        "chatroom" (generate-chatroom-handler room)
                         true (->
                               (fn [req]
-                                (file-response (:uri req)
-                                               {:root "resources/public/"})))}])))
+                                (let [resp (file-response (:uri req)
+                                                          {:root "resources/public/"})]
+                                  (assoc resp :body (slurp (:body resp))))))}])))
 
 (defrecord HttpHandler []
   component/Lifecycle
@@ -93,4 +97,3 @@
 
 (defn new-http-handler []
   (map->HttpHandler {}))
-
