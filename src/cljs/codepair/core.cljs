@@ -7,9 +7,6 @@
   (:require-macros [cljs.core.async.macros :refer [go]]))
 
 
-(.log js/console "Hello Clojurescript")
-
-
 (defn ice-handler [response]
 
   (let [_ (.log js/console (str response))
@@ -24,7 +21,6 @@
                                          :detectSpeakingEvents true
                                          :autoAdjustMic false
                                          :peerConnectionConfig (get ice-data "d")})]
-
     (.on webrtc
          "readyToCall"
          (fn []
@@ -61,7 +57,7 @@
 
 (defn join-chatroom []
   (go
-    (let [{:keys [ws-channel]} (<! (ws-ch "wss://172.28.128.3:8080/chatroom"))
+    (let [{:keys [ws-channel]} (<! (ws-ch "wss://127.0.0.1:8080/chatroom"))
           {:keys [message error]} (<! ws-channel)]
 
       (def latest-message message)
@@ -72,7 +68,33 @@
 
 
 #_(do
+
     (.log js/console "a")
     (join-chatroom)
     (ice-call)
+
+    (def wrtc (new js/SimpleWebRTC #js {:localVideoEl "localVideo"
+                                        :remoteVideosEl "remotesVideos"
+                                        :autoRequestMedia true
+                                        :debug false
+                                        :detectSpeakingEvents true
+                                        :autoAdjustMic false
+                                        :peerConnectionConfig (get ice-data "d")}))
+
+    (def one (.shareScreen wrtc (fn [err]
+                                  (.log js/console (str  "Error: " err)))))
+
+    ;; ====
+
+    var wrtc = new SimpleWebRTC({localVideoEl : "localVideo",
+			     remoteVideosEl : "remotesVideos",
+			     autoRequestMedia : true,
+			     debug : false,
+			     detectSpeakingEvents : true,
+			     autoAdjustMic : false})
+
+    var one = wrtc.shareScreen(function (err) {
+                                               console.log("Error: " + err)})
+
+
     )

@@ -1,15 +1,14 @@
 (ns codepair.shell
-  (:require [codepair.http.handler :as hdl]
-            [codepair.http.server :as srv]
-            [reloaded.repl :refer [go]]
-            [system.components.aleph :refer [new-web-server]]
+  (:require [system.components.aleph :refer [new-web-server]]
             [clojure.tools.namespace.repl :refer [refresh]]
             [system.core :refer [defsystem]]
             [com.stuartsierra.component :as component]
             [reloaded.repl :refer [system init start stop go]]
             [manifold.bus :as bus]
             [clojure.java.io :as io]
-            [nomad :refer [defconfig]]))
+            [nomad :refer [defconfig]]
+            [codepair.http.handler :as hdl]
+            [codepair.http.server :as srv]))
 
 
 (defconfig config-codepair (io/resource "config-codepair.edn"))
@@ -136,12 +135,11 @@
 
   ;; ====
 
-  (require 'weasel.repl.websocket)
-  (cemerick.piggieback/cljs-repl (weasel.repl.websocket/repl-env :ip (:ip-address (config-codepair))
-                                                                 :port 9001))
+  ;; (require 'weasel.repl.websocket)
+  ;; (cemerick.piggieback/cljs-repl (weasel.repl.websocket/repl-env :ip (:ip-address (config-codepair))
+  ;;                                                                :port 9001))
 
   (bootstrap)
-
 
   (use 'figwheel-sidecar.repl-api)
   (start-figwheel!)

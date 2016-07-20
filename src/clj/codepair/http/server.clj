@@ -12,8 +12,9 @@
           cert (io.netty.handler.ssl.util.SelfSignedCertificate.)
           sslContext (.build
                       (io.netty.handler.ssl.SslContextBuilder/forServer (.certificate cert) (.privateKey cert)))
-          server (start-server handler {:port port :join? false :ssl-context sslContext})]
-      ;; server (start-server handler {:port port :join? false})]
+          server (start-server handler {:port port :join? false :ssl-context sslContext})
+          ;; server (start-server handler {:port port :join? false})
+          ]
       (assoc component :server server)))
   (stop [component]
     (when server

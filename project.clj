@@ -22,30 +22,6 @@
 
   :repl-options {:init-ns codepair.shell}
 
-  :source-paths ["src/clj/"]
-
-  :cljsbuild {:builds [{:id "codepair"
-                        :source-paths ["src/cljs/"]
-                        :figwheel {:build-id "codepair"
-                                   :websocket-url "wss://172.28.128.3:3449/figwheel-ws" }
-                        :foreign-libs [{:file "https://simplewebrtc.com/latest-v2.js"
-                                        :provides "com.simplewebrtc"}]
-                        :compiler {:main "codepair.core"
-                                   :output-to "resources/public/js/codepair.js"
-                                   :output-dir "resources/public/js/out"
-                                   :source-map "resources/public/js/out.js.map"
-                                   :asset-path "js/out"
-                                   :optimizations :none
-                                   :pretty-print true}}]}
-
-  :figwheel {:http-server-root "public"
-             :server-host "172.28.128.3"
-             :server-port 3449
-             :websocket-url "172.28.128.3"
-             :websocket-host "172.28.128.3"
-             :nrepl-port 7888
-             :css-dirs ["resources/public/css"]}
-
   :profiles {:dev {:dependencies [[org.clojure/test.check "0.9.0"]
                                   [ring/ring-mock "0.3.0"]
                                   [midje "1.8.2"]
@@ -63,4 +39,27 @@
 
              :test {:dependencies [[ring/ring-mock "0.3.0"]]}}
 
-  )
+  :source-paths["src/clj/"]
+
+  :cljsbuild{:builds [{:id "codepair"
+                       :source-paths ["src/cljs/"]
+                       :figwheel {:build-id "codepair"
+                                  :websocket-url "wss://localhost:3449/figwheel-ws" }
+                       :foreign-libs [{:file "https://simplewebrtc.com/latest-v2.js"
+                                       :provides "com.simplewebrtc"}]
+                       :compiler {:main "codepair.core"
+                                  :output-to "resources/public/js/codepair.js"
+                                  :output-dir "resources/public/js/out"
+                                  :source-map "resources/public/js/out.js.map"
+                                  :asset-path "js/out"
+                                  :optimizations :none
+                                  :pretty-print true}}]}
+
+  :figwheel {:http-server-root "public"
+             ;; :server-host "localhost"
+             ;; :server-port 3449
+             ;; :websocket-url "localhost"
+             ;; :websocket-host "localhost"
+             ;; :nrepl-port 7888
+             ;; :css-dirs ["resources/public/css"]
+             })

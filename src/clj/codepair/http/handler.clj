@@ -28,6 +28,7 @@
                           (http/websocket-connection req)
                           (fn [_] nil))]
       (if-not conn
+
         ;; if it wasn't a valid websocket handshake, return an error
         non-websocket-request
 
@@ -54,15 +55,15 @@
     #spy/d req
 
     ;; make ICE request
-    (let [ resp (client/post
-                 "https://service.xirsys.com/ice"
-                 {:form-params
-                  {:ident "twashing"
-                   :secret #spy/d (:xirsys-token (config-codepair))
-                   :domain "codepair.io"
-                   :application "main"
-                   :room "main"
-                   :secure 1}})]
+    (let [resp (client/post
+                "https://service.xirsys.com/ice"
+                {:form-params
+                 {:ident "twashing"
+                  :secret #spy/d (:xirsys-token (config-codepair))
+                  :domain "codepair.io"
+                  :application "main"
+                  :room "main"
+                  :secure 1}})]
 
       ;; return ICE details
       (select-keys resp [:status :body]))))
